@@ -684,45 +684,76 @@ function addProduct(){
 function deleteProduct(id){
   if(!confirm('Xoá sản phẩm này?')) return;
   db.ref('products/'+id).remove();
-  if(cart[id]) {delete cart[id]; renderCart();}
+  // remove all cart entries for this product
+  Object.keys(cart).filter(k=>cart[k].id===id).forEach(k=>delete cart[k]);
+  renderCart();
 }
 
 // ── Cart ──────────────────────────────────────────────────────────
-function addToCart(id){
-  const p=products.find(x=>x.id===id);
+// cart key: "productId__colorKey"  or  "productId__none_N" for uncolored slots
+function makeKey(productId, colorKey){ return colorKey ? `${productId}__${colorKey}` : `${productId}__none_${Date.now()}`; }
+
+function totalInCart(productId){
+  return Object.values(cart).filter(i=>i.id===productId).reduce((s,i)=>s+i.qty,0);
+}
+
+function addToCart(productId){
+  const p=products.find(x=>x.id===productId);
   if(!p||p.stock<=0) return;
-  if(cart[id]){
-    if(cart[id].qty>=p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
-    cart[id].qty++;
+
+  if(totalInCart(productId)>=p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
+
+  // Find an existing uncolored slot for this product
+  const uncoloredKey=Object.keys(cart).find(k=>cart[k].id===productId&&!cart[k].selectedColor);
+
+  if(uncoloredKey){
+    // Already has an uncolored slot → just bump its qty
+    cart[uncoloredKey].qty++;
   } else {
-    cart[id]={...p,qty:1,selectedColor:null};
+    // Create a fresh uncolored slot
+    const key=makeKey(productId, null);
+    cart[key]={...p, qty:1, selectedColor:null, _key:key};
   }
+
   renderCart();
-  // bounce
+  // bounce button only
   const b=document.querySelector('.cart-btn');
   b.style.transform='scale(1.15)';
   setTimeout(()=>b.style.transform='',150);
-  // open cart
-  document.getElementById('cart-panel').classList.add('open');
 }
 
-function pickColor(productId, colorKey){
-  if(!cart[productId]) return;
-  cart[productId].selectedColor = colorKey;
+function pickColor(cartKey, colorKey){
+  if(!cart[cartKey]) return;
+  const item=cart[cartKey];
+  const productId=item.id;
+  const p=products.find(x=>x.id===productId);
+
+  // Is there already an entry with this color?
+  const existingKey=Object.keys(cart).find(k=>k!==cartKey && cart[k].id===productId && cart[k].selectedColor===colorKey);
+
+  if(existingKey){
+    // Merge: add qty to existing colored entry
+    const combined=cart[cartKey].qty+cart[existingKey].qty;
+    if(p&&combined>p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
+    cart[existingKey].qty=combined;
+    delete cart[cartKey];
+  } else {
+    // Just assign color to this slot
+    cart[cartKey].selectedColor=colorKey;
+  }
   renderCart();
 }
 
-function changeQty(id,d){
-  if(!cart[id]) return;
-  const p=products.find(x=>x.id===id);
-  const newQty=cart[id].qty+d;
-  if(d>0&&p&&newQty>p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
-  cart[id].qty=newQty;
-  if(cart[id].qty<=0) delete cart[id];
+function changeQty(cartKey, d){
+  if(!cart[cartKey]) return;
+  const p=products.find(x=>x.id===cart[cartKey].id);
+  if(d>0&&p&&totalInCart(cart[cartKey].id)>=p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
+  cart[cartKey].qty+=d;
+  if(cart[cartKey].qty<=0) delete cart[cartKey];
   renderCart();
 }
 
-function renderCart(missingIds=[]){
+function renderCart(missingKeys=[]){
   const entries=Object.entries(cart);
   const total=entries.reduce((s,[,i])=>s+i.price*i.qty,0);
   document.getElementById('cart-count').textContent=entries.reduce((s,[,i])=>s+i.qty,0);
@@ -734,14 +765,14 @@ function renderCart(missingIds=[]){
     return;
   }
 
-  el.innerHTML=entries.map(([id,item])=>{
+  el.innerHTML=entries.map(([key,item])=>{
     const cols=(item.colors||[]).map(k=>resolveColor(k)).filter(Boolean);
-    const isMissing=missingIds.includes(item.id);
+    const isMissing=missingKeys.includes(key);
     let colorRow='';
     if(cols.length){
       const swatchBtns=cols.map(c=>{
         const picked=item.selectedColor===c.key;
-        return `<span class="ci-color-swatch${picked?' picked':''}" style="background:${c.hex}" title="${c.name}" onclick="pickColor(${id},'${c.key}')"></span>`;
+        return `<span class="ci-color-swatch${picked?' picked':''}" style="background:${c.hex}" title="${c.name}" onclick="pickColor('${key}','${c.key}')"></span>`;
       }).join('');
       const pickedObj=item.selectedColor?resolveColor(item.selectedColor):null;
       const pickedLine=pickedObj
@@ -763,9 +794,9 @@ function renderCart(missingIds=[]){
           <div class="ci-price">${(item.price*item.qty).toLocaleString('vi-VN')}đ</div>
         </div>
         <div class="ci-qty">
-          <button class="qty-btn" onclick="changeQty(${id},-1)">−</button>
+          <button class="qty-btn" onclick="changeQty('${key}',-1)">−</button>
           <span class="qty-num">${item.qty}</span>
-          <button class="qty-btn" onclick="changeQty(${id},+1)">+</button>
+          <button class="qty-btn" onclick="changeQty('${key}',+1)">+</button>
         </div>
       </div>
       ${colorRow}
@@ -778,9 +809,12 @@ function toggleCart(){document.getElementById('cart-panel').classList.toggle('op
 // ── Color warning ─────────────────────────────────────────────────
 function closeColorWarn(){
   document.getElementById('popup-color-warn').classList.remove('show');
-  // scroll cart to first missing item & highlight
-  const first=document.querySelector('.cart-item.missing-color');
-  if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+  // make sure cart is open and scroll to first missing item
+  document.getElementById('cart-panel').classList.add('open');
+  setTimeout(()=>{
+    const first=document.querySelector('.cart-item.missing-color');
+    if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+  },200);
 }
 
 // ── Order ─────────────────────────────────────────────────────────
@@ -788,19 +822,17 @@ function sendOrder(){
   const items=Object.values(cart);
   if(!items.length) return;
 
-  // check missing colors
-  const missing=items.filter(i=>(i.colors&&i.colors.length>0)&&!i.selectedColor);
-  if(missing.length){
-    // build list in popup
-    document.getElementById('cw-items-list').innerHTML=missing.map(i=>`
+  // check missing colors — find cart entries that have colors available but none picked
+  const missingEntries=Object.entries(cart).filter(([,i])=>(i.colors&&i.colors.length>0)&&!i.selectedColor);
+  if(missingEntries.length){
+    document.getElementById('cw-items-list').innerHTML=missingEntries.map(([,i])=>`
       <div class="cw-item">
         <div class="cw-item-thumb">${imgHtml(i)}</div>
         <div class="cw-item-name">${i.name}</div>
         <div class="cw-item-badge">Chọn màu!</div>
       </div>`).join('');
     document.getElementById('popup-color-warn').classList.add('show');
-    // mark missing items in cart
-    renderCart(missing.map(i=>i.id));
+    renderCart(missingEntries.map(([k])=>k));
     return;
   }
 
@@ -844,9 +876,14 @@ function doSend(msg){
   xhr.send();
 }
 function showSuccess(){
+  // Deduct stock — group by productId, sum all qty entries
+  const stockMap={};
   Object.values(cart).forEach(item=>{
-    const p=products.find(x=>x.id===item.id);
-    if(p) db.ref('products/'+item.id+'/stock').set(Math.max(0,p.stock-item.qty));
+    stockMap[item.id]=(stockMap[item.id]||0)+item.qty;
+  });
+  Object.entries(stockMap).forEach(([pid,qty])=>{
+    const p=products.find(x=>x.id==pid);
+    if(p) db.ref('products/'+pid+'/stock').set(Math.max(0,p.stock-qty));
   });
   document.getElementById('confirm-phone').textContent=customer.phone;
   document.getElementById('popup-success').classList.add('show');
