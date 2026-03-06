@@ -68,8 +68,16 @@
   .stock-badge.in-stock{background:#e8fdf5;color:#00a86b;}
   .stock-badge.low-stock{background:#fff8e6;color:#e67e00;}
   .stock-badge.out{background:#fff0f0;color:#FF4757;}
+
+  /* COLOR SWATCHES on product card */
+  .color-swatches-row{display:flex;align-items:center;gap:5px;margin-top:8px;flex-wrap:wrap;}
+  .card-swatch{width:18px;height:18px;border-radius:50%;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.18);}
+  .color-hint{font-size:11px;color:var(--muted);font-weight:600;}
+
   .add-btn{width:100%;margin-top:8px;padding:9px;background:var(--dark);color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:background 0.2s;}
   .add-btn:hover{background:var(--primary);}
+  .add-btn.has-colors{background:linear-gradient(135deg,#7C3AED,#a855f7);}
+  .add-btn.has-colors:hover{background:linear-gradient(135deg,#6D28D9,#9333ea);}
   .add-btn:disabled{background:#ddd;color:#999;cursor:not-allowed;}
   .add-btn.sold-out{background:#FF4757;}
   .delete-badge{position:absolute;top:8px;right:8px;background:#FF4757;color:white;border:none;border-radius:100px;width:28px;height:28px;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,71,87,0.4);}
@@ -86,12 +94,14 @@
   .cart-empty .big{font-size:48px;display:block;margin-bottom:10px;}
   .cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f5f5f5;animation:slideIn 0.3s ease;}
   @keyframes slideIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
-  .ci-thumb{width:46px;height:46px;border-radius:10px;flex-shrink:0;overflow:hidden;background:#fff8f0;display:flex;align-items:center;justify-content:center;font-size:26px;}
+  .ci-thumb{width:46px;height:46px;border-radius:10px;flex-shrink:0;overflow:hidden;background:#fff8f0;display:flex;align-items:center;justify-content:center;font-size:26px;position:relative;}
   .ci-thumb img{width:100%;height:100%;object-fit:cover;}
+  .ci-color-dot{position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.3);}
   .ci-info{flex:1;min-width:0;}
   .ci-name{font-weight:700;font-size:13px;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .ci-price{font-size:12px;color:var(--primary);font-weight:700;}
-  .ci-qty{display:flex;align-items:center;gap:6px;}
+  .ci-color-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:white;margin-top:3px;font-weight:700;padding:2px 7px;border-radius:100px;}
+  .ci-price{font-size:12px;color:var(--primary);font-weight:700;margin-top:3px;}
+  .ci-qty{display:flex;align-items:center;gap:6px;flex-shrink:0;}
   .qty-btn{background:#f5f5f5;border:none;border-radius:8px;width:28px;height:28px;font-size:16px;cursor:pointer;font-weight:700;}
   .qty-btn:hover{background:var(--secondary);}
   .qty-num{font-weight:800;font-size:15px;min-width:20px;text-align:center;}
@@ -104,6 +114,33 @@
   .order-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--accent),#00B894);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(6,214,160,0.35);display:flex;align-items:center;justify-content:center;gap:8px;}
   .order-btn:hover{transform:translateY(-2px);}
   .order-btn:disabled{background:#ccc;box-shadow:none;cursor:not-allowed;transform:none;}
+
+  /* ── COLOR PICKER BOTTOM SHEET ── */
+  #color-picker-popup{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.5);display:none;align-items:flex-end;justify-content:center;}
+  #color-picker-popup.show{display:flex;}
+  .color-picker-sheet{background:white;border-radius:24px 24px 0 0;padding:24px 22px 36px;width:100%;max-width:480px;animation:slideUp 0.32s cubic-bezier(.34,1.2,.64,1) both;}
+  @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
+  .cp-handle{width:40px;height:4px;background:#e0e0e0;border-radius:4px;margin:0 auto 18px;}
+  .cp-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;}
+  .cp-header h4{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--dark);line-height:1.3;flex:1;padding-right:12px;}
+  .cp-close{background:#f5f5f5;border:none;border-radius:10px;width:34px;height:34px;font-size:16px;cursor:pointer;flex-shrink:0;}
+  .cp-subtitle{font-size:13px;color:var(--muted);margin-bottom:18px;margin-top:4px;}
+  .cp-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
+  .cp-color-btn{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform 0.15s;padding:6px 8px;border-radius:12px;border:2px solid transparent;min-width:60px;}
+  .cp-color-btn:hover{transform:translateY(-2px);background:#f8f9fa;}
+  .cp-color-btn.active{border-color:var(--primary);background:#fff5f2;}
+  .cp-dot{width:40px;height:40px;border-radius:50%;border:3px solid white;box-shadow:0 3px 10px rgba(0,0,0,0.2);transition:box-shadow 0.15s,transform 0.15s;}
+  .cp-color-btn.active .cp-dot{box-shadow:0 0 0 3px var(--primary),0 3px 10px rgba(0,0,0,0.2);transform:scale(1.1);}
+  .cp-label{font-size:11px;font-weight:700;color:var(--dark);text-align:center;line-height:1.2;}
+  .cp-selected-bar{display:none;align-items:center;gap:10px;background:#f8f9fa;padding:10px 14px;border-radius:12px;margin-bottom:14px;border:2px solid var(--primary);}
+  .cp-selected-bar.show{display:flex;}
+  .cp-sel-dot{width:24px;height:24px;border-radius:50%;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.2);flex-shrink:0;}
+  .cp-sel-text{font-weight:700;font-size:13px;color:var(--dark);}
+  .btn-cp-add{width:100%;padding:14px;background:linear-gradient(135deg,#7C3AED,#a855f7);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(124,58,237,0.35);transition:transform 0.15s;}
+  .btn-cp-add:hover{transform:translateY(-2px);}
+  .btn-cp-add:disabled{background:#ccc;box-shadow:none;cursor:not-allowed;transform:none;}
+  .btn-cp-skip{width:100%;padding:11px;background:transparent;color:var(--muted);border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:6px;}
+  .btn-cp-skip:hover{color:var(--dark);}
 
   .popup-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.55);align-items:center;justify-content:center;padding:16px;}
   .popup-overlay.show{display:flex;}
@@ -152,21 +189,49 @@
   .pla-thumb img{width:100%;height:100%;object-fit:cover;}
   .pla-info{flex:1;min-width:0;}
   .pla-name{font-weight:700;font-size:13px;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .pla-meta{font-size:11px;color:var(--muted);}
-  .pla-actions{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+  .pla-meta{font-size:11px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+  .pla-color-dots{display:flex;gap:3px;}
+  .pla-cdot{width:10px;height:10px;border-radius:50%;border:1.5px solid white;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+  .pla-actions{display:flex;align-items:center;gap:5px;flex-shrink:0;}
   .stock-ctrl{display:flex;align-items:center;gap:4px;background:white;border:1.5px solid #eee;border-radius:8px;padding:2px 4px;}
   .stock-ctrl button{background:none;border:none;width:22px;height:22px;cursor:pointer;font-size:14px;font-weight:800;color:var(--dark);display:flex;align-items:center;justify-content:center;}
   .stock-ctrl button:hover{color:var(--primary);}
   .stock-num{font-weight:800;font-size:13px;min-width:24px;text-align:center;color:var(--dark);}
   .btn-del{background:#fff0f0;border:none;border-radius:8px;padding:6px 10px;color:#FF4757;font-size:13px;cursor:pointer;font-weight:700;}
   .btn-del:hover{background:#FF4757;color:white;}
+  .btn-color-mgr{background:#f0eeff;border:none;border-radius:8px;padding:6px 10px;color:#7C3AED;font-size:13px;cursor:pointer;font-weight:700;}
+  .btn-color-mgr:hover{background:#7C3AED;color:white;}
   .close-admin{background:#f5f5f5;border:none;border-radius:10px;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-
-
   .upload-img-label{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;border:2px dashed #eee;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;color:var(--muted);transition:border-color 0.2s,background 0.2s;background:#fafafa;}
   .upload-img-label:hover{border-color:var(--primary);background:#fff5f2;color:var(--primary);}
   .upload-img-label.has-img{border-color:var(--accent);background:#f0fdf9;color:#00a86b;}
   .upload-img-thumb{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+
+  /* ── COLOR MANAGER (ADMIN) ── */
+  #color-manager-panel{position:fixed;inset:0;z-index:850;background:rgba(0,0,0,0.65);display:none;align-items:center;justify-content:center;padding:16px;}
+  #color-manager-panel.show{display:flex;}
+  .cm-box{background:white;border-radius:24px;width:100%;max-width:460px;max-height:85vh;overflow-y:auto;animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;}
+  .cm-head{padding:18px 22px;border-bottom:2px dashed #eee;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;}
+  .cm-head h3{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--dark);}
+  .cm-body{padding:18px 22px;}
+  .cm-product-name{font-size:13px;font-weight:700;color:#7C3AED;margin-bottom:16px;padding:8px 12px;background:#f5f0ff;border-radius:8px;border-left:3px solid #7C3AED;}
+  .cm-empty{font-size:13px;color:var(--muted);padding:10px 0;text-align:center;}
+  .cm-colors-list{display:flex;flex-direction:column;gap:7px;margin-bottom:16px;}
+  .cm-color-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:#f8f9fa;border-radius:10px;}
+  .cm-dot{width:30px;height:30px;border-radius:50%;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,.18);flex-shrink:0;}
+  .cm-color-info{flex:1;}
+  .cm-color-name{font-weight:700;font-size:13px;color:var(--dark);}
+  .cm-color-hex{font-size:11px;color:var(--muted);}
+  .cm-del-color{background:#fff0f0;border:none;border-radius:6px;padding:5px 10px;color:#FF4757;font-size:12px;cursor:pointer;font-weight:700;}
+  .cm-del-color:hover{background:#FF4757;color:white;}
+  .cm-add-section{background:#f8f9fa;border-radius:12px;padding:14px;}
+  .cm-add-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
+  .cm-add-row{display:flex;gap:8px;align-items:center;}
+  .cm-color-input{width:48px;height:40px;border:2px solid #eee;border-radius:8px;cursor:pointer;padding:2px;background:white;}
+  .cm-name-input{flex:1;padding:9px 12px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;background:white;}
+  .cm-name-input:focus{border-color:#7C3AED;}
+  .btn-cm-add{padding:9px 14px;background:#7C3AED;color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
+  .btn-cm-done{width:100%;padding:12px;background:linear-gradient(135deg,var(--accent),#00B894);color:white;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;cursor:pointer;margin-top:14px;}
 
   /* SEARCH BAR */
   .search-wrap{max-width:960px;margin:0 auto;padding:20px 16px 0;}
@@ -246,6 +311,7 @@
   <div style="text-align:center;padding:60px 0;color:var(--muted)">⏳ Đang tải sản phẩm...</div>
 </div>
 
+<!-- CART PANEL -->
 <div id="cart-panel">
   <div class="cart-header">
     <h3>🛒 Giỏ hàng</h3>
@@ -261,6 +327,26 @@
   </div>
 </div>
 
+<!-- COLOR PICKER BOTTOM SHEET -->
+<div id="color-picker-popup">
+  <div class="color-picker-sheet">
+    <div class="cp-handle"></div>
+    <div class="cp-header">
+      <h4 id="cp-title">🎨 Chọn màu</h4>
+      <button class="cp-close" onclick="closeColorPicker()">✕</button>
+    </div>
+    <p class="cp-subtitle" id="cp-subtitle">Bấm vào màu bạn muốn</p>
+    <div class="cp-selected-bar" id="cp-selected-bar">
+      <div class="cp-sel-dot" id="cp-sel-dot"></div>
+      <span class="cp-sel-text" id="cp-sel-text">Đã chọn: —</span>
+    </div>
+    <div class="cp-grid" id="cp-colors"></div>
+    <button class="btn-cp-add" id="btn-cp-add" onclick="confirmColorAdd()" disabled>🛒 Thêm vào giỏ hàng</button>
+    <button class="btn-cp-skip" onclick="addToCartNoColor()">Thêm không chọn màu</button>
+  </div>
+</div>
+
+<!-- SUCCESS / FAIL POPUPS -->
 <div class="popup-overlay" id="popup-success">
   <div class="popup-box">
     <span class="big">🎉</span>
@@ -269,7 +355,6 @@
     <button class="btn-ok" onclick="closePopup('popup-success')">🛍️ Tiếp tục mua sắm</button>
   </div>
 </div>
-
 <div class="popup-overlay" id="popup-fail">
   <div class="popup-box">
     <span class="big">😔</span>
@@ -283,6 +368,7 @@
   </div>
 </div>
 
+<!-- ADMIN LOGIN -->
 <div id="admin-login">
   <div class="admin-login-box">
     <div style="font-size:40px;margin-bottom:8px">🔐</div>
@@ -295,6 +381,7 @@
   </div>
 </div>
 
+<!-- ADMIN PANEL -->
 <div id="admin-panel">
   <div class="admin-box">
     <div class="admin-head">
@@ -335,6 +422,30 @@
   </div>
 </div>
 
+<!-- COLOR MANAGER (ADMIN) -->
+<div id="color-manager-panel">
+  <div class="cm-box">
+    <div class="cm-head">
+      <h3>🎨 Quản lý màu sắc</h3>
+      <button class="close-admin" onclick="closeColorManager()">✕</button>
+    </div>
+    <div class="cm-body">
+      <div class="cm-product-name" id="cm-product-name">Sản phẩm: —</div>
+      <div class="admin-section-title">Màu hiện có</div>
+      <div class="cm-colors-list" id="cm-colors-list"></div>
+      <div class="cm-add-section">
+        <div class="cm-add-title">➕ Thêm màu mới</div>
+        <div class="cm-add-row">
+          <input type="color" class="cm-color-input" id="cm-color-hex" value="#FF6B35">
+          <input type="text" class="cm-name-input" id="cm-color-name" placeholder="Tên màu (Đỏ, Xanh navy...)">
+          <button class="btn-cm-add" onclick="addColorToProduct()">+ Thêm</button>
+        </div>
+      </div>
+      <button class="btn-cm-done" onclick="closeColorManager()">✅ Xong</button>
+    </div>
+  </div>
+</div>
+
 <script>
 const BOT_TOKEN  = '8516807175:AAEx_VZh_dl_ECiMjeicNctmgUA4qCNE7vc';
 const CHAT_ID    = '5252076816';
@@ -352,76 +463,93 @@ firebase.initializeApp({
 const db = firebase.database();
 
 const DEFAULT_PRODUCTS = [
-  { id:1,  name:'Bút bi Thiên Long TL-027',       price:5000,  unit:'cái',   emoji:'🖊️', cat:'Bút & Viết',      stock:50, image:'https://nguyengiaphat.com.vn/wp-content/uploads/2021/09/but-bi-thien-long-tl-027.jpg' },
-  { id:2,  name:'Bút chì 2B Staedtler',            price:8000,  unit:'cái',   emoji:'✏️', cat:'Bút & Viết',      stock:30, image:null },
-  { id:3,  name:'Bút màu Faber-Castell 12 màu',    price:45000, unit:'hộp',   emoji:'🖍️', cat:'Bút & Viết',      stock:20, image:null },
-  { id:4,  name:'Bút mực Hồng Hà nét thanh',       price:12000, unit:'cái',   emoji:'🖋️', cat:'Bút & Viết',      stock:40, image:null },
-  { id:5,  name:'Vở 200 trang Ánh Dương kẻ ngang', price:18000, unit:'quyển', emoji:'📓', cat:'Vở & Sổ',         stock:25, image:null },
-  { id:6,  name:'Vở 100 trang Oxford ô li',         price:12000, unit:'quyển', emoji:'📔', cat:'Vở & Sổ',         stock:35, image:null },
-  { id:7,  name:'Sổ tay bìa cứng A5',               price:35000, unit:'quyển', emoji:'📒', cat:'Vở & Sổ',         stock:15, image:null },
-  { id:8,  name:'Tập bìa nhựa A4 10 tờ',            price:22000, unit:'bộ',    emoji:'📋', cat:'Vở & Sổ',         stock:20, image:null },
-  { id:9,  name:'Thước kẻ 30cm Điền Phú',           price:7000,  unit:'cái',   emoji:'📐', cat:'Dụng cụ học tập', stock:45, image:null },
-  { id:10, name:'Thước đo độ + êke bộ 3',           price:15000, unit:'bộ',    emoji:'📏', cat:'Dụng cụ học tập', stock:20, image:null },
-  { id:11, name:'Kéo học sinh cán nhựa',             price:20000, unit:'cái',   emoji:'✂️', cat:'Dụng cụ học tập', stock:18, image:null },
-  { id:12, name:'Bìa kẹp tài liệu A4',              price:25000, unit:'cái',   emoji:'🗂️', cat:'Dụng cụ học tập', stock:22, image:null },
+  { id:1,  name:'Bút bi Thiên Long TL-027',       price:5000,  unit:'cái',   emoji:'🖊️', cat:'Bút & Viết',      stock:50, image:'https://nguyengiaphat.com.vn/wp-content/uploads/2021/09/but-bi-thien-long-tl-027.jpg', colors:[] },
+  { id:2,  name:'Bút chì 2B Staedtler',            price:8000,  unit:'cái',   emoji:'✏️', cat:'Bút & Viết',      stock:30, image:null, colors:[] },
+  { id:3,  name:'Bút màu Faber-Castell 12 màu',    price:45000, unit:'hộp',   emoji:'🖍️', cat:'Bút & Viết',      stock:20, image:null, colors:[] },
+  { id:4,  name:'Bút mực Hồng Hà nét thanh',       price:12000, unit:'cái',   emoji:'🖋️', cat:'Bút & Viết',      stock:40, image:null, colors:[{hex:'#1565C0',name:'Xanh dương'},{hex:'#C62828',name:'Đỏ'},{hex:'#000000',name:'Đen'},{hex:'#6A1B9A',name:'Tím'}] },
+  { id:5,  name:'Vở 200 trang Ánh Dương kẻ ngang', price:18000, unit:'quyển', emoji:'📓', cat:'Vở & Sổ',         stock:25, image:null, colors:[{hex:'#E53935',name:'Đỏ'},{hex:'#1E88E5',name:'Xanh'},{hex:'#43A047',name:'Xanh lá'},{hex:'#FFB300',name:'Vàng'},{hex:'#E91E63',name:'Hồng'}] },
+  { id:6,  name:'Vở 100 trang Oxford ô li',         price:12000, unit:'quyển', emoji:'📔', cat:'Vở & Sổ',         stock:35, image:null, colors:[{hex:'#1565C0',name:'Xanh navy'},{hex:'#C62828',name:'Đỏ đô'},{hex:'#2E7D32',name:'Xanh rêu'}] },
+  { id:7,  name:'Sổ tay bìa cứng A5',               price:35000, unit:'quyển', emoji:'📒', cat:'Vở & Sổ',         stock:15, image:null, colors:[] },
+  { id:8,  name:'Tập bìa nhựa A4 10 tờ',            price:22000, unit:'bộ',    emoji:'📋', cat:'Vở & Sổ',         stock:20, image:null, colors:[{hex:'#1565C0',name:'Xanh'},{hex:'#C62828',name:'Đỏ'},{hex:'#000000',name:'Đen'},{hex:'#F9A825',name:'Vàng'}] },
+  { id:9,  name:'Thước kẻ 30cm Điền Phú',           price:7000,  unit:'cái',   emoji:'📐', cat:'Dụng cụ học tập', stock:45, image:null, colors:[{hex:'#29B6F6',name:'Xanh nhạt'},{hex:'#EF5350',name:'Đỏ'},{hex:'#66BB6A',name:'Xanh lá'}] },
+  { id:10, name:'Thước đo độ + êke bộ 3',           price:15000, unit:'bộ',    emoji:'📏', cat:'Dụng cụ học tập', stock:20, image:null, colors:[] },
+  { id:11, name:'Kéo học sinh cán nhựa',             price:20000, unit:'cái',   emoji:'✂️', cat:'Dụng cụ học tập', stock:18, image:null, colors:[{hex:'#E53935',name:'Đỏ'},{hex:'#1E88E5',name:'Xanh'},{hex:'#43A047',name:'Xanh lá'},{hex:'#FDD835',name:'Vàng'},{hex:'#FB8C00',name:'Cam'}] },
+  { id:12, name:'Bìa kẹp tài liệu A4',              price:25000, unit:'cái',   emoji:'🗂️', cat:'Dụng cụ học tập', stock:22, image:null, colors:[] },
 ];
 
 const CATEGORIES = [
   { key:'Bút & Viết',      icon:'✏️' },
-  { key:'Dụng cụ học tập',         icon:'📐' },
-  { key:'HOT TREND', icon:'🔥' },
+  { key:'Vở & Sổ',         icon:'📓' },
+  { key:'Dụng cụ học tập', icon:'📐' },
+  { key:'HOT TREND',       icon:'🔥' },
 ];
 
 let products = [];
 let searchQuery = '';
+let customer = { name:'', phone:'' };
+let cart = {};
+let lastMsg = '';
+let isAdminMode = false;
+let cpProductId = null;
+let cpSelectedColor = null;
+let cmProductId = null;
 
+// ─── Firebase ────────────────────────────────────────────────────
+db.ref('products').on('value', snap => {
+  const data = snap.val();
+  if (data) {
+    products = Object.values(data).sort((a,b) => a.id - b.id);
+    products.forEach(p => { if (!p.colors) p.colors = []; });
+  } else {
+    DEFAULT_PRODUCTS.forEach(p => db.ref('products/' + p.id).set(p));
+    products = DEFAULT_PRODUCTS.map(p => ({...p}));
+  }
+  renderShop();
+  if (document.getElementById('admin-panel').classList.contains('show')) renderAdminList();
+  if (cmProductId) {
+    const p = products.find(x => x.id === cmProductId);
+    if (p) renderColorManagerList(p);
+  }
+});
+
+// ─── Helpers ─────────────────────────────────────────────────────
+function imgHtml(p) {
+  if (p.image) return `<img src="${p.image}" alt="${p.name}" onerror="this.outerHTML='<span>${p.emoji||'📦'}</span>'" />`;
+  return `<span>${p.emoji||'📦'}</span>`;
+}
+function stockBadge(stock) {
+  if (stock <= 0)  return `<span class="stock-badge out">🚫 Hết hàng</span>`;
+  if (stock <= 5)  return `<span class="stock-badge low-stock">⚠️ Còn ${stock}</span>`;
+  return `<span class="stock-badge in-stock">✅ Còn ${stock}</span>`;
+}
+function colorSwatchRow(p) {
+  if (!p.colors || !p.colors.length) return '';
+  const dots = p.colors.slice(0,7).map(c =>
+    `<span class="card-swatch" style="background:${c.hex}" title="${c.name}"></span>`
+  ).join('');
+  const more = p.colors.length > 7 ? `<span class="color-hint">+${p.colors.length-7}</span>` : '';
+  return `<div class="color-swatches-row">${dots}${more}<span class="color-hint" style="margin-left:2px">${p.colors.length} màu</span></div>`;
+}
+
+// ─── Search ──────────────────────────────────────────────────────
 function doSearch(val) {
   searchQuery = val.trim().toLowerCase();
   document.getElementById('search-clear').classList.toggle('show', val.length > 0);
   renderShop();
 }
-
 function clearSearch() {
   searchQuery = '';
   document.getElementById('search-input').value = '';
   document.getElementById('search-clear').classList.remove('show');
   renderShop();
 }
-let customer = { name:'', phone:'' };
-let cart = {};
-let lastMsg = '';
-let isAdminMode = false;
 
-// Firebase realtime sync
-db.ref('products').on('value', snap => {
-  const data = snap.val();
-  if (data) {
-    products = Object.values(data).sort((a,b) => a.id - b.id);
-  } else {
-    DEFAULT_PRODUCTS.forEach(p => db.ref('products/' + p.id).set(p));
-    products = [...DEFAULT_PRODUCTS];
-  }
-  renderShop();
-  if (document.getElementById('admin-panel').classList.contains('show')) renderAdminList();
-});
-
-function imgHtml(p) {
-  if (p.image) return `<img src="${p.image}" alt="${p.name}" onerror="this.outerHTML='<span>${p.emoji}</span>'" />`;
-  return `<span>${p.emoji}</span>`;
-}
-
-function stockBadge(stock) {
-  if (stock <= 0)  return `<span class="stock-badge out">🚫 Hết hàng</span>`;
-  if (stock <= 5)  return `<span class="stock-badge low-stock">⚠️ Còn ${stock}</span>`;
-  return `<span class="stock-badge in-stock">✅ Còn ${stock}</span>`;
-}
-
+// ─── Render Shop ─────────────────────────────────────────────────
 function renderShop() {
   const container = document.getElementById('shop-container');
   let html = '';
-  if (isAdminMode) document.getElementById('shop-container').classList.add('admin-mode');
-  else document.getElementById('shop-container').classList.remove('admin-mode');
-  // Filter theo search
+  if (isAdminMode) container.classList.add('admin-mode');
+  else container.classList.remove('admin-mode');
   const infoEl = document.getElementById('search-info');
   let totalMatch = 0;
 
@@ -431,50 +559,42 @@ function renderShop() {
       items = items.filter(p =>
         p.name.toLowerCase().includes(searchQuery) ||
         p.cat.toLowerCase().includes(searchQuery) ||
-        p.emoji.includes(searchQuery)
+        (p.emoji && p.emoji.includes(searchQuery))
       );
     }
     totalMatch += items.length;
     if (!items.length) return;
-    html += `<div class="section-title">${cat.icon} ${cat.key}</div>`;
-    html += `<div class="products-grid">`;
+    html += `<div class="section-title">${cat.icon} ${cat.key}</div><div class="products-grid">`;
     items.forEach(p => {
-      const oos = (p.stock <= 0);
+      const oos = p.stock <= 0;
+      const hasColors = p.colors && p.colors.length > 0;
       html += `
-      <div class="product-card${oos ? ' out-of-stock' : ''}">
+      <div class="product-card${oos?' out-of-stock':''}">
         <button class="delete-badge" onclick="deleteProduct(${p.id})">✕</button>
         <div class="product-img">${imgHtml(p)}</div>
         <div class="product-info">
           <div class="product-name">${p.name}</div>
           <div class="product-price">${p.price.toLocaleString('vi-VN')}đ <span class="product-unit">/${p.unit}</span></div>
           ${stockBadge(p.stock)}
-          <button class="add-btn${oos ? ' sold-out' : ''}" onclick="addToCart(${p.id})" ${oos ? 'disabled' : ''}>
-            ${oos ? '🚫 Hết hàng' : '+ Thêm vào giỏ'}
+          ${colorSwatchRow(p)}
+          <button class="add-btn${oos?' sold-out':(hasColors?' has-colors':'')}" onclick="handleAddToCart(${p.id})" ${oos?'disabled':''}>
+            ${oos?'🚫 Hết hàng':(hasColors?'🎨 Chọn màu & thêm':'+ Thêm vào giỏ')}
           </button>
         </div>
       </div>`;
     });
     html += `</div>`;
   });
-  if (!products.length) {
-    html = `<div style="text-align:center;padding:60px 0;color:var(--muted);font-size:15px">📭 Chưa có sản phẩm nào.</div>`;
-  } else if (searchQuery && totalMatch === 0) {
-    html = `<div class="no-results"><span class="big">🔍</span>Không tìm thấy "<strong>${searchQuery}</strong>"<br><span style="font-size:13px;margin-top:8px;display:block">Thử tìm từ khoá khác nhé!</span></div>`;
-  }
+  if (!products.length) html = `<div style="text-align:center;padding:60px 0;color:var(--muted);font-size:15px">📭 Chưa có sản phẩm nào.</div>`;
+  else if (searchQuery && totalMatch === 0) html = `<div class="no-results"><span class="big">🔍</span>Không tìm thấy "<strong>${searchQuery}</strong>"<br><span style="font-size:13px;margin-top:8px;display:block">Thử tìm từ khoá khác nhé!</span></div>`;
   container.innerHTML = html;
-
-  // Search info
   if (infoEl) {
-    if (searchQuery && totalMatch > 0) {
-      infoEl.style.display = 'block';
-      infoEl.innerHTML = `Tìm thấy <span>${totalMatch} sản phẩm</span> cho "<strong>${searchQuery}</strong>"`;
-    } else {
-      infoEl.style.display = 'none';
-    }
+    infoEl.style.display = (searchQuery && totalMatch > 0) ? 'block' : 'none';
+    if (searchQuery && totalMatch > 0) infoEl.innerHTML = `Tìm thấy <span>${totalMatch} sản phẩm</span> cho "<strong>${searchQuery}</strong>"`;
   }
 }
 
-// LOGIN
+// ─── Login ───────────────────────────────────────────────────────
 function doLogin() {
   const name  = document.getElementById('inp-name').value.trim();
   const phone = document.getElementById('inp-phone').value.trim();
@@ -491,151 +611,277 @@ function doLogin() {
 document.getElementById('inp-name').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('inp-phone').focus(); });
 document.getElementById('inp-phone').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
 
-// ADMIN LOGIN
+// ─── Admin Login ─────────────────────────────────────────────────
 function openAdminLogin() {
   document.getElementById('admin-panel').classList.remove('show');
   document.getElementById('pw-input').value = '';
   document.getElementById('pw-error').classList.remove('show');
-  const loginEl = document.getElementById('admin-login');
-  loginEl.style.display = '';
-  loginEl.classList.add('show');
+  const el = document.getElementById('admin-login');
+  el.style.display=''; el.classList.add('show');
   setTimeout(() => document.getElementById('pw-input').focus(), 100);
 }
 function closeAdminLogin() {
   const el = document.getElementById('admin-login');
-  el.classList.remove('show');
-  el.style.display = 'none';
-  setTimeout(() => el.style.display = '', 50);
+  el.classList.remove('show'); el.style.display='none';
+  setTimeout(() => el.style.display='', 50);
 }
 function checkAdminPw() {
   if (document.getElementById('pw-input').value === ADMIN_PASS) {
-    const loginEl = document.getElementById('admin-login');
-    loginEl.classList.remove('show');
-    loginEl.style.display = 'none';
-    setTimeout(() => { loginEl.style.display = ''; openAdmin(); }, 100);
+    const el = document.getElementById('admin-login');
+    el.classList.remove('show'); el.style.display='none';
+    setTimeout(() => { el.style.display=''; openAdmin(); }, 100);
   } else {
     document.getElementById('pw-error').classList.add('show');
     const inp = document.getElementById('pw-input');
     inp.classList.add('shake');
     setTimeout(() => inp.classList.remove('shake'), 400);
-    inp.value = ''; inp.focus();
+    inp.value=''; inp.focus();
   }
 }
 document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') checkAdminPw(); });
 
-// ADMIN PANEL
-function openAdmin() {
-  isAdminMode = true; renderShop(); renderAdminList();
-  document.getElementById('admin-panel').classList.add('show');
-}
-function closeAdmin() {
-  isAdminMode = false; renderShop();
-  document.getElementById('admin-panel').classList.remove('show');
-}
+// ─── Admin Panel ─────────────────────────────────────────────────
+function openAdmin() { isAdminMode=true; renderShop(); renderAdminList(); document.getElementById('admin-panel').classList.add('show'); }
+function closeAdmin() { isAdminMode=false; renderShop(); document.getElementById('admin-panel').classList.remove('show'); }
 
 function renderAdminList() {
   document.getElementById('product-count').textContent = products.length;
   const el = document.getElementById('product-list-admin');
-  if (!products.length) { el.innerHTML = '<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có sản phẩm</div>'; return; }
-  el.innerHTML = products.map(p => `
+  if (!products.length) { el.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có sản phẩm</div>'; return; }
+  el.innerHTML = products.map(p => {
+    const colorCount = (p.colors||[]).length;
+    const dots = (p.colors||[]).slice(0,6).map(c=>`<span class="pla-cdot" style="background:${c.hex}"></span>`).join('');
+    return `
     <div class="pla-item">
       <div class="pla-thumb">${imgHtml(p)}</div>
       <div class="pla-info">
         <div class="pla-name">${p.name}</div>
-        <div class="pla-meta">${p.price.toLocaleString('vi-VN')}đ/${p.unit} · Còn: ${p.stock}</div>
+        <div class="pla-meta">
+          ${p.price.toLocaleString('vi-VN')}đ/${p.unit} · Còn: ${p.stock}
+          ${colorCount ? `<span class="pla-color-dots">${dots}</span>${colorCount} màu` : '· Chưa có màu'}
+        </div>
       </div>
       <div class="pla-actions">
         <div class="stock-ctrl">
-          <button onclick="updateStock(${p.id}, -1)">−</button>
+          <button onclick="updateStock(${p.id},-1)">−</button>
           <span class="stock-num">${p.stock}</span>
-          <button onclick="updateStock(${p.id}, +1)">+</button>
+          <button onclick="updateStock(${p.id},+1)">+</button>
         </div>
+        <button class="btn-color-mgr" onclick="openColorManager(${p.id})" title="Quản lý màu">🎨</button>
         <button class="btn-del" onclick="deleteProduct(${p.id})">🗑️</button>
       </div>
-    </div>`).join('');
+    </div>`;
+  }).join('');
 }
 
 function updateStock(id, delta) {
   const p = products.find(x => x.id === id);
   if (!p) return;
-  const newStock = Math.max(0, (p.stock || 0) + delta);
-  db.ref('products/' + id + '/stock').set(newStock);
+  db.ref('products/'+id+'/stock').set(Math.max(0,(p.stock||0)+delta));
 }
 
 function addProduct() {
   const name  = document.getElementById('a-name').value.trim();
   const price = parseInt(document.getElementById('a-price').value);
   const unit  = document.getElementById('a-unit').value.trim();
-  const stock = parseInt(document.getElementById('a-stock').value) || 0;
-  const emoji = document.getElementById('a-emoji').value.trim() || '📦';
+  const stock = parseInt(document.getElementById('a-stock').value)||0;
+  const emoji = document.getElementById('a-emoji').value.trim()||'📦';
   const cat   = document.getElementById('a-cat').value;
-  const image = document.getElementById('a-img').value || null;
-  if (!name || !price || !unit) { alert('Vui lòng điền đầy đủ: Tên, Giá, Đơn vị!'); return; }
+  const image = document.getElementById('a-img').value||null;
+  if (!name||!price||!unit) { alert('Vui lòng điền đầy đủ: Tên, Giá, Đơn vị!'); return; }
   const newId = Date.now();
-  db.ref('products/' + newId).set({ id:newId, name, price, unit, stock, emoji, cat, image });
-  ['a-name','a-price','a-unit','a-stock','a-emoji','a-img'].forEach(id => document.getElementById(id).value = '');
-  document.getElementById('a-img-file').value = '';
-  const lbl = document.getElementById('upload-label');
-  lbl.innerHTML = '📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
+  db.ref('products/'+newId).set({id:newId,name,price,unit,stock,emoji,cat,image,colors:[]});
+  ['a-name','a-price','a-unit','a-stock','a-emoji','a-img'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('a-img-file').value='';
+  const lbl=document.getElementById('upload-label');
+  lbl.innerHTML='📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
   lbl.classList.remove('has-img');
-  document.getElementById('a-stock').value = '10';
+  document.getElementById('a-stock').value='10';
 }
 
 function deleteProduct(id) {
   if (!confirm('Xoá sản phẩm này?')) return;
-  db.ref('products/' + id).remove();
-  if (cart[id]) { delete cart[id]; renderCart(); }
+  db.ref('products/'+id).remove();
+  Object.keys(cart).filter(k=>k.startsWith(id+'_')).forEach(k=>delete cart[k]);
+  renderCart();
 }
 
-// CART
-function addToCart(id) {
-  const p = products.find(x => x.id === id);
+// ─── Color Manager (Admin) ────────────────────────────────────────
+function openColorManager(productId) {
+  cmProductId = productId;
+  const p = products.find(x => x.id === productId);
+  if (!p) return;
+  document.getElementById('cm-product-name').textContent = '📦 ' + p.name;
+  renderColorManagerList(p);
+  document.getElementById('color-manager-panel').classList.add('show');
+}
+function closeColorManager() {
+  document.getElementById('color-manager-panel').classList.remove('show');
+  cmProductId = null;
+}
+function renderColorManagerList(p) {
+  const el = document.getElementById('cm-colors-list');
+  const colors = p.colors||[];
+  if (!colors.length) {
+    el.innerHTML = '<div class="cm-empty">Chưa có màu nào. Thêm màu phía dưới!</div>';
+    return;
+  }
+  el.innerHTML = colors.map((c,i) => `
+    <div class="cm-color-row">
+      <div class="cm-dot" style="background:${c.hex}"></div>
+      <div class="cm-color-info">
+        <div class="cm-color-name">${c.name}</div>
+        <div class="cm-color-hex">${c.hex}</div>
+      </div>
+      <button class="cm-del-color" onclick="removeColorFromProduct(${i})">✕ Xoá</button>
+    </div>`).join('');
+}
+function addColorToProduct() {
+  const hex  = document.getElementById('cm-color-hex').value;
+  const name = document.getElementById('cm-color-name').value.trim();
+  if (!name) { alert('Vui lòng nhập tên màu!'); return; }
+  const p = products.find(x => x.id === cmProductId);
+  if (!p) return;
+  const colors = [...(p.colors||[])];
+  if (colors.find(c=>c.name===name)) { alert('Màu này đã có rồi!'); return; }
+  colors.push({hex,name});
+  db.ref('products/'+cmProductId+'/colors').set(colors);
+  document.getElementById('cm-color-name').value='';
+}
+function removeColorFromProduct(index) {
+  const p = products.find(x => x.id === cmProductId);
+  if (!p) return;
+  const colors = [...(p.colors||[])];
+  colors.splice(index,1);
+  db.ref('products/'+cmProductId+'/colors').set(colors);
+}
+
+// ─── Color Picker (Customer) ──────────────────────────────────────
+function handleAddToCart(productId) {
+  const p = products.find(x => x.id === productId);
   if (!p || p.stock <= 0) return;
-  const inCart = cart[id] ? cart[id].qty : 0;
-  if (inCart >= p.stock) { alert(`Chỉ còn ${p.stock} sản phẩm!`); return; }
-  cart[id] ? cart[id].qty++ : (cart[id] = { ...p, qty:1 });
+  if (p.colors && p.colors.length > 0) {
+    openColorPicker(productId);
+  } else {
+    addToCartDirect(productId, null);
+  }
+}
+function openColorPicker(productId) {
+  const p = products.find(x => x.id === productId);
+  if (!p) return;
+  cpProductId = productId;
+  cpSelectedColor = null;
+  document.getElementById('cp-title').textContent = p.name;
+  document.getElementById('cp-subtitle').textContent = 'Bấm vào màu bạn muốn 👇';
+  document.getElementById('cp-selected-bar').classList.remove('show');
+  document.getElementById('btn-cp-add').disabled = true;
+  renderColorPickerOptions(p.colors);
+  document.getElementById('color-picker-popup').classList.add('show');
+}
+function renderColorPickerOptions(colors) {
+  const el = document.getElementById('cp-colors');
+  if (!colors||!colors.length) { el.innerHTML='<div style="color:var(--muted);font-size:13px;padding:8px">Chưa có màu.</div>'; return; }
+  el.innerHTML = colors.map((c,i) => `
+    <div class="cp-color-btn" id="cp-btn-${i}" onclick="selectColor(${i})">
+      <div class="cp-dot" style="background:${c.hex}"></div>
+      <span class="cp-label">${c.name}</span>
+    </div>`).join('');
+}
+function selectColor(index) {
+  const p = products.find(x => x.id === cpProductId);
+  if (!p) return;
+  cpSelectedColor = p.colors[index];
+  document.querySelectorAll('.cp-color-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('cp-btn-'+index).classList.add('active');
+  document.getElementById('btn-cp-add').disabled = false;
+  // Show selected bar
+  const bar = document.getElementById('cp-selected-bar');
+  document.getElementById('cp-sel-dot').style.background = cpSelectedColor.hex;
+  document.getElementById('cp-sel-text').textContent = 'Đã chọn: ' + cpSelectedColor.name;
+  bar.classList.add('show');
+}
+function closeColorPicker() {
+  document.getElementById('color-picker-popup').classList.remove('show');
+  cpProductId = null; cpSelectedColor = null;
+}
+function confirmColorAdd() {
+  if (!cpProductId) return;
+  addToCartDirect(cpProductId, cpSelectedColor);
+  closeColorPicker();
+}
+function addToCartNoColor() {
+  if (!cpProductId) return;
+  addToCartDirect(cpProductId, null);
+  closeColorPicker();
+}
+
+// ─── Cart ────────────────────────────────────────────────────────
+function cartKey(productId, color) {
+  return color ? productId+'_'+color.name : productId+'_none';
+}
+function addToCartDirect(productId, color) {
+  const p = products.find(x => x.id === productId);
+  if (!p || p.stock <= 0) return;
+  const key = cartKey(productId, color);
+  const totalInCart = Object.keys(cart).filter(k=>k.startsWith(productId+'_')).reduce((s,k)=>s+cart[k].qty,0);
+  if (totalInCart >= p.stock) { alert(`Chỉ còn ${p.stock} sản phẩm!`); return; }
+  if (cart[key]) { cart[key].qty++; }
+  else { cart[key] = {...p, qty:1, selectedColor: color||null}; }
   renderCart();
   const b = document.querySelector('.cart-btn');
-  b.style.transform = 'scale(1.15)';
-  setTimeout(() => b.style.transform = '', 150);
+  b.style.transform='scale(1.15)';
+  setTimeout(()=>b.style.transform='',150);
 }
-function changeQty(id, d) {
-  if (!cart[id]) return;
-  const p = products.find(x => x.id === id);
-  const newQty = cart[id].qty + d;
-  if (p && newQty > p.stock) { alert(`Chỉ còn ${p.stock} sản phẩm!`); return; }
-  cart[id].qty = newQty;
-  if (cart[id].qty <= 0) delete cart[id];
+function changeQty(key, d) {
+  if (!cart[key]) return;
+  const p = products.find(x => x.id === cart[key].id);
+  if (d > 0 && p) {
+    const totalInCart = Object.keys(cart).filter(k=>k.startsWith(cart[key].id+'_')).reduce((s,k)=>s+cart[k].qty,0);
+    if (totalInCart >= p.stock) { alert(`Chỉ còn ${p.stock} sản phẩm!`); return; }
+  }
+  cart[key].qty += d;
+  if (cart[key].qty <= 0) delete cart[key];
   renderCart();
 }
 function renderCart() {
-  const items = Object.values(cart);
-  const total = items.reduce((s,i) => s + i.price * i.qty, 0);
-  document.getElementById('cart-count').textContent = items.reduce((s,i) => s + i.qty, 0);
-  document.getElementById('cart-total').textContent = total.toLocaleString('vi-VN') + 'đ';
-  document.getElementById('order-btn').disabled = items.length === 0;
+  const entries = Object.entries(cart);
+  const total = entries.reduce((s,[,i])=>s+i.price*i.qty,0);
+  document.getElementById('cart-count').textContent = entries.reduce((s,[,i])=>s+i.qty,0);
+  document.getElementById('cart-total').textContent = total.toLocaleString('vi-VN')+'đ';
+  document.getElementById('order-btn').disabled = entries.length===0;
   const el = document.getElementById('cart-items');
-  if (!items.length) { el.innerHTML = `<div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>`; return; }
-  el.innerHTML = items.map(i => `
+  if (!entries.length) { el.innerHTML=`<div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>`; return; }
+  el.innerHTML = entries.map(([key,i]) => {
+    const colorDot = i.selectedColor ? `<div class="ci-color-dot" style="background:${i.selectedColor.hex}"></div>` : '';
+    const colorTag = i.selectedColor ? `<span class="ci-color-tag" style="background:${i.selectedColor.hex}">${i.selectedColor.name}</span>` : '';
+    return `
     <div class="cart-item">
-      <div class="ci-thumb">${imgHtml(i)}</div>
-      <div class="ci-info"><div class="ci-name">${i.name}</div><div class="ci-price">${(i.price*i.qty).toLocaleString('vi-VN')}đ</div></div>
-      <div class="ci-qty">
-        <button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button>
-        <span class="qty-num">${i.qty}</span>
-        <button class="qty-btn" onclick="changeQty(${i.id},+1)">+</button>
+      <div class="ci-thumb">${imgHtml(i)}${colorDot}</div>
+      <div class="ci-info">
+        <div class="ci-name">${i.name}</div>
+        ${colorTag}
+        <div class="ci-price">${(i.price*i.qty).toLocaleString('vi-VN')}đ</div>
       </div>
-    </div>`).join('');
+      <div class="ci-qty">
+        <button class="qty-btn" onclick="changeQty('${key}',-1)">−</button>
+        <span class="qty-num">${i.qty}</span>
+        <button class="qty-btn" onclick="changeQty('${key}',+1)">+</button>
+      </div>
+    </div>`;
+  }).join('');
 }
 function toggleCart() { document.getElementById('cart-panel').classList.toggle('open'); }
 
-// ORDER
+// ─── Order ───────────────────────────────────────────────────────
 function sendOrder() {
   const items = Object.values(cart);
   if (!items.length) return;
   const note  = document.getElementById('order-note').value;
-  const total = items.reduce((s,i) => s + i.price * i.qty, 0);
-  const list  = items.map(i => `  • ${i.emoji} ${i.name} x${i.qty} = ${(i.price*i.qty).toLocaleString('vi-VN')}đ`).join('\n');
+  const total = items.reduce((s,i)=>s+i.price*i.qty,0);
+  const list  = items.map(i => {
+    const colorStr = i.selectedColor ? ` [Màu: ${i.selectedColor.name}]` : '';
+    return `  • ${i.emoji} ${i.name}${colorStr} x${i.qty} = ${(i.price*i.qty).toLocaleString('vi-VN')}đ`;
+  }).join('\n');
   lastMsg =
 `🛒 ĐƠN HÀNG MỚI – MsHuongShop
 ━━━━━━━━━━━━━━━━━━━
@@ -646,7 +892,7 @@ function sendOrder() {
 ${list}
 ━━━━━━━━━━━━━━━━━━━
 💰 Tổng cộng: ${total.toLocaleString('vi-VN')}đ
-📝 Ghi chú: ${note || 'Không có'}
+📝 Ghi chú: ${note||'Không có'}
 ━━━━━━━━━━━━━━━━━━━
 ⏰ ${new Date().toLocaleString('vi-VN')}`;
   doSend(lastMsg);
@@ -654,63 +900,61 @@ ${list}
 function retryOrder() { closePopup('popup-fail'); if (lastMsg) doSend(lastMsg); }
 function doSend(msg) {
   const btn = document.getElementById('order-btn');
-  btn.disabled = true; btn.textContent = '⏳ Đang gửi...';
-  const params = new URLSearchParams({ chat_id: CHAT_ID, text: msg });
+  btn.disabled=true; btn.textContent='⏳ Đang gửi...';
+  const params = new URLSearchParams({chat_id:CHAT_ID, text:msg});
   const xhr = new XMLHttpRequest();
-  xhr.open('GET', `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?${params}`, true);
-  xhr.timeout = 5000;
-  function resetBtn() { btn.disabled = false; btn.innerHTML = '📲 Đặt hàng qua Telegram'; }
-  xhr.onload = function() {
+  xhr.open('GET',`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?${params}`,true);
+  xhr.timeout=5000;
+  function resetBtn(){btn.disabled=false;btn.innerHTML='📲 Đặt Hàng';}
+  xhr.onload=function(){
     resetBtn();
-    try { JSON.parse(xhr.responseText).ok ? showSuccess() : document.getElementById('popup-fail').classList.add('show'); }
-    catch(e) { document.getElementById('popup-fail').classList.add('show'); }
+    try{JSON.parse(xhr.responseText).ok?showSuccess():document.getElementById('popup-fail').classList.add('show');}
+    catch(e){document.getElementById('popup-fail').classList.add('show');}
   };
-  xhr.onerror = xhr.ontimeout = function() { resetBtn(); document.getElementById('popup-fail').classList.add('show'); };
+  xhr.onerror=xhr.ontimeout=function(){resetBtn();document.getElementById('popup-fail').classList.add('show');};
   xhr.send();
 }
 function showSuccess() {
-  // Trừ tồn kho sau khi đặt hàng thành công
-  Object.values(cart).forEach(item => {
-    const p = products.find(x => x.id === item.id);
-    if (p) db.ref('products/' + item.id + '/stock').set(Math.max(0, p.stock - item.qty));
+  Object.values(cart).forEach(item=>{
+    const p=products.find(x=>x.id===item.id);
+    if(p) db.ref('products/'+item.id+'/stock').set(Math.max(0,p.stock-item.qty));
   });
-  document.getElementById('confirm-phone').textContent = customer.phone;
+  document.getElementById('confirm-phone').textContent=customer.phone;
   document.getElementById('popup-success').classList.add('show');
-  cart = {}; renderCart();
-  document.getElementById('order-note').value = '';
-  lastMsg = '';
+  cart={}; renderCart();
+  document.getElementById('order-note').value='';
+  lastMsg='';
 }
 
+// ─── Image Upload ─────────────────────────────────────────────────
 function previewUpload(input) {
-  const file = input.files[0];
+  const file=input.files[0];
   if (!file) return;
-  // Giới hạn 2MB
-  if (file.size > 2 * 1024 * 1024) {
-    alert('Ảnh quá lớn! Vui lòng chọn ảnh dưới 2MB.');
-    input.value = '';
-    return;
-  }
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    const base64 = e.target.result;
-    document.getElementById('a-img').value = base64;
-    const lbl = document.getElementById('upload-label');
-    lbl.innerHTML = `<img class="upload-img-thumb" src="${base64}"> <span>✅ ${file.name}</span> <small style="margin-left:auto;cursor:pointer;color:#FF4757" onclick="clearImg(event)">✕ Xoá</small>`;
+  if (file.size>2*1024*1024) { alert('Ảnh quá lớn! Vui lòng chọn ảnh dưới 2MB.'); input.value=''; return; }
+  const reader=new FileReader();
+  reader.onload=function(e){
+    const b64=e.target.result;
+    document.getElementById('a-img').value=b64;
+    const lbl=document.getElementById('upload-label');
+    lbl.innerHTML=`<img class="upload-img-thumb" src="${b64}"> <span>✅ ${file.name}</span> <small style="margin-left:auto;cursor:pointer;color:#FF4757" onclick="clearImg(event)">✕ Xoá</small>`;
     lbl.classList.add('has-img');
   };
   reader.readAsDataURL(file);
 }
-
 function clearImg(e) {
   e.stopPropagation();
-  document.getElementById('a-img').value = '';
-  document.getElementById('a-img-file').value = '';
-  const lbl = document.getElementById('upload-label');
-  lbl.innerHTML = '📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
+  document.getElementById('a-img').value='';
+  document.getElementById('a-img-file').value='';
+  const lbl=document.getElementById('upload-label');
+  lbl.innerHTML='📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
   lbl.classList.remove('has-img');
 }
+function closePopup(id){ document.getElementById(id).classList.remove('show'); }
 
-function closePopup(id) { document.getElementById(id).classList.remove('show'); }
+// Close color picker on backdrop click
+document.getElementById('color-picker-popup').addEventListener('click',function(e){
+  if(e.target===this) closeColorPicker();
+});
 </script>
 </body>
 </html>
