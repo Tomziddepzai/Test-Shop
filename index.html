@@ -150,7 +150,6 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .cpm-color-btn.active .cpm-dot::after{content:'';}
 .cpm-dot-check{position:relative;}
 .cpm-color-btn.active .cpm-dot-check::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:900;text-shadow:0 1px 3px rgba(0,0,0,.5);}
-.cpm-color-name{font-size:11px;font-weight:700;color:var(--dark);text-align:center;line-height:1.2;}
 .cpm-selected-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f8f9fa;border-radius:12px;margin:14px 0 0;min-height:40px;}
 .cpm-sel-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.2);}
 .cpm-sel-text{font-size:13px;font-weight:700;color:var(--dark);}
@@ -732,7 +731,7 @@ function openCPM(productId){
 
   const alreadyIn = totalInCart(productId);
   const available = p.stock - alreadyIn;
-  if(available <= 0){ alert(`Bạn đã thêm đủ số lượng còn lại (${p.stock})!`); return; }
+  if(available <= 0){ alert(`Chỉ còn ${p.stock} sản phẩm!`); return; }
 
   cpm.productId = productId;
   cpm.selectedColor = null;
@@ -793,7 +792,7 @@ function cpmChangeQty(d){
   const available = p.stock - totalInCart(cpm.productId); // how many more can be added
   const newQty = Math.max(1, Math.min(cpm.qty + d, available));
   if(newQty === cpm.qty){
-    if(d>0) alert(`Chỉ còn ${p.stock} sản phẩm, bạn đã có ${totalInCart(cpm.productId)} trong giỏ!`);
+    if(d>0) alert(`Chỉ còn ${p.stock} sản phẩm!`);
     return;
   }
   cpm.qty = newQty;
@@ -809,7 +808,7 @@ function cpmConfirm(){
   if(!p) return;
   const available = p.stock - totalInCart(cpm.productId);
   if(cpm.qty > available){
-    alert(`Chỉ còn ${p.stock} sản phẩm! Bạn chỉ có thể thêm thêm ${available}.`);
+    alert(`Chỉ còn ${p.stock} sản phẩm!`);
     cpm.qty = Math.max(1, available);
     document.getElementById('cpm-qty').textContent = cpm.qty;
     return;
@@ -841,7 +840,7 @@ function addToCartDirect(productId, colorKey, qty){
   // Hard cap: total in cart + new qty cannot exceed stock
   const currentTotal = totalInCart(productId);
   const allowed = Math.min(qty, p.stock - currentTotal);
-  if(allowed <= 0){ alert(`Chỉ còn ${p.stock} sản phẩm, giỏ đã đủ!`); return; }
+  if(allowed <= 0){ alert(`Chỉ còn ${p.stock} sản phẩm!`); return; }
   if(colorKey){
     // keyed by color — merge same color
     const key = `${productId}__${colorKey}`;
@@ -911,8 +910,6 @@ function toggleCart(){document.getElementById('cart-panel').classList.toggle('op
 function sendOrder(){
   const items=Object.values(cart);
   if(!items.length) return;
-
-
 
   const note=document.getElementById('order-note').value;
   const total=items.reduce((s,i)=>s+i.price*i.qty,0);
