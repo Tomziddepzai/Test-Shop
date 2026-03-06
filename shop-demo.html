@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StudyShop – Đồ Dùng Học Tập</title>
+<link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --primary:#FF6B35;--secondary:#FFD166;--accent:#06D6A0;
+    --dark:#1A1A2E;--soft:#F7F3EE;--text:#2D2D2D;--muted:#888;
+    --radius:18px;--shadow:0 8px 32px rgba(26,26,46,0.10);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Nunito',sans-serif;background:var(--soft);color:var(--text);min-height:100vh;}
+
+  /* OVERLAY */
+  #overlay{position:fixed;inset:0;z-index:999;background:linear-gradient(135deg,#1A1A2E 0%,#16213E 60%,#0F3460 100%);display:flex;align-items:center;justify-content:center;transition:opacity 0.5s ease;}
+  #overlay.hide{opacity:0;pointer-events:none;}
+  .login-box{background:white;border-radius:28px;padding:48px 40px 40px;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,0.4);position:relative;animation:popIn 0.5s cubic-bezier(.34,1.56,.64,1) both;}
+  @keyframes popIn{from{transform:scale(0.8) translateY(40px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+  .login-badge{position:absolute;top:-20px;left:50%;transform:translateX(-50%);background:var(--primary);color:white;font-family:'Baloo 2',cursive;font-weight:800;font-size:14px;padding:6px 20px;border-radius:100px;letter-spacing:1px;white-space:nowrap;box-shadow:0 4px 16px rgba(255,107,53,0.4);}
+  .login-logo{text-align:center;margin-bottom:8px;}
+  .login-logo .emoji{font-size:52px;display:block;margin-bottom:4px;}
+  .login-logo h1{font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;color:var(--dark);}
+  .login-logo h1 span{color:var(--primary);}
+  .login-logo p{font-size:13px;color:var(--muted);margin-top:4px;}
+  .divider{border:none;border-top:1.5px dashed #eee;margin:20px 0;}
+  .form-group{margin-bottom:16px;}
+  .form-group label{display:block;font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+  .form-group input{width:100%;padding:13px 16px;border:2px solid #eee;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s,box-shadow 0.2s;background:#fafafa;}
+  .form-group input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(255,107,53,0.1);background:white;}
+  .form-group input.error{border-color:#FF4757;}
+  .error-msg{font-size:12px;color:#FF4757;margin-top:5px;display:none;}
+  .error-msg.show{display:block;}
+  .btn-enter{width:100%;padding:15px;background:linear-gradient(135deg,var(--primary),#FF8C42);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:17px;font-weight:700;cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;box-shadow:0 6px 20px rgba(255,107,53,0.35);margin-top:4px;}
+  .btn-enter:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(255,107,53,0.45);}
+  .note{text-align:center;font-size:12px;color:var(--muted);margin-top:14px;}
+
+  /* HEADER */
+  header{background:var(--dark);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(26,26,46,0.3);}
+  .header-logo{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:white;}
+  .header-logo span{color:var(--secondary);}
+  .header-right{display:flex;align-items:center;gap:14px;}
+  .user-chip{background:rgba(255,255,255,0.1);color:white;padding:6px 14px;border-radius:100px;font-size:13px;font-weight:600;}
+  .cart-btn{background:var(--primary);color:white;border:none;padding:8px 18px;border-radius:100px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.2s,transform 0.15s;}
+  .cart-btn:hover{background:#e55a27;transform:scale(1.04);}
+  .cart-count{background:var(--secondary);color:var(--dark);border-radius:100px;width:20px;height:20px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+
+  /* HERO */
+  .hero{background:linear-gradient(120deg,var(--dark) 0%,#0F3460 100%);padding:48px 24px 40px;text-align:center;color:white;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 50%,rgba(255,209,102,0.12) 0%,transparent 60%);}
+  .hero h2{font-family:'Baloo 2',cursive;font-size:32px;font-weight:800;line-height:1.2;position:relative;}
+  .hero h2 em{color:var(--secondary);font-style:normal;}
+  .hero p{margin-top:10px;font-size:15px;color:rgba(255,255,255,0.7);position:relative;}
+
+  /* PRODUCTS */
+  .container{max-width:960px;margin:0 auto;padding:32px 16px;}
+  .section-title{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;}
+  .product-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer;}
+  .product-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(26,26,46,0.15);}
+  .product-img{width:100%;height:150px;overflow:hidden;background:linear-gradient(135deg,#fff8f0,#fff3e0);display:flex;align-items:center;justify-content:center;font-size:60px;}
+  .product-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s;}
+  .product-card:hover .product-img img{transform:scale(1.07);}
+  .product-info{padding:14px 16px 16px;}
+  .product-name{font-weight:700;font-size:14px;color:var(--dark);margin-bottom:4px;line-height:1.3;}
+  .product-price{color:var(--primary);font-weight:800;font-size:16px;font-family:'Baloo 2',cursive;}
+  .product-unit{font-size:12px;color:var(--muted);margin-left:2px;font-weight:400;}
+  .add-btn{width:100%;margin-top:10px;padding:9px;background:var(--dark);color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:background 0.2s;}
+  .add-btn:hover{background:var(--primary);}
+
+  /* CART PANEL */
+  #cart-panel{position:fixed;right:0;top:0;bottom:0;width:360px;background:white;box-shadow:-8px 0 40px rgba(0,0,0,0.15);z-index:500;transform:translateX(100%);transition:transform 0.35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
+  #cart-panel.open{transform:translateX(0);}
+  .cart-header{padding:20px 24px;border-bottom:2px dashed #eee;display:flex;align-items:center;justify-content:space-between;}
+  .cart-header h3{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--dark);}
+  .close-cart{background:#f5f5f5;border:none;border-radius:10px;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background 0.2s;}
+  .close-cart:hover{background:#ffe0d6;color:var(--primary);}
+  .cart-items{flex:1;overflow-y:auto;padding:16px 24px;}
+  .cart-empty{text-align:center;color:var(--muted);padding:48px 0;font-size:15px;}
+  .cart-empty .big{font-size:48px;display:block;margin-bottom:10px;}
+  .cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f5f5f5;animation:slideIn 0.3s ease;}
+  @keyframes slideIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+  .ci-thumb{width:46px;height:46px;border-radius:10px;flex-shrink:0;overflow:hidden;background:#fff8f0;display:flex;align-items:center;justify-content:center;font-size:26px;}
+  .ci-thumb img{width:100%;height:100%;object-fit:cover;}
+  .ci-info{flex:1;min-width:0;}
+  .ci-name{font-weight:700;font-size:13px;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+  .ci-price{font-size:12px;color:var(--primary);font-weight:700;}
+  .ci-qty{display:flex;align-items:center;gap:6px;}
+  .qty-btn{background:#f5f5f5;border:none;border-radius:8px;width:28px;height:28px;font-size:16px;cursor:pointer;font-weight:700;transition:background 0.15s;}
+  .qty-btn:hover{background:var(--secondary);}
+  .qty-num{font-weight:800;font-size:15px;min-width:20px;text-align:center;}
+  .cart-footer{padding:16px 24px 24px;border-top:2px dashed #eee;}
+  .cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+  .cart-total span{font-weight:700;color:var(--muted);}
+  .cart-total strong{font-family:'Baloo 2',cursive;font-size:22px;color:var(--primary);}
+
+  /* PAYMENT METHOD */
+  .pay-label{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:8px;}
+  .pay-methods{display:flex;gap:8px;margin-bottom:12px;}
+  .pay-opt{flex:1;padding:10px 6px;border:2px solid #eee;border-radius:12px;background:#fafafa;cursor:pointer;text-align:center;font-size:12px;font-weight:700;color:var(--muted);transition:all 0.2s;user-select:none;}
+  .pay-opt:hover{border-color:var(--primary);color:var(--primary);}
+  .pay-opt.active{border-color:var(--primary);background:#fff5f2;color:var(--primary);}
+  .pay-opt .pi{font-size:20px;display:block;margin-bottom:3px;}
+
+  .note-input{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;resize:none;margin-bottom:12px;transition:border-color 0.2s;}
+  .note-input:focus{border-color:var(--accent);}
+  .order-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--accent),#00B894);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(6,214,160,0.35);transition:transform 0.15s,box-shadow 0.15s;display:flex;align-items:center;justify-content:center;gap:8px;}
+  .order-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(6,214,160,0.45);}
+  .order-btn:disabled{background:#ccc;box-shadow:none;cursor:not-allowed;transform:none;}
+
+  /* POPUPS */
+  .popup-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;}
+  .popup-overlay.show{display:flex;}
+  .popup-box{background:white;border-radius:24px;padding:40px 36px;text-align:center;max-width:380px;width:90%;animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;}
+  .popup-box .big{font-size:64px;display:block;margin-bottom:12px;}
+  .popup-box h3{font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;color:var(--dark);margin-bottom:8px;}
+  .popup-box p{color:var(--muted);font-size:14px;line-height:1.6;}
+  .btn-ok{margin-top:20px;padding:12px 32px;background:var(--accent);color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;cursor:pointer;}
+  .fail-actions{margin-top:20px;display:flex;gap:10px;justify-content:center;}
+  .btn-retry{padding:12px 24px;background:var(--primary);color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;cursor:pointer;}
+  .btn-dismiss{padding:12px 24px;background:#f0f0f0;color:var(--dark);border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;cursor:pointer;}
+  .fail-hint{margin-top:12px;font-size:12px;color:#bbb;}
+
+  /* QR POPUP */
+  .qr-popup-box{max-width:400px;padding:28px 28px 24px;}
+  .qr-timer-row{font-size:13px;color:var(--muted);margin-bottom:10px;}
+  .qr-timer-row span{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--primary);}
+  .qr-timer-row.urgent span{color:#FF4757;animation:blink 1s infinite;}
+  @keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+  .qr-img-wrap{background:white;border:3px solid #f0f0f0;border-radius:16px;padding:10px;display:inline-block;margin:10px 0;}
+  .qr-img-wrap img{width:190px;height:190px;display:block;}
+  .qr-img-wrap.expired img{opacity:0.25;filter:grayscale(1);}
+  .qr-info{background:#f8f9fa;border-radius:12px;padding:12px 14px;text-align:left;margin:10px 0;font-size:13px;line-height:1.9;}
+  .qr-info strong{color:var(--dark);}
+  .qr-amount{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--primary);}
+  .copy-row{display:flex;align-items:center;justify-content:space-between;gap:8px;}
+  .copy-row span{word-break:break-all;}
+  .btn-copy{background:var(--secondary);border:none;border-radius:8px;padding:3px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;flex-shrink:0;}
+  .qr-warn{font-size:11px;color:var(--primary);font-weight:700;margin-top:6px;}
+  .qr-expired-msg{color:#FF4757;font-weight:700;font-size:13px;margin-top:6px;display:none;}
+  .qr-actions{display:flex;gap:8px;margin-top:14px;justify-content:center;}
+  .btn-paid{padding:11px 20px;background:var(--accent);color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;cursor:pointer;}
+  .btn-cancel-qr{padding:11px 18px;background:#f0f0f0;color:var(--dark);border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:14px;cursor:pointer;}
+
+  @media(max-width:480px){
+    #cart-panel{width:100%;}
+    .hero h2{font-size:24px;}
+    .products-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
+    .qr-popup-box{padding:20px 16px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div id="overlay">
+  <div class="login-box">
+    <div class="login-badge">🔒 Vui lòng xác nhận thông tin</div>
+    <div class="login-logo">
+      <span class="emoji">🎒</span>
+      <h1>Study<span>Shop</span></h1>
+      <p>Đồ dùng học tập chất lượng cao</p>
+    </div>
+    <hr class="divider">
+    <div class="form-group">
+      <label>👤 Họ và tên</label>
+      <input type="text" id="inp-name" placeholder="Nguyễn Văn A" autocomplete="name">
+      <div class="error-msg" id="err-name">Vui lòng nhập họ tên của bạn</div>
+    </div>
+    <div class="form-group">
+      <label>📞 Số điện thoại</label>
+      <input type="tel" id="inp-phone" placeholder="0912345678" autocomplete="tel">
+      <div class="error-msg" id="err-phone">Số điện thoại không hợp lệ (cần 10 chữ số)</div>
+    </div>
+    <button class="btn-enter" onclick="doLogin()">Vào mua hàng ngay →</button>
+    <p class="note">📌 Thông tin sẽ được dùng để liên hệ giao hàng cho bạn</p>
+  </div>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-logo">Study<span>Shop</span> 🎒</div>
+  <div class="header-right">
+    <div class="user-chip" id="user-chip">👤 Khách</div>
+    <button class="cart-btn" onclick="toggleCart()">
+      🛒 Giỏ hàng <div class="cart-count" id="cart-count">0</div>
+    </button>
+  </div>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h2>Sắm đồ học tập<br><em>thật dễ dàng</em> 🌟</h2>
+  <p>Chọn hàng → Đặt đơn → Chúng mình giao tới tận tay!</p>
+</div>
+
+<!-- PRODUCTS -->
+<div class="container">
+  <div class="section-title">✏️ Bút & Viết</div>
+  <div class="products-grid" id="grid-1"></div>
+  <div class="section-title" style="margin-top:32px">📚 Vở & Sổ</div>
+  <div class="products-grid" id="grid-2"></div>
+  <div class="section-title" style="margin-top:32px">📐 Dụng cụ học tập</div>
+  <div class="products-grid" id="grid-3"></div>
+</div>
+
+<!-- CART -->
+<div id="cart-panel">
+  <div class="cart-header">
+    <h3>🛒 Giỏ hàng</h3>
+    <button class="close-cart" onclick="toggleCart()">✕</button>
+  </div>
+  <div class="cart-items" id="cart-items">
+    <div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>
+  </div>
+  <div class="cart-footer">
+    <div class="cart-total"><span>Tổng cộng:</span><strong id="cart-total">0đ</strong></div>
+    <div class="pay-label">💳 Hình thức thanh toán</div>
+    <div class="pay-methods">
+      <div class="pay-opt active" id="pay-cod" onclick="selectPay('cod')">
+        <span class="pi">🚚</span>COD
+      </div>
+      <div class="pay-opt" id="pay-bank" onclick="selectPay('bank')">
+        <span class="pi">🏦</span>Ngân hàng
+      </div>
+    </div>
+    <textarea class="note-input" id="order-note" placeholder="Ghi chú (địa chỉ, yêu cầu...)" rows="2"></textarea>
+    <button class="order-btn" id="order-btn" onclick="sendOrder()" disabled>📲 Đặt hàng qua Telegram</button>
+  </div>
+</div>
+
+<!-- POPUP THÀNH CÔNG -->
+<div class="popup-overlay" id="popup-success">
+  <div class="popup-box">
+    <span class="big">🎉</span>
+    <h3>Đặt hàng thành công!</h3>
+    <p>Đơn hàng đã được gửi đến shop.<br>Chúng mình sẽ liên hệ số <strong id="confirm-phone"></strong> sớm nhất để xác nhận nhé!</p>
+    <button class="btn-ok" onclick="closePopup('popup-success')">🛍️ Tiếp tục mua sắm</button>
+  </div>
+</div>
+
+<!-- POPUP THẤT BẠI -->
+<div class="popup-overlay" id="popup-fail">
+  <div class="popup-box">
+    <span class="big">😔</span>
+    <h3>Gửi đơn thất bại!</h3>
+    <p>Không thể kết nối đến Telegram.<br>Có thể do <strong>mạng yếu</strong> hoặc <strong>token chưa đúng</strong>.</p>
+    <div class="fail-actions">
+      <button class="btn-retry" onclick="retryOrder()">🔄 Thử lại</button>
+      <button class="btn-dismiss" onclick="closePopup('popup-fail')">Đóng</button>
+    </div>
+    <p class="fail-hint">Kiểm tra BOT_TOKEN và kết nối mạng</p>
+  </div>
+</div>
+
+<!-- POPUP QR NGÂN HÀNG -->
+<div class="popup-overlay" id="popup-qr">
+  <div class="popup-box qr-popup-box">
+    <h3 style="margin-bottom:4px">🏦 Quét QR để thanh toán</h3>
+    <div class="qr-timer-row" id="qr-timer-row">Hết hạn sau: <span id="qr-countdown">10:00</span></div>
+    <div class="qr-img-wrap" id="qr-img-wrap">
+      <img id="qr-img" src="" alt="QR VietQR" />
+    </div>
+    <div class="qr-expired-msg" id="qr-expired-msg">⏰ QR đã hết hạn! Vui lòng đặt lại đơn.</div>
+    <div class="qr-info">
+      <div><strong>Ngân hàng:</strong> Vietcombank</div>
+      <div><strong>Số TK:</strong>
+        <div class="copy-row">
+          <span>9384383107</span>
+          <button class="btn-copy" onclick="copyText('9384383107',this)">Copy</button>
+        </div>
+      </div>
+      <div><strong>Chủ TK:</strong> PHÍ THỊ HƯỜNG</div>
+      <div><strong>Số tiền:</strong> <span class="qr-amount" id="qr-amount"></span></div>
+      <div><strong>Nội dung:</strong>
+        <div class="copy-row">
+          <span id="qr-content"></span>
+          <button class="btn-copy" id="btn-copy-content" onclick="copyText(document.getElementById('qr-content').textContent,this)">Copy</button>
+        </div>
+      </div>
+    </div>
+    <div class="qr-warn">⚠️ Ghi đúng nội dung chuyển tiền để xác nhận đơn hàng!</div>
+    <div class="qr-actions">
+      <button class="btn-paid" onclick="confirmPaid()">✅ Đã chuyển khoản</button>
+      <button class="btn-cancel-qr" onclick="cancelQR()">Huỷ</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// =============================================
+// ⚙️ CẤU HÌNH — CHỈ SỬA Ở ĐÂY
+// =============================================
+const BOT_TOKEN = 'ĐIỀN_TOKEN_CỦA_BẠN';  // VD: 7123456789:AAFxxxxxxxx
+const CHAT_ID   = '8547038863';
+
+const BANK_ID   = 'VCB';          // Mã ngân hàng VietQR
+const BANK_STK  = '9384383107';   // Số tài khoản
+const BANK_NAME = 'PHI%20THI%20HUONG'; // Tên chủ TK (URL encoded)
+// =============================================
+
+const products = {
+  'grid-1': [
+    { id:1,  emoji:'🖊️', name:'Bút bi Thiên Long TL-027',     price:5000,  unit:'cái',   image:'https://nguyengiaphat.com.vn/wp-content/uploads/2021/09/but-bi-thien-long-tl-027.jpg' },
+    { id:2,  emoji:'✏️', name:'Bút chì 2B Staedtler',          price:8000,  unit:'cái',   image:null },
+    { id:3,  emoji:'🖍️', name:'Bút màu Faber-Castell 12 màu', price:45000, unit:'hộp',   image:null },
+    { id:4,  emoji:'🖋️', name:'Bút mực Hồng Hà nét thanh',    price:12000, unit:'cái',   image:null },
+  ],
+  'grid-2': [
+    { id:5,  emoji:'📓', name:'Vở 200 trang Ánh Dương kẻ ngang', price:18000, unit:'quyển', image:null },
+    { id:6,  emoji:'📔', name:'Vở 100 trang Oxford ô li',         price:12000, unit:'quyển', image:null },
+    { id:7,  emoji:'📒', name:'Sổ tay bìa cứng A5',               price:35000, unit:'quyển', image:null },
+    { id:8,  emoji:'📋', name:'Tập bìa nhựa A4 10 tờ',            price:22000, unit:'bộ',    image:null },
+  ],
+  'grid-3': [
+    { id:9,  emoji:'📐', name:'Thước kẻ 30cm Điền Phú',  price:7000,  unit:'cái', image:null },
+    { id:10, emoji:'📏', name:'Thước đo độ + êke bộ 3',   price:15000, unit:'bộ',  image:null },
+    { id:11, emoji:'✂️', name:'Kéo học sinh cán nhựa',    price:20000, unit:'cái', image:null },
+    { id:12, emoji:'🗂️', name:'Bìa kẹp tài liệu A4',      price:25000, unit:'cái', image:null },
+  ],
+};
+
+let customer = { name:'', phone:'' };
+let cart = {};
+let lastMsg = '';
+let payMethod = 'cod';
+let qrTimer = null;
+
+// ----- RENDER -----
+function imgHtml(p) {
+  if (p.image) return `<img src="${p.image}" alt="${p.name}" onerror="this.outerHTML='<span>${p.emoji}</span>'" />`;
+  return `<span>${p.emoji}</span>`;
+}
+
+Object.entries(products).forEach(([gridId, items]) => {
+  document.getElementById(gridId).innerHTML = items.map(p => `
+    <div class="product-card">
+      <div class="product-img">${imgHtml(p)}</div>
+      <div class="product-info">
+        <div class="product-name">${p.name}</div>
+        <div class="product-price">${p.price.toLocaleString('vi-VN')}đ <span class="product-unit">/${p.unit}</span></div>
+        <button class="add-btn" onclick="addToCart(${p.id})">+ Thêm vào giỏ</button>
+      </div>
+    </div>`).join('');
+});
+
+// ----- LOGIN -----
+function doLogin() {
+  const name  = document.getElementById('inp-name').value.trim();
+  const phone = document.getElementById('inp-phone').value.trim();
+  let ok = true;
+  if (!name) {
+    document.getElementById('inp-name').classList.add('error');
+    document.getElementById('err-name').classList.add('show');
+    ok = false;
+  } else {
+    document.getElementById('inp-name').classList.remove('error');
+    document.getElementById('err-name').classList.remove('show');
+  }
+  if (!/^(0[3-9])\d{8}$/.test(phone)) {
+    document.getElementById('inp-phone').classList.add('error');
+    document.getElementById('err-phone').classList.add('show');
+    ok = false;
+  } else {
+    document.getElementById('inp-phone').classList.remove('error');
+    document.getElementById('err-phone').classList.remove('show');
+  }
+  if (!ok) return;
+  customer = { name, phone };
+  document.getElementById('user-chip').textContent = '👤 ' + name;
+  document.getElementById('overlay').classList.add('hide');
+}
+document.getElementById('inp-name').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('inp-phone').focus(); });
+document.getElementById('inp-phone').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+
+// ----- CART -----
+function allProducts() { return Object.values(products).flat(); }
+
+function addToCart(id) {
+  cart[id] ? cart[id].qty++ : (cart[id] = { ...allProducts().find(x => x.id === id), qty:1 });
+  renderCart();
+  const b = document.querySelector('.cart-btn');
+  b.style.transform = 'scale(1.15)';
+  setTimeout(() => b.style.transform = '', 150);
+}
+
+function changeQty(id, d) {
+  if (!cart[id]) return;
+  cart[id].qty += d;
+  if (cart[id].qty <= 0) delete cart[id];
+  renderCart();
+}
+
+function renderCart() {
+  const items = Object.values(cart);
+  const total = items.reduce((s,i) => s + i.price * i.qty, 0);
+  document.getElementById('cart-count').textContent = items.reduce((s,i) => s + i.qty, 0);
+  document.getElementById('cart-total').textContent = total.toLocaleString('vi-VN') + 'đ';
+  document.getElementById('order-btn').disabled = items.length === 0;
+  const el = document.getElementById('cart-items');
+  if (!items.length) {
+    el.innerHTML = `<div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>`;
+    return;
+  }
+  el.innerHTML = items.map(i => `
+    <div class="cart-item">
+      <div class="ci-thumb">${imgHtml(i)}</div>
+      <div class="ci-info">
+        <div class="ci-name">${i.name}</div>
+        <div class="ci-price">${(i.price*i.qty).toLocaleString('vi-VN')}đ</div>
+      </div>
+      <div class="ci-qty">
+        <button class="qty-btn" onclick="changeQty(${i.id},-1)">−</button>
+        <span class="qty-num">${i.qty}</span>
+        <button class="qty-btn" onclick="changeQty(${i.id},+1)">+</button>
+      </div>
+    </div>`).join('');
+}
+
+function toggleCart() { document.getElementById('cart-panel').classList.toggle('open'); }
+
+// ----- PAYMENT METHOD -----
+function selectPay(method) {
+  payMethod = method;
+  document.getElementById('pay-cod').classList.toggle('active', method === 'cod');
+  document.getElementById('pay-bank').classList.toggle('active', method === 'bank');
+}
+
+// ----- ORDER -----
+function sendOrder() {
+  const items = Object.values(cart);
+  if (!items.length) return;
+  const note  = document.getElementById('order-note').value;
+  const total = items.reduce((s,i) => s + i.price * i.qty, 0);
+  const list  = items.map(i => `  • ${i.emoji} ${i.name} x${i.qty} = ${(i.price*i.qty).toLocaleString('vi-VN')}đ`).join('\n');
+
+  lastMsg =
+`🛒 ĐƠN HÀNG MỚI – StudyShop
+━━━━━━━━━━━━━━━━━━━
+👤 Khách hàng: ${customer.name}
+📞 Số điện thoại: ${customer.phone}
+━━━━━━━━━━━━━━━━━━━
+📦 Sản phẩm:
+${list}
+━━━━━━━━━━━━━━━━━━━
+💰 Tổng cộng: ${total.toLocaleString('vi-VN')}đ
+💳 Thanh toán: ${payMethod === 'bank' ? '🏦 Chuyển khoản ngân hàng' : '🚚 COD (nhận hàng trả tiền)'}
+📝 Ghi chú: ${note || 'Không có'}
+━━━━━━━━━━━━━━━━━━━
+⏰ ${new Date().toLocaleString('vi-VN')}`;
+
+  // Gửi Telegram
+  doSend(lastMsg);
+
+  // Nếu chọn ngân hàng → hiện QR
+  if (payMethod === 'bank') {
+    showQR(total);
+  }
+}
+
+function retryOrder() {
+  closePopup('popup-fail');
+  if (lastMsg) doSend(lastMsg);
+}
+
+// ----- GỬI TELEGRAM (XHR duy nhất) -----
+function doSend(msg) {
+  const btn = document.getElementById('order-btn');
+  btn.disabled = true;
+  btn.textContent = '⏳ Đang gửi...';
+
+  const params = new URLSearchParams({ chat_id: CHAT_ID, text: msg });
+  const xhr = new XMLHttpRequest();
+  xhr.open('GET', `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?${params}`, true);
+  xhr.timeout = 5000;
+
+  function resetBtn() {
+    btn.disabled = false;
+    btn.innerHTML = '📲 Đặt hàng qua Telegram';
+  }
+
+  xhr.onload = function() {
+    resetBtn();
+    if (payMethod === 'bank') return; // QR đã xử lý thành công riêng
+    try {
+      JSON.parse(xhr.responseText).ok
+        ? showSuccess()
+        : document.getElementById('popup-fail').classList.add('show');
+    } catch(e) {
+      document.getElementById('popup-fail').classList.add('show');
+    }
+  };
+  xhr.onerror = xhr.ontimeout = function() {
+    resetBtn();
+    if (payMethod !== 'bank') document.getElementById('popup-fail').classList.add('show');
+  };
+  xhr.send();
+}
+
+// ----- QR VIETQR -----
+function showQR(total) {
+  const content = customer.phone + ' ' + customer.name.split(' ').pop().toUpperCase();
+  document.getElementById('qr-amount').textContent = total.toLocaleString('vi-VN') + 'đ';
+  document.getElementById('qr-content').textContent = content;
+  document.getElementById('qr-expired-msg').style.display = 'none';
+  document.getElementById('qr-img-wrap').classList.remove('expired');
+  document.getElementById('qr-timer-row').style.display = 'block';
+  document.getElementById('qr-timer-row').classList.remove('urgent');
+
+  // VietQR API — tự điền số tiền + nội dung
+  const qrUrl = `https://img.vietqr.io/image/${BANK_ID}-${BANK_STK}-qr_only.png`
+    + `?amount=${total}&addInfo=${encodeURIComponent(content)}&accountName=${BANK_NAME}`;
+  document.getElementById('qr-img').src = qrUrl;
+
+  document.getElementById('cart-panel').classList.remove('open');
+  document.getElementById('popup-qr').classList.add('show');
+
+  // Đếm ngược 10 phút
+  let secs = 600;
+  clearInterval(qrTimer);
+  const countEl = document.getElementById('qr-countdown');
+  const timerRow = document.getElementById('qr-timer-row');
+  qrTimer = setInterval(() => {
+    secs--;
+    const m = String(Math.floor(secs/60)).padStart(2,'0');
+    const s = String(secs % 60).padStart(2,'0');
+    countEl.textContent = `${m}:${s}`;
+    if (secs <= 60) timerRow.classList.add('urgent');
+    if (secs <= 0) {
+      clearInterval(qrTimer);
+      timerRow.style.display = 'none';
+      document.getElementById('qr-expired-msg').style.display = 'block';
+      document.getElementById('qr-img-wrap').classList.add('expired');
+    }
+  }, 1000);
+}
+
+function confirmPaid() {
+  clearInterval(qrTimer);
+  closePopup('popup-qr');
+  showSuccess();
+}
+
+function cancelQR() {
+  clearInterval(qrTimer);
+  closePopup('popup-qr');
+  document.getElementById('cart-panel').classList.add('open');
+}
+
+function showSuccess() {
+  document.getElementById('confirm-phone').textContent = customer.phone;
+  document.getElementById('popup-success').classList.add('show');
+  cart = {}; renderCart();
+  document.getElementById('order-note').value = '';
+  lastMsg = '';
+}
+
+function closePopup(id) { document.getElementById(id).classList.remove('show'); }
+
+function copyText(text, btn) {
+  navigator.clipboard.writeText(text).catch(() => {
+    const ta = document.createElement('textarea');
+    ta.value = text; document.body.appendChild(ta); ta.select();
+    document.execCommand('copy'); document.body.removeChild(ta);
+  });
+  if (btn) { const orig = btn.textContent; btn.textContent = '✅'; setTimeout(() => btn.textContent = orig, 1500); }
+}
+</script>
+</body>
+</html>
