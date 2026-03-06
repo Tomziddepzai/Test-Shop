@@ -8,255 +8,229 @@
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
 <style>
-  :root{--primary:#FF6B35;--secondary:#FFD166;--accent:#06D6A0;--dark:#1A1A2E;--soft:#F7F3EE;--text:#2D2D2D;--muted:#888;--radius:18px;--shadow:0 8px 32px rgba(26,26,46,0.10);}
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:'Nunito',sans-serif;background:var(--soft);color:var(--text);min-height:100vh;}
+:root{--primary:#FF6B35;--secondary:#FFD166;--accent:#06D6A0;--dark:#1A1A2E;--soft:#F7F3EE;--text:#2D2D2D;--muted:#888;--radius:18px;--shadow:0 8px 32px rgba(26,26,46,0.10);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Nunito',sans-serif;background:var(--soft);color:var(--text);min-height:100vh;}
 
-  #overlay{position:fixed;inset:0;z-index:999;background:linear-gradient(135deg,#1A1A2E 0%,#16213E 60%,#0F3460 100%);display:flex;align-items:center;justify-content:center;transition:opacity 0.5s;}
-  #overlay.hide{opacity:0;pointer-events:none;}
-  .login-box{background:white;border-radius:28px;padding:48px 40px 40px;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,0.4);position:relative;animation:popIn 0.5s cubic-bezier(.34,1.56,.64,1) both;}
-  @keyframes popIn{from{transform:scale(0.8) translateY(40px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
-  .login-badge{position:absolute;top:-20px;left:50%;transform:translateX(-50%);background:var(--primary);color:white;font-family:'Baloo 2',cursive;font-weight:800;font-size:14px;padding:6px 20px;border-radius:100px;white-space:nowrap;box-shadow:0 4px 16px rgba(255,107,53,0.4);}
-  .login-logo{text-align:center;margin-bottom:8px;}
-  .login-logo .emoji{font-size:52px;display:block;margin-bottom:4px;}
-  .login-logo h1{font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;color:var(--dark);}
-  .login-logo h1 span{color:var(--primary);}
-  .login-logo p{font-size:13px;color:var(--muted);margin-top:4px;}
-  .divider{border:none;border-top:1.5px dashed #eee;margin:20px 0;}
-  .form-group{margin-bottom:16px;}
-  .form-group label{display:block;font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
-  .form-group input{width:100%;padding:13px 16px;border:2px solid #eee;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;background:#fafafa;}
-  .form-group input:focus{border-color:var(--primary);box-shadow:0 0 0 4px rgba(255,107,53,0.1);background:white;}
-  .form-group input.error{border-color:#FF4757;}
-  .error-msg{font-size:12px;color:#FF4757;margin-top:5px;display:none;}
-  .error-msg.show{display:block;}
-  .btn-enter{width:100%;padding:15px;background:linear-gradient(135deg,var(--primary),#FF8C42);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(255,107,53,0.35);margin-top:4px;transition:transform 0.15s;}
-  .btn-enter:hover{transform:translateY(-2px);}
-  .note{text-align:center;font-size:12px;color:var(--muted);margin-top:14px;}
+/* ── LOGIN ── */
+#overlay{position:fixed;inset:0;z-index:999;background:linear-gradient(135deg,#1A1A2E 0%,#16213E 60%,#0F3460 100%);display:flex;align-items:center;justify-content:center;transition:opacity 0.5s;}
+#overlay.hide{opacity:0;pointer-events:none;}
+.login-box{background:white;border-radius:28px;padding:48px 40px 40px;width:100%;max-width:420px;box-shadow:0 24px 80px rgba(0,0,0,0.4);position:relative;animation:popIn 0.5s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes popIn{from{transform:scale(0.8) translateY(40px);opacity:0;}to{transform:scale(1) translateY(0);opacity:1;}}
+.login-badge{position:absolute;top:-20px;left:50%;transform:translateX(-50%);background:var(--primary);color:white;font-family:'Baloo 2',cursive;font-weight:800;font-size:14px;padding:6px 20px;border-radius:100px;white-space:nowrap;box-shadow:0 4px 16px rgba(255,107,53,0.4);}
+.login-logo{text-align:center;margin-bottom:8px;}
+.login-logo .emoji{font-size:52px;display:block;margin-bottom:4px;}
+.login-logo h1{font-family:'Baloo 2',cursive;font-size:28px;font-weight:800;color:var(--dark);}
+.login-logo h1 span{color:var(--primary);}
+.login-logo p{font-size:13px;color:var(--muted);margin-top:4px;}
+.divider{border:none;border-top:1.5px dashed #eee;margin:20px 0;}
+.form-group{margin-bottom:16px;}
+.form-group label{display:block;font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
+.form-group input{width:100%;padding:13px 16px;border:2px solid #eee;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;background:#fafafa;}
+.form-group input:focus{border-color:var(--primary);background:white;}
+.form-group input.error{border-color:#FF4757;}
+.error-msg{font-size:12px;color:#FF4757;margin-top:5px;display:none;}
+.error-msg.show{display:block;}
+.btn-enter{width:100%;padding:15px;background:linear-gradient(135deg,var(--primary),#FF8C42);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:17px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(255,107,53,0.35);margin-top:4px;transition:transform 0.15s;}
+.btn-enter:hover{transform:translateY(-2px);}
+.note{text-align:center;font-size:12px;color:var(--muted);margin-top:14px;}
 
-  header{background:var(--dark);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(26,26,46,0.3);}
-  .header-logo{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:white;}
-  .header-logo span{color:var(--secondary);}
-  .header-right{display:flex;align-items:center;gap:10px;}
-  .user-chip{background:rgba(255,255,255,0.1);color:white;padding:6px 14px;border-radius:100px;font-size:13px;font-weight:600;}
-  .admin-btn{background:rgba(255,255,255,0.1);color:white;border:none;padding:8px 14px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;transition:background 0.2s;}
-  .admin-btn:hover{background:rgba(255,255,255,0.2);}
-  .cart-btn{background:var(--primary);color:white;border:none;padding:8px 18px;border-radius:100px;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.2s,transform 0.15s;}
-  .cart-btn:hover{background:#e55a27;transform:scale(1.04);}
-  .cart-count{background:var(--secondary);color:var(--dark);border-radius:100px;width:20px;height:20px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+/* ── HEADER ── */
+header{background:var(--dark);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(26,26,46,0.3);}
+.header-logo{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:white;}
+.header-logo span{color:var(--secondary);}
+.header-right{display:flex;align-items:center;gap:10px;}
+.user-chip{background:rgba(255,255,255,0.1);color:white;padding:6px 14px;border-radius:100px;font-size:13px;font-weight:600;}
+.admin-btn{background:rgba(255,255,255,0.1);color:white;border:none;padding:8px 14px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;transition:background 0.2s;}
+.admin-btn:hover{background:rgba(255,255,255,0.2);}
+.cart-btn{background:var(--primary);color:white;border:none;padding:8px 18px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.2s,transform 0.15s;}
+.cart-btn:hover{background:#e55a27;transform:scale(1.04);}
+.cart-count{background:var(--secondary);color:var(--dark);border-radius:100px;width:20px;height:20px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
 
-  .hero{background:linear-gradient(120deg,var(--dark) 0%,#0F3460 100%);padding:48px 24px 40px;text-align:center;color:white;position:relative;overflow:hidden;}
-  .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 50%,rgba(255,209,102,0.12) 0%,transparent 60%);}
-  .hero h2{font-family:'Baloo 2',cursive;font-size:32px;font-weight:800;line-height:1.2;position:relative;}
-  .hero h2 em{color:var(--secondary);font-style:normal;}
-  .hero p{margin-top:10px;font-size:15px;color:rgba(255,255,255,0.7);position:relative;}
+/* ── HERO ── */
+.hero{background:linear-gradient(120deg,var(--dark) 0%,#0F3460 100%);padding:48px 24px 40px;text-align:center;color:white;position:relative;overflow:hidden;}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 50%,rgba(255,209,102,0.12) 0%,transparent 60%);}
+.hero h2{font-family:'Baloo 2',cursive;font-size:32px;font-weight:800;line-height:1.2;position:relative;}
+.hero h2 em{color:var(--secondary);font-style:normal;}
+.hero p{margin-top:10px;font-size:15px;color:rgba(255,255,255,0.7);position:relative;}
 
-  .container{max-width:960px;margin:0 auto;padding:32px 16px;}
-  .section-title{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
-  .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;margin-bottom:32px;}
-  .product-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;position:relative;}
-  .product-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(26,26,46,0.15);}
-  .product-card.out-of-stock{opacity:0.7;}
-  .product-img{width:100%;height:150px;overflow:hidden;background:linear-gradient(135deg,#fff8f0,#fff3e0);display:flex;align-items:center;justify-content:center;font-size:60px;}
-  .product-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s;}
-  .product-card:hover .product-img img{transform:scale(1.07);}
-  .product-info{padding:14px 16px 16px;}
-  .product-name{font-weight:700;font-size:14px;color:var(--dark);margin-bottom:4px;line-height:1.3;}
-  .product-price{color:var(--primary);font-weight:800;font-size:16px;font-family:'Baloo 2',cursive;}
-  .product-unit{font-size:12px;color:var(--muted);margin-left:2px;font-weight:400;}
-  .stock-badge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:100px;}
-  .stock-badge.in-stock{background:#e8fdf5;color:#00a86b;}
-  .stock-badge.low-stock{background:#fff8e6;color:#e67e00;}
-  .stock-badge.out{background:#fff0f0;color:#FF4757;}
+/* ── SEARCH ── */
+.search-wrap{max-width:960px;margin:0 auto;padding:20px 16px 0;}
+.search-box{display:flex;align-items:center;gap:12px;background:white;border-radius:16px;padding:12px 20px;box-shadow:var(--shadow);border:2px solid transparent;transition:border-color 0.2s;}
+.search-box:focus-within{border-color:var(--primary);}
+.search-box .s-icon{font-size:20px;color:var(--muted);}
+.search-box input{flex:1;border:none;outline:none;font-family:'Nunito',sans-serif;font-size:15px;background:transparent;}
+.search-box input::placeholder{color:#bbb;}
+.search-clear{background:none;border:none;cursor:pointer;font-size:18px;color:#bbb;padding:0 4px;display:none;}
+.search-clear.show{display:block;}
+.search-results-info{font-size:13px;color:var(--muted);margin:12px 0 0;font-weight:600;}
+.search-results-info span{color:var(--primary);}
 
-  /* COLOR SWATCHES on product card */
-  .color-swatches-row{display:flex;align-items:center;gap:5px;margin-top:8px;flex-wrap:wrap;}
-  .card-swatch{width:18px;height:18px;border-radius:50%;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.18);}
-  .color-hint{font-size:11px;color:var(--muted);font-weight:600;}
+/* ── PRODUCTS ── */
+.container{max-width:960px;margin:0 auto;padding:32px 16px;}
+.section-title{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:20px;margin-bottom:32px;}
+.product-card{background:white;border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;position:relative;}
+.product-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(26,26,46,0.15);}
+.product-card.out-of-stock{opacity:0.7;}
+.product-img{width:100%;height:150px;overflow:hidden;background:linear-gradient(135deg,#fff8f0,#fff3e0);display:flex;align-items:center;justify-content:center;font-size:60px;}
+.product-img img{width:100%;height:100%;object-fit:cover;transition:transform 0.3s;}
+.product-card:hover .product-img img{transform:scale(1.07);}
+.product-info{padding:14px 16px 16px;}
+.product-name{font-weight:700;font-size:14px;color:var(--dark);margin-bottom:4px;line-height:1.3;}
+.product-price{color:var(--primary);font-weight:800;font-size:16px;font-family:'Baloo 2',cursive;}
+.product-unit{font-size:12px;color:var(--muted);margin-left:2px;font-weight:400;}
+.stock-badge{display:inline-flex;align-items:center;gap:4px;margin-top:6px;font-size:11px;font-weight:700;padding:3px 8px;border-radius:100px;}
+.stock-badge.in-stock{background:#e8fdf5;color:#00a86b;}
+.stock-badge.low-stock{background:#fff8e6;color:#e67e00;}
+.stock-badge.out{background:#fff0f0;color:#FF4757;}
+/* mini swatches on card */
+.card-colors{display:flex;align-items:center;gap:4px;margin-top:7px;flex-wrap:wrap;}
+.card-swatch{width:16px;height:16px;border-radius:50%;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.card-color-hint{font-size:11px;color:var(--muted);font-weight:600;}
+.add-btn{width:100%;margin-top:8px;padding:9px;background:var(--dark);color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:background 0.2s;}
+.add-btn:hover{background:var(--primary);}
+.add-btn:disabled{background:#ddd;color:#999;cursor:not-allowed;}
+.add-btn.sold-out{background:#FF4757;}
+.delete-badge{position:absolute;top:8px;right:8px;background:#FF4757;color:white;border:none;border-radius:100px;width:28px;height:28px;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,71,87,0.4);}
+.admin-mode .delete-badge{display:flex;}
+.no-results{text-align:center;padding:60px 0;color:var(--muted);}
+.no-results .big{font-size:56px;display:block;margin-bottom:12px;}
 
-  .add-btn{width:100%;margin-top:8px;padding:9px;background:var(--dark);color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:background 0.2s;}
-  .add-btn:hover{background:var(--primary);}
-  .add-btn.has-colors{background:linear-gradient(135deg,#7C3AED,#a855f7);}
-  .add-btn.has-colors:hover{background:linear-gradient(135deg,#6D28D9,#9333ea);}
-  .add-btn:disabled{background:#ddd;color:#999;cursor:not-allowed;}
-  .add-btn.sold-out{background:#FF4757;}
-  .delete-badge{position:absolute;top:8px;right:8px;background:#FF4757;color:white;border:none;border-radius:100px;width:28px;height:28px;font-size:14px;cursor:pointer;display:none;align-items:center;justify-content:center;box-shadow:0 2px 8px rgba(255,71,87,0.4);}
-  .admin-mode .delete-badge{display:flex;}
+/* ── CART PANEL ── */
+#cart-panel{position:fixed;right:0;top:0;bottom:0;width:380px;background:white;box-shadow:-8px 0 40px rgba(0,0,0,0.15);z-index:500;transform:translateX(100%);transition:transform 0.35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
+#cart-panel.open{transform:translateX(0);}
+.cart-header{padding:20px 24px;border-bottom:2px dashed #eee;display:flex;align-items:center;justify-content:space-between;}
+.cart-header h3{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--dark);}
+.close-cart{background:#f5f5f5;border:none;border-radius:10px;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.close-cart:hover{background:#ffe0d6;color:var(--primary);}
+.cart-items{flex:1;overflow-y:auto;padding:12px 20px;}
+.cart-empty{text-align:center;color:var(--muted);padding:48px 0;font-size:15px;}
+.cart-empty .big{font-size:48px;display:block;margin-bottom:10px;}
 
-  #cart-panel{position:fixed;right:0;top:0;bottom:0;width:360px;background:white;box-shadow:-8px 0 40px rgba(0,0,0,0.15);z-index:500;transform:translateX(100%);transition:transform 0.35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
-  #cart-panel.open{transform:translateX(0);}
-  .cart-header{padding:20px 24px;border-bottom:2px dashed #eee;display:flex;align-items:center;justify-content:space-between;}
-  .cart-header h3{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--dark);}
-  .close-cart{background:#f5f5f5;border:none;border-radius:10px;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-  .close-cart:hover{background:#ffe0d6;color:var(--primary);}
-  .cart-items{flex:1;overflow-y:auto;padding:16px 24px;}
-  .cart-empty{text-align:center;color:var(--muted);padding:48px 0;font-size:15px;}
-  .cart-empty .big{font-size:48px;display:block;margin-bottom:10px;}
-  .cart-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid #f5f5f5;animation:slideIn 0.3s ease;}
-  @keyframes slideIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
-  .ci-thumb{width:46px;height:46px;border-radius:10px;flex-shrink:0;overflow:hidden;background:#fff8f0;display:flex;align-items:center;justify-content:center;font-size:26px;position:relative;}
-  .ci-thumb img{width:100%;height:100%;object-fit:cover;}
-  .ci-color-dot{position:absolute;bottom:-2px;right:-2px;width:14px;height:14px;border-radius:50%;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,0.3);}
-  .ci-info{flex:1;min-width:0;}
-  .ci-name{font-weight:700;font-size:13px;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .ci-color-tag{display:inline-flex;align-items:center;gap:4px;font-size:11px;color:white;margin-top:3px;font-weight:700;padding:2px 7px;border-radius:100px;}
-  .ci-price{font-size:12px;color:var(--primary);font-weight:700;margin-top:3px;}
-  .ci-qty{display:flex;align-items:center;gap:6px;flex-shrink:0;}
-  .qty-btn{background:#f5f5f5;border:none;border-radius:8px;width:28px;height:28px;font-size:16px;cursor:pointer;font-weight:700;}
-  .qty-btn:hover{background:var(--secondary);}
-  .qty-num{font-weight:800;font-size:15px;min-width:20px;text-align:center;}
-  .cart-footer{padding:16px 24px 24px;border-top:2px dashed #eee;}
-  .cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
-  .cart-total span{font-weight:700;color:var(--muted);}
-  .cart-total strong{font-family:'Baloo 2',cursive;font-size:22px;color:var(--primary);}
-  .note-input{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;resize:none;margin-bottom:12px;}
-  .note-input:focus{border-color:var(--accent);}
-  .order-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--accent),#00B894);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(6,214,160,0.35);display:flex;align-items:center;justify-content:center;gap:8px;}
-  .order-btn:hover{transform:translateY(-2px);}
-  .order-btn:disabled{background:#ccc;box-shadow:none;cursor:not-allowed;transform:none;}
+/* cart item */
+.cart-item{padding:12px 0;border-bottom:1px solid #f0f0f0;animation:slideIn 0.3s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateX(20px);}to{opacity:1;transform:translateX(0);}}
+.ci-top{display:flex;align-items:center;gap:10px;}
+.ci-thumb{width:46px;height:46px;border-radius:10px;flex-shrink:0;overflow:hidden;background:#fff8f0;display:flex;align-items:center;justify-content:center;font-size:26px;}
+.ci-thumb img{width:100%;height:100%;object-fit:cover;}
+.ci-info{flex:1;min-width:0;}
+.ci-name{font-weight:700;font-size:13px;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.ci-price{font-size:12px;color:var(--primary);font-weight:700;margin-top:2px;}
+.ci-qty{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.qty-btn{background:#f5f5f5;border:none;border-radius:8px;width:28px;height:28px;font-size:16px;cursor:pointer;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.qty-btn:hover{background:var(--secondary);}
+.qty-num{font-weight:800;font-size:15px;min-width:20px;text-align:center;}
 
-  /* ── COLOR PICKER BOTTOM SHEET ── */
-  #color-picker-popup{position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.5);display:none;align-items:flex-end;justify-content:center;}
-  #color-picker-popup.show{display:flex;}
-  .color-picker-sheet{background:white;border-radius:24px 24px 0 0;padding:24px 22px 36px;width:100%;max-width:480px;animation:slideUp 0.32s cubic-bezier(.34,1.2,.64,1) both;}
-  @keyframes slideUp{from{transform:translateY(100%);}to{transform:translateY(0);}}
-  .cp-handle{width:40px;height:4px;background:#e0e0e0;border-radius:4px;margin:0 auto 18px;}
-  .cp-header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4px;}
-  .cp-header h4{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--dark);line-height:1.3;flex:1;padding-right:12px;}
-  .cp-close{background:#f5f5f5;border:none;border-radius:10px;width:34px;height:34px;font-size:16px;cursor:pointer;flex-shrink:0;}
-  .cp-subtitle{font-size:13px;color:var(--muted);margin-bottom:18px;margin-top:4px;}
-  .cp-grid{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px;}
-  .cp-color-btn{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;transition:transform 0.15s;padding:6px 8px;border-radius:12px;border:2px solid transparent;min-width:60px;}
-  .cp-color-btn:hover{transform:translateY(-2px);background:#f8f9fa;}
-  .cp-color-btn.active{border-color:var(--primary);background:#fff5f2;}
-  .cp-dot{width:40px;height:40px;border-radius:50%;border:3px solid white;box-shadow:0 3px 10px rgba(0,0,0,0.2);transition:box-shadow 0.15s,transform 0.15s;}
-  .cp-color-btn.active .cp-dot{box-shadow:0 0 0 3px var(--primary),0 3px 10px rgba(0,0,0,0.2);transform:scale(1.1);}
-  .cp-label{font-size:11px;font-weight:700;color:var(--dark);text-align:center;line-height:1.2;}
-  .cp-selected-bar{display:none;align-items:center;gap:10px;background:#f8f9fa;padding:10px 14px;border-radius:12px;margin-bottom:14px;border:2px solid var(--primary);}
-  .cp-selected-bar.show{display:flex;}
-  .cp-sel-dot{width:24px;height:24px;border-radius:50%;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.2);flex-shrink:0;}
-  .cp-sel-text{font-weight:700;font-size:13px;color:var(--dark);}
-  .btn-cp-add{width:100%;padding:14px;background:linear-gradient(135deg,#7C3AED,#a855f7);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(124,58,237,0.35);transition:transform 0.15s;}
-  .btn-cp-add:hover{transform:translateY(-2px);}
-  .btn-cp-add:disabled{background:#ccc;box-shadow:none;cursor:not-allowed;transform:none;}
-  .btn-cp-skip{width:100%;padding:11px;background:transparent;color:var(--muted);border:none;font-family:'Nunito',sans-serif;font-size:13px;font-weight:600;cursor:pointer;margin-top:6px;}
-  .btn-cp-skip:hover{color:var(--dark);}
+/* ── COLOR ROW inside cart item ── */
+.ci-color-row{margin-top:8px;padding:8px 10px;background:#f8f9fa;border-radius:10px;}
+.ci-color-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;}
+.ci-color-options{display:flex;flex-wrap:wrap;gap:6px;}
+.ci-color-swatch{width:26px;height:26px;border-radius:50%;border:3px solid white;box-shadow:0 1px 5px rgba(0,0,0,.2);cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;position:relative;flex-shrink:0;}
+.ci-color-swatch:hover{transform:scale(1.15);}
+.ci-color-swatch.picked{box-shadow:0 0 0 3px var(--primary),0 2px 8px rgba(0,0,0,.2);transform:scale(1.1);}
+.ci-color-swatch.picked::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:900;text-shadow:0 1px 2px rgba(0,0,0,.5);}
+.ci-picked-name{font-size:11px;font-weight:700;color:var(--dark);margin-top:5px;display:flex;align-items:center;gap:5px;}
+.ci-picked-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0;}
 
-  .popup-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.55);align-items:center;justify-content:center;padding:16px;}
-  .popup-overlay.show{display:flex;}
-  .popup-box{background:white;border-radius:24px;padding:40px 36px;text-align:center;max-width:380px;width:100%;animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;}
-  .popup-box .big{font-size:64px;display:block;margin-bottom:12px;}
-  .popup-box h3{font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;color:var(--dark);margin-bottom:8px;}
-  .popup-box p{color:var(--muted);font-size:14px;line-height:1.6;}
-  .btn-ok{margin-top:20px;padding:12px 32px;background:var(--accent);color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;cursor:pointer;}
-  .fail-actions{margin-top:20px;display:flex;gap:10px;justify-content:center;}
-  .btn-retry{padding:12px 24px;background:var(--primary);color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;cursor:pointer;}
-  .btn-dismiss{padding:12px 24px;background:#f0f0f0;color:var(--dark);border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;cursor:pointer;}
-  .fail-hint{margin-top:12px;font-size:12px;color:#bbb;}
+.cart-footer{padding:14px 20px 24px;border-top:2px dashed #eee;}
+.cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.cart-total span{font-weight:700;color:var(--muted);}
+.cart-total strong{font-family:'Baloo 2',cursive;font-size:22px;color:var(--primary);}
+.note-input{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;resize:none;margin-bottom:12px;}
+.note-input:focus{border-color:var(--accent);}
+.order-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--accent),#00B894);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(6,214,160,0.35);display:flex;align-items:center;justify-content:center;gap:8px;}
+.order-btn:hover{transform:translateY(-2px);}
+.order-btn:disabled{background:#ccc;box-shadow:none;cursor:not-allowed;transform:none;}
 
-  #admin-login{position:fixed;inset:0;z-index:790;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;}
-  #admin-login.show{display:flex;}
-  .admin-login-box{background:white;border-radius:20px;padding:36px 32px;max-width:340px;width:90%;text-align:center;animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;}
-  .admin-login-box h3{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:6px;}
-  .admin-login-box p{font-size:13px;color:var(--muted);margin-bottom:20px;}
-  .pw-input{width:100%;padding:12px 16px;border:2px solid #eee;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;text-align:center;letter-spacing:4px;margin-bottom:8px;}
-  .pw-input:focus{border-color:var(--primary);}
-  .pw-input.shake{animation:shake 0.4s ease;}
-  @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
-  .pw-error{font-size:12px;color:#FF4757;margin-bottom:10px;display:none;}
-  .pw-error.show{display:block;}
-  .btn-pw-ok{width:100%;padding:12px;background:var(--dark);color:white;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;}
-  .btn-pw-cancel{width:100%;padding:10px;background:transparent;color:var(--muted);border:none;font-size:13px;cursor:pointer;margin-top:6px;}
+/* ── POPUPS ── */
+.popup-overlay{display:none;position:fixed;inset:0;z-index:600;background:rgba(0,0,0,0.55);align-items:center;justify-content:center;padding:16px;}
+.popup-overlay.show{display:flex;}
+.popup-box{background:white;border-radius:24px;padding:40px 36px;text-align:center;max-width:380px;width:100%;animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;}
+.popup-box .big{font-size:64px;display:block;margin-bottom:12px;}
+.popup-box h3{font-family:'Baloo 2',cursive;font-size:24px;font-weight:800;color:var(--dark);margin-bottom:8px;}
+.popup-box p{color:var(--muted);font-size:14px;line-height:1.6;}
+.btn-ok{margin-top:20px;padding:12px 32px;background:var(--accent);color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;cursor:pointer;}
+.fail-actions{margin-top:20px;display:flex;gap:10px;justify-content:center;}
+.btn-retry{padding:12px 24px;background:var(--primary);color:white;border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;cursor:pointer;}
+.btn-dismiss{padding:12px 24px;background:#f0f0f0;color:var(--dark);border:none;border-radius:12px;font-family:'Nunito',sans-serif;font-weight:700;font-size:15px;cursor:pointer;}
+.fail-hint{margin-top:12px;font-size:12px;color:#bbb;}
 
-  #admin-panel{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;padding:16px;}
-  #admin-panel.show{display:flex;}
-  .admin-box{background:white;border-radius:24px;width:100%;max-width:540px;max-height:90vh;overflow-y:auto;animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;}
-  .admin-head{padding:20px 24px;border-bottom:2px dashed #eee;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;z-index:1;}
-  .admin-head h3{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--dark);}
-  .admin-body{padding:20px 24px;}
-  .admin-section{margin-bottom:24px;}
-  .admin-section-title{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
-  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
-  .field-row.full{grid-template-columns:1fr;}
-  .field-row.three{grid-template-columns:1fr 1fr 1fr;}
-  .a-input{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
-  .a-input:focus{border-color:var(--primary);}
-  .a-select{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;background:white;cursor:pointer;}
-  .btn-add-product{width:100%;padding:12px;background:linear-gradient(135deg,var(--primary),#FF8C42);color:white;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;}
-  .product-list-admin{display:flex;flex-direction:column;gap:8px;}
-  .pla-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f8f9fa;border-radius:12px;}
-  .pla-thumb{width:40px;height:40px;border-radius:8px;overflow:hidden;background:#fff3e0;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
-  .pla-thumb img{width:100%;height:100%;object-fit:cover;}
-  .pla-info{flex:1;min-width:0;}
-  .pla-name{font-weight:700;font-size:13px;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  .pla-meta{font-size:11px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
-  .pla-color-dots{display:flex;gap:3px;}
-  .pla-cdot{width:10px;height:10px;border-radius:50%;border:1.5px solid white;box-shadow:0 1px 3px rgba(0,0,0,.2);}
-  .pla-actions{display:flex;align-items:center;gap:5px;flex-shrink:0;}
-  .stock-ctrl{display:flex;align-items:center;gap:4px;background:white;border:1.5px solid #eee;border-radius:8px;padding:2px 4px;}
-  .stock-ctrl button{background:none;border:none;width:22px;height:22px;cursor:pointer;font-size:14px;font-weight:800;color:var(--dark);display:flex;align-items:center;justify-content:center;}
-  .stock-ctrl button:hover{color:var(--primary);}
-  .stock-num{font-weight:800;font-size:13px;min-width:24px;text-align:center;color:var(--dark);}
-  .btn-del{background:#fff0f0;border:none;border-radius:8px;padding:6px 10px;color:#FF4757;font-size:13px;cursor:pointer;font-weight:700;}
-  .btn-del:hover{background:#FF4757;color:white;}
-  .btn-color-mgr{background:#f0eeff;border:none;border-radius:8px;padding:6px 10px;color:#7C3AED;font-size:13px;cursor:pointer;font-weight:700;}
-  .btn-color-mgr:hover{background:#7C3AED;color:white;}
-  .close-admin{background:#f5f5f5;border:none;border-radius:10px;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
-  .upload-img-label{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;border:2px dashed #eee;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;color:var(--muted);transition:border-color 0.2s,background 0.2s;background:#fafafa;}
-  .upload-img-label:hover{border-color:var(--primary);background:#fff5f2;color:var(--primary);}
-  .upload-img-label.has-img{border-color:var(--accent);background:#f0fdf9;color:#00a86b;}
-  .upload-img-thumb{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+/* ── ADMIN LOGIN ── */
+#admin-login{position:fixed;inset:0;z-index:790;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;}
+#admin-login.show{display:flex;}
+.admin-login-box{background:white;border-radius:20px;padding:36px 32px;max-width:340px;width:90%;text-align:center;animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;}
+.admin-login-box h3{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:6px;}
+.admin-login-box p{font-size:13px;color:var(--muted);margin-bottom:20px;}
+.pw-input{width:100%;padding:12px 16px;border:2px solid #eee;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;text-align:center;letter-spacing:4px;margin-bottom:8px;}
+.pw-input:focus{border-color:var(--primary);}
+.pw-input.shake{animation:shake 0.4s ease;}
+@keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
+.pw-error{font-size:12px;color:#FF4757;margin-bottom:10px;display:none;}
+.pw-error.show{display:block;}
+.btn-pw-ok{width:100%;padding:12px;background:var(--dark);color:white;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;}
+.btn-pw-cancel{width:100%;padding:10px;background:transparent;color:var(--muted);border:none;font-size:13px;cursor:pointer;margin-top:6px;}
 
-  /* ── COLOR MANAGER (ADMIN) ── */
-  #color-manager-panel{position:fixed;inset:0;z-index:850;background:rgba(0,0,0,0.65);display:none;align-items:center;justify-content:center;padding:16px;}
-  #color-manager-panel.show{display:flex;}
-  .cm-box{background:white;border-radius:24px;width:100%;max-width:460px;max-height:85vh;overflow-y:auto;animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;}
-  .cm-head{padding:18px 22px;border-bottom:2px dashed #eee;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;}
-  .cm-head h3{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--dark);}
-  .cm-body{padding:18px 22px;}
-  .cm-product-name{font-size:13px;font-weight:700;color:#7C3AED;margin-bottom:16px;padding:8px 12px;background:#f5f0ff;border-radius:8px;border-left:3px solid #7C3AED;}
-  .cm-empty{font-size:13px;color:var(--muted);padding:10px 0;text-align:center;}
-  .cm-colors-list{display:flex;flex-direction:column;gap:7px;margin-bottom:16px;}
-  .cm-color-row{display:flex;align-items:center;gap:10px;padding:9px 12px;background:#f8f9fa;border-radius:10px;}
-  .cm-dot{width:30px;height:30px;border-radius:50%;border:2px solid white;box-shadow:0 2px 6px rgba(0,0,0,.18);flex-shrink:0;}
-  .cm-color-info{flex:1;}
-  .cm-color-name{font-weight:700;font-size:13px;color:var(--dark);}
-  .cm-color-hex{font-size:11px;color:var(--muted);}
-  .cm-del-color{background:#fff0f0;border:none;border-radius:6px;padding:5px 10px;color:#FF4757;font-size:12px;cursor:pointer;font-weight:700;}
-  .cm-del-color:hover{background:#FF4757;color:white;}
-  .cm-add-section{background:#f8f9fa;border-radius:12px;padding:14px;}
-  .cm-add-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:10px;}
-  .cm-add-row{display:flex;gap:8px;align-items:center;}
-  .cm-color-input{width:48px;height:40px;border:2px solid #eee;border-radius:8px;cursor:pointer;padding:2px;background:white;}
-  .cm-name-input{flex:1;padding:9px 12px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;background:white;}
-  .cm-name-input:focus{border-color:#7C3AED;}
-  .btn-cm-add{padding:9px 14px;background:#7C3AED;color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
-  .btn-cm-done{width:100%;padding:12px;background:linear-gradient(135deg,var(--accent),#00B894);color:white;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;cursor:pointer;margin-top:14px;}
+/* ── ADMIN PANEL ── */
+#admin-panel{position:fixed;inset:0;z-index:800;background:rgba(0,0,0,0.6);display:none;align-items:center;justify-content:center;padding:16px;}
+#admin-panel.show{display:flex;}
+.admin-box{background:white;border-radius:24px;width:100%;max-width:560px;max-height:90vh;overflow-y:auto;animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;}
+.admin-head{padding:20px 24px;border-bottom:2px dashed #eee;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;background:white;z-index:1;}
+.admin-head h3{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--dark);}
+.admin-body{padding:20px 24px;}
+.admin-section{margin-bottom:24px;}
+.admin-section-title{font-size:13px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
+.field-row.full{grid-template-columns:1fr;}
+.field-row.three{grid-template-columns:1fr 1fr 1fr;}
+.a-input{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+.a-input:focus{border-color:var(--primary);}
+.a-select{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;background:white;cursor:pointer;}
 
-  /* SEARCH BAR */
-  .search-wrap{max-width:960px;margin:0 auto;padding:20px 16px 0;}
-  .search-box{display:flex;align-items:center;gap:12px;background:white;border-radius:16px;padding:12px 20px;box-shadow:var(--shadow);border:2px solid transparent;transition:border-color 0.2s,box-shadow 0.2s;}
-  .search-box:focus-within{border-color:var(--primary);box-shadow:0 8px 32px rgba(255,107,53,0.15);}
-  .search-box .s-icon{font-size:20px;flex-shrink:0;color:var(--muted);}
-  .search-box input{flex:1;border:none;outline:none;font-family:'Nunito',sans-serif;font-size:15px;color:var(--text);background:transparent;}
-  .search-box input::placeholder{color:#bbb;}
-  .search-clear{background:none;border:none;cursor:pointer;font-size:18px;color:#bbb;padding:0 4px;display:none;transition:color 0.15s;}
-  .search-clear:hover{color:var(--primary);}
-  .search-clear.show{display:block;}
-  .search-results-info{font-size:13px;color:var(--muted);margin:12px 0 0;font-weight:600;}
-  .search-results-info span{color:var(--primary);}
-  .no-results{text-align:center;padding:60px 0;color:var(--muted);}
-  .no-results .big{font-size:56px;display:block;margin-bottom:12px;}
-  @media(max-width:480px){
-    #cart-panel{width:100%;}
-    .hero h2{font-size:24px;}
-    .products-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
-    .field-row,.field-row.three{grid-template-columns:1fr;}
-  }
+/* ── COLOR TICK in admin add form ── */
+.color-tick-section{background:#f8f9fa;border-radius:12px;padding:12px 14px;margin-bottom:8px;}
+.color-tick-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;}
+.color-tick-grid{display:flex;flex-wrap:wrap;gap:8px;}
+.color-tick-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;user-select:none;}
+.color-tick-item input[type=checkbox]{display:none;}
+.color-tick-dot{width:32px;height:32px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,.18);transition:box-shadow 0.15s,transform 0.15s;position:relative;}
+.color-tick-item input:checked + .color-tick-dot{box-shadow:0 0 0 3px var(--primary),0 2px 8px rgba(0,0,0,.2);transform:scale(1.1);}
+.color-tick-item input:checked + .color-tick-dot::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:900;text-shadow:0 1px 2px rgba(0,0,0,.6);}
+.color-tick-name{font-size:10px;font-weight:700;color:var(--dark);text-align:center;}
+
+.btn-add-product{width:100%;padding:12px;background:linear-gradient(135deg,var(--primary),#FF8C42);color:white;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;}
+.product-list-admin{display:flex;flex-direction:column;gap:8px;}
+.pla-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f8f9fa;border-radius:12px;}
+.pla-thumb{width:40px;height:40px;border-radius:8px;overflow:hidden;background:#fff3e0;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.pla-thumb img{width:100%;height:100%;object-fit:cover;}
+.pla-info{flex:1;min-width:0;}
+.pla-name{font-weight:700;font-size:13px;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pla-meta{font-size:11px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
+.pla-cdot{width:10px;height:10px;border-radius:50%;border:1.5px solid white;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+.pla-actions{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.stock-ctrl{display:flex;align-items:center;gap:4px;background:white;border:1.5px solid #eee;border-radius:8px;padding:2px 4px;}
+.stock-ctrl button{background:none;border:none;width:22px;height:22px;cursor:pointer;font-size:14px;font-weight:800;color:var(--dark);display:flex;align-items:center;justify-content:center;}
+.stock-ctrl button:hover{color:var(--primary);}
+.stock-num{font-weight:800;font-size:13px;min-width:24px;text-align:center;}
+.btn-del{background:#fff0f0;border:none;border-radius:8px;padding:6px 10px;color:#FF4757;font-size:13px;cursor:pointer;font-weight:700;}
+.btn-del:hover{background:#FF4757;color:white;}
+.close-admin{background:#f5f5f5;border:none;border-radius:10px;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.upload-img-label{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;border:2px dashed #eee;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;color:var(--muted);background:#fafafa;transition:border-color 0.2s,background 0.2s;}
+.upload-img-label:hover{border-color:var(--primary);background:#fff5f2;color:var(--primary);}
+.upload-img-label.has-img{border-color:var(--accent);background:#f0fdf9;color:#00a86b;}
+.upload-img-thumb{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;}
+
+@media(max-width:480px){
+  #cart-panel{width:100%;}
+  .hero h2{font-size:24px;}
+  .products-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
+  .field-row,.field-row.three{grid-template-columns:1fr;}
+}
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="overlay">
   <div class="login-box">
     <div class="login-badge">🔒 Vui lòng xác nhận thông tin</div>
@@ -322,31 +296,12 @@
   </div>
   <div class="cart-footer">
     <div class="cart-total"><span>Tổng cộng:</span><strong id="cart-total">0đ</strong></div>
-    <textarea class="note-input" id="order-note" placeholder="Ghi chú (địa chỉ, màu sắc...)" rows="2"></textarea>
+    <textarea class="note-input" id="order-note" placeholder="Ghi chú (địa chỉ, yêu cầu...)" rows="2"></textarea>
     <button class="order-btn" id="order-btn" onclick="sendOrder()" disabled>📲 Đặt Hàng</button>
   </div>
 </div>
 
-<!-- COLOR PICKER BOTTOM SHEET -->
-<div id="color-picker-popup">
-  <div class="color-picker-sheet">
-    <div class="cp-handle"></div>
-    <div class="cp-header">
-      <h4 id="cp-title">🎨 Chọn màu</h4>
-      <button class="cp-close" onclick="closeColorPicker()">✕</button>
-    </div>
-    <p class="cp-subtitle" id="cp-subtitle">Bấm vào màu bạn muốn</p>
-    <div class="cp-selected-bar" id="cp-selected-bar">
-      <div class="cp-sel-dot" id="cp-sel-dot"></div>
-      <span class="cp-sel-text" id="cp-sel-text">Đã chọn: —</span>
-    </div>
-    <div class="cp-grid" id="cp-colors"></div>
-    <button class="btn-cp-add" id="btn-cp-add" onclick="confirmColorAdd()" disabled>🛒 Thêm vào giỏ hàng</button>
-    <button class="btn-cp-skip" onclick="addToCartNoColor()">Thêm không chọn màu</button>
-  </div>
-</div>
-
-<!-- SUCCESS / FAIL POPUPS -->
+<!-- SUCCESS POPUP -->
 <div class="popup-overlay" id="popup-success">
   <div class="popup-box">
     <span class="big">🎉</span>
@@ -355,11 +310,13 @@
     <button class="btn-ok" onclick="closePopup('popup-success')">🛍️ Tiếp tục mua sắm</button>
   </div>
 </div>
+
+<!-- FAIL POPUP -->
 <div class="popup-overlay" id="popup-fail">
   <div class="popup-box">
     <span class="big">😔</span>
     <h3>Gửi đơn thất bại!</h3>
-    <p>Không thể kết nối.<br>Có thể do <strong>mạng yếu</strong>.</p>
+    <p>Không thể kết nối. Có thể do <strong>mạng yếu</strong>.</p>
     <div class="fail-actions">
       <button class="btn-retry" onclick="retryOrder()">🔄 Thử lại</button>
       <button class="btn-dismiss" onclick="closePopup('popup-fail')">Đóng</button>
@@ -412,6 +369,11 @@
           <input type="file" id="a-img-file" accept="image/*" style="display:none" onchange="previewUpload(this)">
           <input type="hidden" id="a-img">
         </div>
+        <!-- COLOR TICK -->
+        <div class="color-tick-section">
+          <div class="color-tick-title">🎨 Màu sắc có sẵn (tick để khách chọn)</div>
+          <div class="color-tick-grid" id="color-tick-grid"></div>
+        </div>
         <button class="btn-add-product" onclick="addProduct()">+ Thêm sản phẩm</button>
       </div>
       <div class="admin-section">
@@ -422,152 +384,137 @@
   </div>
 </div>
 
-<!-- COLOR MANAGER (ADMIN) -->
-<div id="color-manager-panel">
-  <div class="cm-box">
-    <div class="cm-head">
-      <h3>🎨 Quản lý màu sắc</h3>
-      <button class="close-admin" onclick="closeColorManager()">✕</button>
-    </div>
-    <div class="cm-body">
-      <div class="cm-product-name" id="cm-product-name">Sản phẩm: —</div>
-      <div class="admin-section-title">Màu hiện có</div>
-      <div class="cm-colors-list" id="cm-colors-list"></div>
-      <div class="cm-add-section">
-        <div class="cm-add-title">➕ Thêm màu mới</div>
-        <div class="cm-add-row">
-          <input type="color" class="cm-color-input" id="cm-color-hex" value="#FF6B35">
-          <input type="text" class="cm-name-input" id="cm-color-name" placeholder="Tên màu (Đỏ, Xanh navy...)">
-          <button class="btn-cm-add" onclick="addColorToProduct()">+ Thêm</button>
-        </div>
-      </div>
-      <button class="btn-cm-done" onclick="closeColorManager()">✅ Xong</button>
-    </div>
-  </div>
-</div>
-
 <script>
 const BOT_TOKEN  = '8516807175:AAEx_VZh_dl_ECiMjeicNctmgUA4qCNE7vc';
 const CHAT_ID    = '5252076816';
 const ADMIN_PASS = 'admin123';
 
 firebase.initializeApp({
-  apiKey: "AIzaSyDMkQeQJ71_vLzxLlkAAUz6Cfil-6rDmF4",
-  authDomain: "mshuong-bb209.firebaseapp.com",
-  databaseURL: "https://mshuong-bb209-default-rtdb.firebaseio.com",
-  projectId: "mshuong-bb209",
-  storageBucket: "mshuong-bb209.firebasestorage.app",
-  messagingSenderId: "86617226447",
-  appId: "1:86617226447:web:fc73ed98948d4a63c00bba"
+  apiKey:"AIzaSyDMkQeQJ71_vLzxLlkAAUz6Cfil-6rDmF4",
+  authDomain:"mshuong-bb209.firebaseapp.com",
+  databaseURL:"https://mshuong-bb209-default-rtdb.firebaseio.com",
+  projectId:"mshuong-bb209",
+  storageBucket:"mshuong-bb209.firebasestorage.app",
+  messagingSenderId:"86617226447",
+  appId:"1:86617226447:web:fc73ed98948d4a63c00bba"
 });
 const db = firebase.database();
 
+// ── 7 màu cơ bản ─────────────────────────────────────────────────
+const BASE_COLORS = [
+  { key:'do',    hex:'#E53935', name:'Đỏ'      },
+  { key:'cam',   hex:'#FB8C00', name:'Cam'     },
+  { key:'vang',  hex:'#FDD835', name:'Vàng'    },
+  { key:'xanhla',hex:'#43A047', name:'Xanh lá' },
+  { key:'xanhduong',hex:'#1E88E5',name:'Xanh dương'},
+  { key:'tim',   hex:'#8E24AA', name:'Tím'     },
+  { key:'hong',  hex:'#E91E63', name:'Hồng'    },
+];
+
 const DEFAULT_PRODUCTS = [
-  { id:1,  name:'Bút bi Thiên Long TL-027',       price:5000,  unit:'cái',   emoji:'🖊️', cat:'Bút & Viết',      stock:50, image:'https://nguyengiaphat.com.vn/wp-content/uploads/2021/09/but-bi-thien-long-tl-027.jpg', colors:[] },
-  { id:2,  name:'Bút chì 2B Staedtler',            price:8000,  unit:'cái',   emoji:'✏️', cat:'Bút & Viết',      stock:30, image:null, colors:[] },
-  { id:3,  name:'Bút màu Faber-Castell 12 màu',    price:45000, unit:'hộp',   emoji:'🖍️', cat:'Bút & Viết',      stock:20, image:null, colors:[] },
-  { id:4,  name:'Bút mực Hồng Hà nét thanh',       price:12000, unit:'cái',   emoji:'🖋️', cat:'Bút & Viết',      stock:40, image:null, colors:[{hex:'#1565C0',name:'Xanh dương'},{hex:'#C62828',name:'Đỏ'},{hex:'#000000',name:'Đen'},{hex:'#6A1B9A',name:'Tím'}] },
-  { id:5,  name:'Vở 200 trang Ánh Dương kẻ ngang', price:18000, unit:'quyển', emoji:'📓', cat:'Vở & Sổ',         stock:25, image:null, colors:[{hex:'#E53935',name:'Đỏ'},{hex:'#1E88E5',name:'Xanh'},{hex:'#43A047',name:'Xanh lá'},{hex:'#FFB300',name:'Vàng'},{hex:'#E91E63',name:'Hồng'}] },
-  { id:6,  name:'Vở 100 trang Oxford ô li',         price:12000, unit:'quyển', emoji:'📔', cat:'Vở & Sổ',         stock:35, image:null, colors:[{hex:'#1565C0',name:'Xanh navy'},{hex:'#C62828',name:'Đỏ đô'},{hex:'#2E7D32',name:'Xanh rêu'}] },
-  { id:7,  name:'Sổ tay bìa cứng A5',               price:35000, unit:'quyển', emoji:'📒', cat:'Vở & Sổ',         stock:15, image:null, colors:[] },
-  { id:8,  name:'Tập bìa nhựa A4 10 tờ',            price:22000, unit:'bộ',    emoji:'📋', cat:'Vở & Sổ',         stock:20, image:null, colors:[{hex:'#1565C0',name:'Xanh'},{hex:'#C62828',name:'Đỏ'},{hex:'#000000',name:'Đen'},{hex:'#F9A825',name:'Vàng'}] },
-  { id:9,  name:'Thước kẻ 30cm Điền Phú',           price:7000,  unit:'cái',   emoji:'📐', cat:'Dụng cụ học tập', stock:45, image:null, colors:[{hex:'#29B6F6',name:'Xanh nhạt'},{hex:'#EF5350',name:'Đỏ'},{hex:'#66BB6A',name:'Xanh lá'}] },
-  { id:10, name:'Thước đo độ + êke bộ 3',           price:15000, unit:'bộ',    emoji:'📏', cat:'Dụng cụ học tập', stock:20, image:null, colors:[] },
-  { id:11, name:'Kéo học sinh cán nhựa',             price:20000, unit:'cái',   emoji:'✂️', cat:'Dụng cụ học tập', stock:18, image:null, colors:[{hex:'#E53935',name:'Đỏ'},{hex:'#1E88E5',name:'Xanh'},{hex:'#43A047',name:'Xanh lá'},{hex:'#FDD835',name:'Vàng'},{hex:'#FB8C00',name:'Cam'}] },
-  { id:12, name:'Bìa kẹp tài liệu A4',              price:25000, unit:'cái',   emoji:'🗂️', cat:'Dụng cụ học tập', stock:22, image:null, colors:[] },
+  {id:1, name:'Bút bi Thiên Long TL-027',       price:5000,  unit:'cái',   emoji:'🖊️',cat:'Bút & Viết',      stock:50,image:'https://nguyengiaphat.com.vn/wp-content/uploads/2021/09/but-bi-thien-long-tl-027.jpg',colors:['do','xanhduong','den']},
+  {id:2, name:'Bút chì 2B Staedtler',            price:8000,  unit:'cái',   emoji:'✏️',cat:'Bút & Viết',      stock:30,image:null,colors:[]},
+  {id:3, name:'Bút màu Faber-Castell 12 màu',    price:45000, unit:'hộp',   emoji:'🖍️',cat:'Bút & Viết',      stock:20,image:null,colors:[]},
+  {id:4, name:'Bút mực Hồng Hà nét thanh',       price:12000, unit:'cái',   emoji:'🖋️',cat:'Bút & Viết',      stock:40,image:null,colors:['do','xanhduong','tim']},
+  {id:5, name:'Vở 200 trang Ánh Dương kẻ ngang', price:18000, unit:'quyển', emoji:'📓',cat:'Vở & Sổ',         stock:25,image:null,colors:['do','xanhduong','xanhla','vang','hong']},
+  {id:6, name:'Vở 100 trang Oxford ô li',         price:12000, unit:'quyển', emoji:'📔',cat:'Vở & Sổ',         stock:35,image:null,colors:['do','xanhduong','xanhla']},
+  {id:7, name:'Sổ tay bìa cứng A5',               price:35000, unit:'quyển', emoji:'📒',cat:'Vở & Sổ',         stock:15,image:null,colors:[]},
+  {id:8, name:'Tập bìa nhựa A4 10 tờ',            price:22000, unit:'bộ',    emoji:'📋',cat:'Vở & Sổ',         stock:20,image:null,colors:['do','xanhduong','vang']},
+  {id:9, name:'Thước kẻ 30cm Điền Phú',           price:7000,  unit:'cái',   emoji:'📐',cat:'Dụng cụ học tập', stock:45,image:null,colors:['xanhduong','do','xanhla']},
+  {id:10,name:'Thước đo độ + êke bộ 3',           price:15000, unit:'bộ',    emoji:'📏',cat:'Dụng cụ học tập', stock:20,image:null,colors:[]},
+  {id:11,name:'Kéo học sinh cán nhựa',             price:20000, unit:'cái',   emoji:'✂️',cat:'Dụng cụ học tập', stock:18,image:null,colors:['do','xanhduong','xanhla','vang','cam']},
+  {id:12,name:'Bìa kẹp tài liệu A4',              price:25000, unit:'cái',   emoji:'🗂️',cat:'Dụng cụ học tập', stock:22,image:null,colors:[]},
 ];
 
 const CATEGORIES = [
-  { key:'Bút & Viết',      icon:'✏️' },
-  { key:'Vở & Sổ',         icon:'📓' },
-  { key:'Dụng cụ học tập', icon:'📐' },
-  { key:'HOT TREND',       icon:'🔥' },
+  {key:'Bút & Viết',      icon:'✏️'},
+  {key:'Vở & Sổ',         icon:'📓'},
+  {key:'Dụng cụ học tập', icon:'📐'},
+  {key:'HOT TREND',       icon:'🔥'},
 ];
 
 let products = [];
 let searchQuery = '';
-let customer = { name:'', phone:'' };
+let customer = {name:'',phone:''};
+// cart: { productId: { ...product, qty, selectedColor: key|null } }
 let cart = {};
 let lastMsg = '';
 let isAdminMode = false;
-let cpProductId = null;
-let cpSelectedColor = null;
-let cmProductId = null;
 
-// ─── Firebase ────────────────────────────────────────────────────
+// ── Build color tick grid in admin ────────────────────────────────
+function buildColorTickGrid() {
+  const grid = document.getElementById('color-tick-grid');
+  grid.innerHTML = BASE_COLORS.map(c => `
+    <label class="color-tick-item" title="${c.name}">
+      <input type="checkbox" name="color-tick" value="${c.key}">
+      <div class="color-tick-dot" style="background:${c.hex}"></div>
+      <span class="color-tick-name">${c.name}</span>
+    </label>`).join('');
+}
+buildColorTickGrid();
+
+// ── Firebase ──────────────────────────────────────────────────────
 db.ref('products').on('value', snap => {
   const data = snap.val();
   if (data) {
     products = Object.values(data).sort((a,b) => a.id - b.id);
     products.forEach(p => { if (!p.colors) p.colors = []; });
   } else {
-    DEFAULT_PRODUCTS.forEach(p => db.ref('products/' + p.id).set(p));
+    DEFAULT_PRODUCTS.forEach(p => db.ref('products/'+p.id).set(p));
     products = DEFAULT_PRODUCTS.map(p => ({...p}));
   }
   renderShop();
   if (document.getElementById('admin-panel').classList.contains('show')) renderAdminList();
-  if (cmProductId) {
-    const p = products.find(x => x.id === cmProductId);
-    if (p) renderColorManagerList(p);
-  }
 });
 
-// ─── Helpers ─────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────
 function imgHtml(p) {
-  if (p.image) return `<img src="${p.image}" alt="${p.name}" onerror="this.outerHTML='<span>${p.emoji||'📦'}</span>'" />`;
+  if (p.image) return `<img src="${p.image}" alt="${p.name}" onerror="this.outerHTML='<span>${p.emoji||'📦'}</span>'"/>`;
   return `<span>${p.emoji||'📦'}</span>`;
 }
-function stockBadge(stock) {
-  if (stock <= 0)  return `<span class="stock-badge out">🚫 Hết hàng</span>`;
-  if (stock <= 5)  return `<span class="stock-badge low-stock">⚠️ Còn ${stock}</span>`;
-  return `<span class="stock-badge in-stock">✅ Còn ${stock}</span>`;
+function stockBadge(s) {
+  if (s<=0) return `<span class="stock-badge out">🚫 Hết hàng</span>`;
+  if (s<=5) return `<span class="stock-badge low-stock">⚠️ Còn ${s}</span>`;
+  return `<span class="stock-badge in-stock">✅ Còn ${s}</span>`;
 }
-function colorSwatchRow(p) {
-  if (!p.colors || !p.colors.length) return '';
-  const dots = p.colors.slice(0,7).map(c =>
-    `<span class="card-swatch" style="background:${c.hex}" title="${c.name}"></span>`
-  ).join('');
-  const more = p.colors.length > 7 ? `<span class="color-hint">+${p.colors.length-7}</span>` : '';
-  return `<div class="color-swatches-row">${dots}${more}<span class="color-hint" style="margin-left:2px">${p.colors.length} màu</span></div>`;
+// resolve color key → BASE_COLORS object
+function resolveColor(key) {
+  return BASE_COLORS.find(c => c.key === key) || null;
 }
 
-// ─── Search ──────────────────────────────────────────────────────
+// ── Search ────────────────────────────────────────────────────────
 function doSearch(val) {
   searchQuery = val.trim().toLowerCase();
-  document.getElementById('search-clear').classList.toggle('show', val.length > 0);
+  document.getElementById('search-clear').classList.toggle('show', val.length>0);
   renderShop();
 }
 function clearSearch() {
-  searchQuery = '';
-  document.getElementById('search-input').value = '';
+  searchQuery='';
+  document.getElementById('search-input').value='';
   document.getElementById('search-clear').classList.remove('show');
   renderShop();
 }
 
-// ─── Render Shop ─────────────────────────────────────────────────
+// ── Render Shop ───────────────────────────────────────────────────
 function renderShop() {
   const container = document.getElementById('shop-container');
-  let html = '';
   if (isAdminMode) container.classList.add('admin-mode');
   else container.classList.remove('admin-mode');
   const infoEl = document.getElementById('search-info');
-  let totalMatch = 0;
+  let html='', totalMatch=0;
 
   CATEGORIES.forEach(cat => {
-    let items = products.filter(p => p.cat === cat.key);
-    if (searchQuery) {
-      items = items.filter(p =>
-        p.name.toLowerCase().includes(searchQuery) ||
-        p.cat.toLowerCase().includes(searchQuery) ||
-        (p.emoji && p.emoji.includes(searchQuery))
-      );
-    }
+    let items = products.filter(p => p.cat===cat.key);
+    if (searchQuery) items = items.filter(p => p.name.toLowerCase().includes(searchQuery)||p.cat.toLowerCase().includes(searchQuery));
     totalMatch += items.length;
     if (!items.length) return;
     html += `<div class="section-title">${cat.icon} ${cat.key}</div><div class="products-grid">`;
     items.forEach(p => {
-      const oos = p.stock <= 0;
-      const hasColors = p.colors && p.colors.length > 0;
+      const oos = p.stock<=0;
+      const cols = (p.colors||[]).map(k=>resolveColor(k)).filter(Boolean);
+      const swatches = cols.length
+        ? `<div class="card-colors">${cols.map(c=>`<span class="card-swatch" style="background:${c.hex}" title="${c.name}"></span>`).join('')}<span class="card-color-hint">${cols.length} màu</span></div>`
+        : '';
       html += `
       <div class="product-card${oos?' out-of-stock':''}">
         <button class="delete-badge" onclick="deleteProduct(${p.id})">✕</button>
@@ -576,90 +523,87 @@ function renderShop() {
           <div class="product-name">${p.name}</div>
           <div class="product-price">${p.price.toLocaleString('vi-VN')}đ <span class="product-unit">/${p.unit}</span></div>
           ${stockBadge(p.stock)}
-          ${colorSwatchRow(p)}
-          <button class="add-btn${oos?' sold-out':(hasColors?' has-colors':'')}" onclick="handleAddToCart(${p.id})" ${oos?'disabled':''}>
-            ${oos?'🚫 Hết hàng':(hasColors?'🎨 Chọn màu & thêm':'+ Thêm vào giỏ')}
+          ${swatches}
+          <button class="add-btn${oos?' sold-out':''}" onclick="addToCart(${p.id})" ${oos?'disabled':''}>
+            ${oos?'🚫 Hết hàng':'+ Thêm vào giỏ'}
           </button>
         </div>
       </div>`;
     });
     html += `</div>`;
   });
-  if (!products.length) html = `<div style="text-align:center;padding:60px 0;color:var(--muted);font-size:15px">📭 Chưa có sản phẩm nào.</div>`;
-  else if (searchQuery && totalMatch === 0) html = `<div class="no-results"><span class="big">🔍</span>Không tìm thấy "<strong>${searchQuery}</strong>"<br><span style="font-size:13px;margin-top:8px;display:block">Thử tìm từ khoá khác nhé!</span></div>`;
+  if (!products.length) html = `<div style="text-align:center;padding:60px 0;color:var(--muted)">📭 Chưa có sản phẩm nào.</div>`;
+  else if (searchQuery && totalMatch===0) html = `<div class="no-results"><span class="big">🔍</span>Không tìm thấy "<strong>${searchQuery}</strong>"<br><small>Thử từ khoá khác nhé!</small></div>`;
   container.innerHTML = html;
+
   if (infoEl) {
-    infoEl.style.display = (searchQuery && totalMatch > 0) ? 'block' : 'none';
-    if (searchQuery && totalMatch > 0) infoEl.innerHTML = `Tìm thấy <span>${totalMatch} sản phẩm</span> cho "<strong>${searchQuery}</strong>"`;
+    infoEl.style.display = (searchQuery && totalMatch>0) ? 'block' : 'none';
+    if (searchQuery && totalMatch>0) infoEl.innerHTML = `Tìm thấy <span>${totalMatch} sản phẩm</span> cho "<strong>${searchQuery}</strong>"`;
   }
 }
 
-// ─── Login ───────────────────────────────────────────────────────
+// ── Login ─────────────────────────────────────────────────────────
 function doLogin() {
-  const name  = document.getElementById('inp-name').value.trim();
+  const name = document.getElementById('inp-name').value.trim();
   const phone = document.getElementById('inp-phone').value.trim();
-  let ok = true;
-  if (!name) { document.getElementById('inp-name').classList.add('error'); document.getElementById('err-name').classList.add('show'); ok=false; }
-  else { document.getElementById('inp-name').classList.remove('error'); document.getElementById('err-name').classList.remove('show'); }
-  if (!/^0\d{9}$/.test(phone)) { document.getElementById('inp-phone').classList.add('error'); document.getElementById('err-phone').classList.add('show'); ok=false; }
-  else { document.getElementById('inp-phone').classList.remove('error'); document.getElementById('err-phone').classList.remove('show'); }
+  let ok=true;
+  if (!name){document.getElementById('inp-name').classList.add('error');document.getElementById('err-name').classList.add('show');ok=false;}
+  else{document.getElementById('inp-name').classList.remove('error');document.getElementById('err-name').classList.remove('show');}
+  if (!/^0\d{9}$/.test(phone)){document.getElementById('inp-phone').classList.add('error');document.getElementById('err-phone').classList.add('show');ok=false;}
+  else{document.getElementById('inp-phone').classList.remove('error');document.getElementById('err-phone').classList.remove('show');}
   if (!ok) return;
-  customer = { name, phone };
-  document.getElementById('user-chip').textContent = '👤 ' + name;
+  customer={name,phone};
+  document.getElementById('user-chip').textContent='👤 '+name;
   document.getElementById('overlay').classList.add('hide');
 }
-document.getElementById('inp-name').addEventListener('keydown', e => { if(e.key==='Enter') document.getElementById('inp-phone').focus(); });
-document.getElementById('inp-phone').addEventListener('keydown', e => { if(e.key==='Enter') doLogin(); });
+document.getElementById('inp-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inp-phone').focus();});
+document.getElementById('inp-phone').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
 
-// ─── Admin Login ─────────────────────────────────────────────────
-function openAdminLogin() {
-  document.getElementById('admin-panel').classList.remove('show');
-  document.getElementById('pw-input').value = '';
+// ── Admin Login ───────────────────────────────────────────────────
+function openAdminLogin(){
+  document.getElementById('pw-input').value='';
   document.getElementById('pw-error').classList.remove('show');
-  const el = document.getElementById('admin-login');
-  el.style.display=''; el.classList.add('show');
-  setTimeout(() => document.getElementById('pw-input').focus(), 100);
+  const el=document.getElementById('admin-login');
+  el.style.display='';el.classList.add('show');
+  setTimeout(()=>document.getElementById('pw-input').focus(),100);
 }
-function closeAdminLogin() {
-  const el = document.getElementById('admin-login');
-  el.classList.remove('show'); el.style.display='none';
-  setTimeout(() => el.style.display='', 50);
+function closeAdminLogin(){
+  const el=document.getElementById('admin-login');
+  el.classList.remove('show');el.style.display='none';
+  setTimeout(()=>el.style.display='',50);
 }
-function checkAdminPw() {
-  if (document.getElementById('pw-input').value === ADMIN_PASS) {
-    const el = document.getElementById('admin-login');
-    el.classList.remove('show'); el.style.display='none';
-    setTimeout(() => { el.style.display=''; openAdmin(); }, 100);
+function checkAdminPw(){
+  if(document.getElementById('pw-input').value===ADMIN_PASS){
+    const el=document.getElementById('admin-login');
+    el.classList.remove('show');el.style.display='none';
+    setTimeout(()=>{el.style.display='';openAdmin();},100);
   } else {
     document.getElementById('pw-error').classList.add('show');
-    const inp = document.getElementById('pw-input');
+    const inp=document.getElementById('pw-input');
     inp.classList.add('shake');
-    setTimeout(() => inp.classList.remove('shake'), 400);
-    inp.value=''; inp.focus();
+    setTimeout(()=>inp.classList.remove('shake'),400);
+    inp.value='';inp.focus();
   }
 }
-document.getElementById('pw-input').addEventListener('keydown', e => { if(e.key==='Enter') checkAdminPw(); });
+document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='Enter')checkAdminPw();});
 
-// ─── Admin Panel ─────────────────────────────────────────────────
-function openAdmin() { isAdminMode=true; renderShop(); renderAdminList(); document.getElementById('admin-panel').classList.add('show'); }
-function closeAdmin() { isAdminMode=false; renderShop(); document.getElementById('admin-panel').classList.remove('show'); }
+// ── Admin Panel ───────────────────────────────────────────────────
+function openAdmin(){isAdminMode=true;renderShop();renderAdminList();document.getElementById('admin-panel').classList.add('show');}
+function closeAdmin(){isAdminMode=false;renderShop();document.getElementById('admin-panel').classList.remove('show');}
 
-function renderAdminList() {
-  document.getElementById('product-count').textContent = products.length;
-  const el = document.getElementById('product-list-admin');
-  if (!products.length) { el.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có sản phẩm</div>'; return; }
-  el.innerHTML = products.map(p => {
-    const colorCount = (p.colors||[]).length;
-    const dots = (p.colors||[]).slice(0,6).map(c=>`<span class="pla-cdot" style="background:${c.hex}"></span>`).join('');
+function renderAdminList(){
+  document.getElementById('product-count').textContent=products.length;
+  const el=document.getElementById('product-list-admin');
+  if(!products.length){el.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có sản phẩm</div>';return;}
+  el.innerHTML=products.map(p=>{
+    const cols=(p.colors||[]).map(k=>resolveColor(k)).filter(Boolean);
+    const dots=cols.slice(0,7).map(c=>`<span class="pla-cdot" style="background:${c.hex}"></span>`).join('');
     return `
     <div class="pla-item">
       <div class="pla-thumb">${imgHtml(p)}</div>
       <div class="pla-info">
         <div class="pla-name">${p.name}</div>
-        <div class="pla-meta">
-          ${p.price.toLocaleString('vi-VN')}đ/${p.unit} · Còn: ${p.stock}
-          ${colorCount ? `<span class="pla-color-dots">${dots}</span>${colorCount} màu` : '· Chưa có màu'}
-        </div>
+        <div class="pla-meta">${p.price.toLocaleString('vi-VN')}đ/${p.unit} · Còn: ${p.stock} ${dots} ${cols.length?cols.length+' màu':'· Không có màu'}</div>
       </div>
       <div class="pla-actions">
         <div class="stock-ctrl">
@@ -667,222 +611,147 @@ function renderAdminList() {
           <span class="stock-num">${p.stock}</span>
           <button onclick="updateStock(${p.id},+1)">+</button>
         </div>
-        <button class="btn-color-mgr" onclick="openColorManager(${p.id})" title="Quản lý màu">🎨</button>
         <button class="btn-del" onclick="deleteProduct(${p.id})">🗑️</button>
       </div>
     </div>`;
   }).join('');
 }
 
-function updateStock(id, delta) {
-  const p = products.find(x => x.id === id);
-  if (!p) return;
+function updateStock(id,delta){
+  const p=products.find(x=>x.id===id);
+  if(!p) return;
   db.ref('products/'+id+'/stock').set(Math.max(0,(p.stock||0)+delta));
 }
 
-function addProduct() {
-  const name  = document.getElementById('a-name').value.trim();
-  const price = parseInt(document.getElementById('a-price').value);
-  const unit  = document.getElementById('a-unit').value.trim();
-  const stock = parseInt(document.getElementById('a-stock').value)||0;
-  const emoji = document.getElementById('a-emoji').value.trim()||'📦';
-  const cat   = document.getElementById('a-cat').value;
-  const image = document.getElementById('a-img').value||null;
-  if (!name||!price||!unit) { alert('Vui lòng điền đầy đủ: Tên, Giá, Đơn vị!'); return; }
-  const newId = Date.now();
-  db.ref('products/'+newId).set({id:newId,name,price,unit,stock,emoji,cat,image,colors:[]});
-  ['a-name','a-price','a-unit','a-stock','a-emoji','a-img'].forEach(id=>document.getElementById(id).value='');
+function addProduct(){
+  const name=document.getElementById('a-name').value.trim();
+  const price=parseInt(document.getElementById('a-price').value);
+  const unit=document.getElementById('a-unit').value.trim();
+  const stock=parseInt(document.getElementById('a-stock').value)||0;
+  const emoji=document.getElementById('a-emoji').value.trim()||'📦';
+  const cat=document.getElementById('a-cat').value;
+  const image=document.getElementById('a-img').value||null;
+  if(!name||!price||!unit){alert('Vui lòng điền đầy đủ: Tên, Giá, Đơn vị!');return;}
+  // collect ticked colors
+  const ticked=[...document.querySelectorAll('#color-tick-grid input[type=checkbox]:checked')].map(cb=>cb.value);
+  const newId=Date.now();
+  db.ref('products/'+newId).set({id:newId,name,price,unit,stock,emoji,cat,image,colors:ticked});
+  // reset form
+  ['a-name','a-price','a-unit','a-emoji','a-img'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('a-stock').value='10';
   document.getElementById('a-img-file').value='';
+  document.querySelectorAll('#color-tick-grid input[type=checkbox]').forEach(cb=>cb.checked=false);
   const lbl=document.getElementById('upload-label');
   lbl.innerHTML='📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
   lbl.classList.remove('has-img');
-  document.getElementById('a-stock').value='10';
 }
 
-function deleteProduct(id) {
-  if (!confirm('Xoá sản phẩm này?')) return;
+function deleteProduct(id){
+  if(!confirm('Xoá sản phẩm này?')) return;
   db.ref('products/'+id).remove();
-  Object.keys(cart).filter(k=>k.startsWith(id+'_')).forEach(k=>delete cart[k]);
-  renderCart();
+  if(cart[id]) {delete cart[id]; renderCart();}
 }
 
-// ─── Color Manager (Admin) ────────────────────────────────────────
-function openColorManager(productId) {
-  cmProductId = productId;
-  const p = products.find(x => x.id === productId);
-  if (!p) return;
-  document.getElementById('cm-product-name').textContent = '📦 ' + p.name;
-  renderColorManagerList(p);
-  document.getElementById('color-manager-panel').classList.add('show');
-}
-function closeColorManager() {
-  document.getElementById('color-manager-panel').classList.remove('show');
-  cmProductId = null;
-}
-function renderColorManagerList(p) {
-  const el = document.getElementById('cm-colors-list');
-  const colors = p.colors||[];
-  if (!colors.length) {
-    el.innerHTML = '<div class="cm-empty">Chưa có màu nào. Thêm màu phía dưới!</div>';
-    return;
-  }
-  el.innerHTML = colors.map((c,i) => `
-    <div class="cm-color-row">
-      <div class="cm-dot" style="background:${c.hex}"></div>
-      <div class="cm-color-info">
-        <div class="cm-color-name">${c.name}</div>
-        <div class="cm-color-hex">${c.hex}</div>
-      </div>
-      <button class="cm-del-color" onclick="removeColorFromProduct(${i})">✕ Xoá</button>
-    </div>`).join('');
-}
-function addColorToProduct() {
-  const hex  = document.getElementById('cm-color-hex').value;
-  const name = document.getElementById('cm-color-name').value.trim();
-  if (!name) { alert('Vui lòng nhập tên màu!'); return; }
-  const p = products.find(x => x.id === cmProductId);
-  if (!p) return;
-  const colors = [...(p.colors||[])];
-  if (colors.find(c=>c.name===name)) { alert('Màu này đã có rồi!'); return; }
-  colors.push({hex,name});
-  db.ref('products/'+cmProductId+'/colors').set(colors);
-  document.getElementById('cm-color-name').value='';
-}
-function removeColorFromProduct(index) {
-  const p = products.find(x => x.id === cmProductId);
-  if (!p) return;
-  const colors = [...(p.colors||[])];
-  colors.splice(index,1);
-  db.ref('products/'+cmProductId+'/colors').set(colors);
-}
-
-// ─── Color Picker (Customer) ──────────────────────────────────────
-function handleAddToCart(productId) {
-  const p = products.find(x => x.id === productId);
-  if (!p || p.stock <= 0) return;
-  if (p.colors && p.colors.length > 0) {
-    openColorPicker(productId);
+// ── Cart ──────────────────────────────────────────────────────────
+function addToCart(id){
+  const p=products.find(x=>x.id===id);
+  if(!p||p.stock<=0) return;
+  if(cart[id]){
+    if(cart[id].qty>=p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
+    cart[id].qty++;
   } else {
-    addToCartDirect(productId, null);
+    cart[id]={...p,qty:1,selectedColor:null};
   }
-}
-function openColorPicker(productId) {
-  const p = products.find(x => x.id === productId);
-  if (!p) return;
-  cpProductId = productId;
-  cpSelectedColor = null;
-  document.getElementById('cp-title').textContent = p.name;
-  document.getElementById('cp-subtitle').textContent = 'Bấm vào màu bạn muốn 👇';
-  document.getElementById('cp-selected-bar').classList.remove('show');
-  document.getElementById('btn-cp-add').disabled = true;
-  renderColorPickerOptions(p.colors);
-  document.getElementById('color-picker-popup').classList.add('show');
-}
-function renderColorPickerOptions(colors) {
-  const el = document.getElementById('cp-colors');
-  if (!colors||!colors.length) { el.innerHTML='<div style="color:var(--muted);font-size:13px;padding:8px">Chưa có màu.</div>'; return; }
-  el.innerHTML = colors.map((c,i) => `
-    <div class="cp-color-btn" id="cp-btn-${i}" onclick="selectColor(${i})">
-      <div class="cp-dot" style="background:${c.hex}"></div>
-      <span class="cp-label">${c.name}</span>
-    </div>`).join('');
-}
-function selectColor(index) {
-  const p = products.find(x => x.id === cpProductId);
-  if (!p) return;
-  cpSelectedColor = p.colors[index];
-  document.querySelectorAll('.cp-color-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById('cp-btn-'+index).classList.add('active');
-  document.getElementById('btn-cp-add').disabled = false;
-  // Show selected bar
-  const bar = document.getElementById('cp-selected-bar');
-  document.getElementById('cp-sel-dot').style.background = cpSelectedColor.hex;
-  document.getElementById('cp-sel-text').textContent = 'Đã chọn: ' + cpSelectedColor.name;
-  bar.classList.add('show');
-}
-function closeColorPicker() {
-  document.getElementById('color-picker-popup').classList.remove('show');
-  cpProductId = null; cpSelectedColor = null;
-}
-function confirmColorAdd() {
-  if (!cpProductId) return;
-  addToCartDirect(cpProductId, cpSelectedColor);
-  closeColorPicker();
-}
-function addToCartNoColor() {
-  if (!cpProductId) return;
-  addToCartDirect(cpProductId, null);
-  closeColorPicker();
-}
-
-// ─── Cart ────────────────────────────────────────────────────────
-function cartKey(productId, color) {
-  return color ? productId+'_'+color.name : productId+'_none';
-}
-function addToCartDirect(productId, color) {
-  const p = products.find(x => x.id === productId);
-  if (!p || p.stock <= 0) return;
-  const key = cartKey(productId, color);
-  const totalInCart = Object.keys(cart).filter(k=>k.startsWith(productId+'_')).reduce((s,k)=>s+cart[k].qty,0);
-  if (totalInCart >= p.stock) { alert(`Chỉ còn ${p.stock} sản phẩm!`); return; }
-  if (cart[key]) { cart[key].qty++; }
-  else { cart[key] = {...p, qty:1, selectedColor: color||null}; }
   renderCart();
-  const b = document.querySelector('.cart-btn');
+  // bounce
+  const b=document.querySelector('.cart-btn');
   b.style.transform='scale(1.15)';
   setTimeout(()=>b.style.transform='',150);
+  // open cart
+  document.getElementById('cart-panel').classList.add('open');
 }
-function changeQty(key, d) {
-  if (!cart[key]) return;
-  const p = products.find(x => x.id === cart[key].id);
-  if (d > 0 && p) {
-    const totalInCart = Object.keys(cart).filter(k=>k.startsWith(cart[key].id+'_')).reduce((s,k)=>s+cart[k].qty,0);
-    if (totalInCart >= p.stock) { alert(`Chỉ còn ${p.stock} sản phẩm!`); return; }
-  }
-  cart[key].qty += d;
-  if (cart[key].qty <= 0) delete cart[key];
+
+function pickColor(productId, colorKey){
+  if(!cart[productId]) return;
+  cart[productId].selectedColor = colorKey;
   renderCart();
 }
-function renderCart() {
-  const entries = Object.entries(cart);
-  const total = entries.reduce((s,[,i])=>s+i.price*i.qty,0);
-  document.getElementById('cart-count').textContent = entries.reduce((s,[,i])=>s+i.qty,0);
-  document.getElementById('cart-total').textContent = total.toLocaleString('vi-VN')+'đ';
-  document.getElementById('order-btn').disabled = entries.length===0;
-  const el = document.getElementById('cart-items');
-  if (!entries.length) { el.innerHTML=`<div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>`; return; }
-  el.innerHTML = entries.map(([key,i]) => {
-    const colorDot = i.selectedColor ? `<div class="ci-color-dot" style="background:${i.selectedColor.hex}"></div>` : '';
-    const colorTag = i.selectedColor ? `<span class="ci-color-tag" style="background:${i.selectedColor.hex}">${i.selectedColor.name}</span>` : '';
+
+function changeQty(id,d){
+  if(!cart[id]) return;
+  const p=products.find(x=>x.id===id);
+  const newQty=cart[id].qty+d;
+  if(d>0&&p&&newQty>p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
+  cart[id].qty=newQty;
+  if(cart[id].qty<=0) delete cart[id];
+  renderCart();
+}
+
+function renderCart(){
+  const entries=Object.entries(cart);
+  const total=entries.reduce((s,[,i])=>s+i.price*i.qty,0);
+  document.getElementById('cart-count').textContent=entries.reduce((s,[,i])=>s+i.qty,0);
+  document.getElementById('cart-total').textContent=total.toLocaleString('vi-VN')+'đ';
+  document.getElementById('order-btn').disabled=entries.length===0;
+  const el=document.getElementById('cart-items');
+  if(!entries.length){
+    el.innerHTML=`<div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>`;
+    return;
+  }
+
+  el.innerHTML=entries.map(([id,item])=>{
+    const cols=(item.colors||[]).map(k=>resolveColor(k)).filter(Boolean);
+    // color picker row – only if product has colors
+    let colorRow='';
+    if(cols.length){
+      const swatchBtns=cols.map(c=>{
+        const picked=item.selectedColor===c.key;
+        return `<span class="ci-color-swatch${picked?' picked':''}" style="background:${c.hex}" title="${c.name}" onclick="pickColor(${id},'${c.key}')"></span>`;
+      }).join('');
+      const pickedObj=item.selectedColor?resolveColor(item.selectedColor):null;
+      const pickedLine=pickedObj
+        ?`<div class="ci-picked-name"><span class="ci-picked-dot" style="background:${pickedObj.hex}"></span>Đã chọn: ${pickedObj.name}</div>`
+        :`<div class="ci-picked-name" style="color:var(--muted);font-weight:600">← Bấm chọn màu</div>`;
+      colorRow=`
+      <div class="ci-color-row">
+        <div class="ci-color-label">🎨 Chọn màu</div>
+        <div class="ci-color-options">${swatchBtns}</div>
+        ${pickedLine}
+      </div>`;
+    }
     return `
     <div class="cart-item">
-      <div class="ci-thumb">${imgHtml(i)}${colorDot}</div>
-      <div class="ci-info">
-        <div class="ci-name">${i.name}</div>
-        ${colorTag}
-        <div class="ci-price">${(i.price*i.qty).toLocaleString('vi-VN')}đ</div>
+      <div class="ci-top">
+        <div class="ci-thumb">${imgHtml(item)}</div>
+        <div class="ci-info">
+          <div class="ci-name">${item.name}</div>
+          <div class="ci-price">${(item.price*item.qty).toLocaleString('vi-VN')}đ</div>
+        </div>
+        <div class="ci-qty">
+          <button class="qty-btn" onclick="changeQty(${id},-1)">−</button>
+          <span class="qty-num">${item.qty}</span>
+          <button class="qty-btn" onclick="changeQty(${id},+1)">+</button>
+        </div>
       </div>
-      <div class="ci-qty">
-        <button class="qty-btn" onclick="changeQty('${key}',-1)">−</button>
-        <span class="qty-num">${i.qty}</span>
-        <button class="qty-btn" onclick="changeQty('${key}',+1)">+</button>
-      </div>
+      ${colorRow}
     </div>`;
   }).join('');
 }
-function toggleCart() { document.getElementById('cart-panel').classList.toggle('open'); }
 
-// ─── Order ───────────────────────────────────────────────────────
-function sendOrder() {
-  const items = Object.values(cart);
-  if (!items.length) return;
-  const note  = document.getElementById('order-note').value;
-  const total = items.reduce((s,i)=>s+i.price*i.qty,0);
-  const list  = items.map(i => {
-    const colorStr = i.selectedColor ? ` [Màu: ${i.selectedColor.name}]` : '';
-    return `  • ${i.emoji} ${i.name}${colorStr} x${i.qty} = ${(i.price*i.qty).toLocaleString('vi-VN')}đ`;
+function toggleCart(){document.getElementById('cart-panel').classList.toggle('open');}
+
+// ── Order ─────────────────────────────────────────────────────────
+function sendOrder(){
+  const items=Object.values(cart);
+  if(!items.length) return;
+  const note=document.getElementById('order-note').value;
+  const total=items.reduce((s,i)=>s+i.price*i.qty,0);
+  const list=items.map(i=>{
+    const colObj=i.selectedColor?resolveColor(i.selectedColor):null;
+    const colStr=colObj?` [Màu: ${colObj.name}]`:(i.colors&&i.colors.length?' [Màu: chưa chọn]':'');
+    return `  • ${i.emoji} ${i.name}${colStr} x${i.qty} = ${(i.price*i.qty).toLocaleString('vi-VN')}đ`;
   }).join('\n');
-  lastMsg =
+  lastMsg=
 `🛒 ĐƠN HÀNG MỚI – MsHuongShop
 ━━━━━━━━━━━━━━━━━━━
 👤 Khách hàng: ${customer.name}
@@ -897,12 +766,12 @@ ${list}
 ⏰ ${new Date().toLocaleString('vi-VN')}`;
   doSend(lastMsg);
 }
-function retryOrder() { closePopup('popup-fail'); if (lastMsg) doSend(lastMsg); }
-function doSend(msg) {
-  const btn = document.getElementById('order-btn');
-  btn.disabled=true; btn.textContent='⏳ Đang gửi...';
-  const params = new URLSearchParams({chat_id:CHAT_ID, text:msg});
-  const xhr = new XMLHttpRequest();
+function retryOrder(){closePopup('popup-fail');if(lastMsg)doSend(lastMsg);}
+function doSend(msg){
+  const btn=document.getElementById('order-btn');
+  btn.disabled=true;btn.textContent='⏳ Đang gửi...';
+  const params=new URLSearchParams({chat_id:CHAT_ID,text:msg});
+  const xhr=new XMLHttpRequest();
   xhr.open('GET',`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage?${params}`,true);
   xhr.timeout=5000;
   function resetBtn(){btn.disabled=false;btn.innerHTML='📲 Đặt Hàng';}
@@ -914,23 +783,23 @@ function doSend(msg) {
   xhr.onerror=xhr.ontimeout=function(){resetBtn();document.getElementById('popup-fail').classList.add('show');};
   xhr.send();
 }
-function showSuccess() {
+function showSuccess(){
   Object.values(cart).forEach(item=>{
     const p=products.find(x=>x.id===item.id);
     if(p) db.ref('products/'+item.id+'/stock').set(Math.max(0,p.stock-item.qty));
   });
   document.getElementById('confirm-phone').textContent=customer.phone;
   document.getElementById('popup-success').classList.add('show');
-  cart={}; renderCart();
+  cart={};renderCart();
   document.getElementById('order-note').value='';
   lastMsg='';
 }
 
-// ─── Image Upload ─────────────────────────────────────────────────
-function previewUpload(input) {
+// ── Image Upload ──────────────────────────────────────────────────
+function previewUpload(input){
   const file=input.files[0];
-  if (!file) return;
-  if (file.size>2*1024*1024) { alert('Ảnh quá lớn! Vui lòng chọn ảnh dưới 2MB.'); input.value=''; return; }
+  if(!file) return;
+  if(file.size>2*1024*1024){alert('Ảnh quá lớn! Vui lòng chọn ảnh dưới 2MB.');input.value='';return;}
   const reader=new FileReader();
   reader.onload=function(e){
     const b64=e.target.result;
@@ -941,7 +810,7 @@ function previewUpload(input) {
   };
   reader.readAsDataURL(file);
 }
-function clearImg(e) {
+function clearImg(e){
   e.stopPropagation();
   document.getElementById('a-img').value='';
   document.getElementById('a-img-file').value='';
@@ -949,12 +818,7 @@ function clearImg(e) {
   lbl.innerHTML='📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
   lbl.classList.remove('has-img');
 }
-function closePopup(id){ document.getElementById(id).classList.remove('show'); }
-
-// Close color picker on backdrop click
-document.getElementById('color-picker-popup').addEventListener('click',function(e){
-  if(e.target===this) closeColorPicker();
-});
+function closePopup(id){document.getElementById(id).classList.remove('show');}
 </script>
 </body>
 </html>
