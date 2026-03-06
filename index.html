@@ -373,6 +373,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
       </div>
     </div>
     <div class="cpm-body">
+      <div id="cpm-stock-note" style="margin-bottom:6px;min-height:18px"></div>
       <div class="cpm-label">🎨 Chọn màu sắc</div>
       <div class="cpm-colors" id="cpm-colors"></div>
       <div class="cpm-selected-bar" id="cpm-sel-bar">
@@ -728,6 +729,11 @@ let cpm = { productId:null, selectedColor:null, qty:1 };
 function openCPM(productId){
   const p = products.find(x=>x.id===productId);
   if(!p||p.stock<=0) return;
+
+  const alreadyIn = totalInCart(productId);
+  const available = p.stock - alreadyIn;
+  if(available <= 0){ alert(`Bạn đã thêm đủ số lượng còn lại (${p.stock})!`); return; }
+
   cpm.productId = productId;
   cpm.selectedColor = null;
   cpm.qty = 1;
@@ -753,11 +759,15 @@ function openCPM(productId){
       <span class="cpm-color-name">${c.name}</span>
     </div>`).join('');
 
-  // Reset state
+  // Show remaining stock
+  const stockNote = available<=5 ? `<span style="color:var(--primary);font-weight:700;font-size:12px">⚠️ Còn ${available} sản phẩm có thể thêm</span>` : '';
   document.getElementById('cpm-sel-bar').innerHTML = '<span class="cpm-sel-hint">👆 Bấm chọn màu bên trên</span>';
   document.getElementById('cpm-qty').textContent = '1';
   document.getElementById('btn-cpm-add').disabled = true;
   document.getElementById('btn-cpm-add').textContent = '+ Thêm vào giỏ hàng';
+  // inject stock note
+  const stockEl = document.getElementById('cpm-stock-note');
+  if(stockEl) stockEl.innerHTML = stockNote;
 
   document.getElementById('color-picker-modal').classList.add('show');
 }
@@ -779,10 +789,13 @@ function cpmPickColor(colorKey, idx){
 
 function cpmChangeQty(d){
   const p = products.find(x=>x.id===cpm.productId);
-  const maxStock = p ? p.stock : 99;
-  const alreadyIn = totalInCart(cpm.productId);
-  const newQty = Math.max(1, Math.min(cpm.qty + d, maxStock - alreadyIn));
-  if(newQty === cpm.qty) return;
+  if(!p) return;
+  const available = p.stock - totalInCart(cpm.productId); // how many more can be added
+  const newQty = Math.max(1, Math.min(cpm.qty + d, available));
+  if(newQty === cpm.qty){
+    if(d>0) alert(`Chỉ còn ${p.stock} sản phẩm, bạn đã có ${totalInCart(cpm.productId)} trong giỏ!`);
+    return;
+  }
   cpm.qty = newQty;
   document.getElementById('cpm-qty').textContent = cpm.qty;
   if(cpm.selectedColor){
@@ -792,6 +805,15 @@ function cpmChangeQty(d){
 
 function cpmConfirm(){
   if(!cpm.selectedColor||!cpm.productId) return;
+  const p = products.find(x=>x.id===cpm.productId);
+  if(!p) return;
+  const available = p.stock - totalInCart(cpm.productId);
+  if(cpm.qty > available){
+    alert(`Chỉ còn ${p.stock} sản phẩm! Bạn chỉ có thể thêm thêm ${available}.`);
+    cpm.qty = Math.max(1, available);
+    document.getElementById('cpm-qty').textContent = cpm.qty;
+    return;
+  }
   addToCartDirect(cpm.productId, cpm.selectedColor, cpm.qty);
   closeCPM();
   bounceCartBtn();
@@ -816,16 +838,20 @@ function addToCart(productId){
 function addToCartDirect(productId, colorKey, qty){
   const p = products.find(x=>x.id===productId);
   if(!p) return;
+  // Hard cap: total in cart + new qty cannot exceed stock
+  const currentTotal = totalInCart(productId);
+  const allowed = Math.min(qty, p.stock - currentTotal);
+  if(allowed <= 0){ alert(`Chỉ còn ${p.stock} sản phẩm, giỏ đã đủ!`); return; }
   if(colorKey){
     // keyed by color — merge same color
     const key = `${productId}__${colorKey}`;
-    if(cart[key]){ cart[key].qty += qty; }
-    else { cart[key] = {...p, qty, selectedColor:colorKey}; }
+    if(cart[key]){ cart[key].qty += allowed; }
+    else { cart[key] = {...p, qty:allowed, selectedColor:colorKey}; }
   } else {
     // no color — single slot per product
     const existKey = Object.keys(cart).find(k=>cart[k].id===productId);
-    if(existKey){ cart[existKey].qty += qty; }
-    else { const key=makeKey(productId,null); cart[key]={...p,qty,selectedColor:null}; }
+    if(existKey){ cart[existKey].qty = Math.min(cart[existKey].qty + allowed, p.stock); }
+    else { const key=makeKey(productId,null); cart[key]={...p,qty:allowed,selectedColor:null}; }
   }
   renderCart();
 }
