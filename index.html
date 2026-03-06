@@ -86,8 +86,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .stock-badge.out{background:#fff0f0;color:#FF4757;}
 /* mini swatches on card */
 .card-colors{display:flex;align-items:center;gap:4px;margin-top:7px;flex-wrap:wrap;}
-.card-swatch{width:16px;height:16px;border-radius:50%;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.2);}
-.card-color-hint{font-size:11px;color:var(--muted);font-weight:600;}
+
 .add-btn{width:100%;margin-top:8px;padding:9px;background:var(--dark);color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-weight:700;font-size:13px;cursor:pointer;transition:background 0.2s;}
 .add-btn:hover{background:var(--primary);}
 .add-btn:disabled{background:#ddd;color:#999;cursor:not-allowed;}
@@ -122,11 +121,10 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .qty-btn:hover{background:var(--secondary);}
 .qty-num{font-weight:800;font-size:15px;min-width:20px;text-align:center;}
 
-/* ── COLOR TAG on cart item ── */
-.ci-color-tag{display:inline-flex;align-items:center;gap:5px;margin-top:4px;padding:3px 9px 3px 5px;border-radius:100px;font-size:11px;font-weight:700;color:white;}
-.ci-color-tag-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.5);}
+/* ── OPTION TAG on cart item ── */
+.ci-option-tag{display:inline-flex;align-items:center;margin-top:4px;padding:3px 9px;border-radius:100px;font-size:11px;font-weight:700;background:var(--dark);color:white;}
 
-/* ── COLOR PICKER POPUP (TMDT style) ── */
+/* ── OPTION PICKER POPUP ── */
 #color-picker-modal{position:fixed;inset:0;z-index:650;display:none;align-items:flex-end;justify-content:center;}
 #color-picker-modal.show{display:flex;}
 #color-picker-modal .cpm-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.5);animation:fadeInBd 0.2s ease;}
@@ -141,17 +139,12 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .cpm-pprice{color:var(--primary);font-weight:800;font-size:16px;font-family:'Baloo 2',cursive;margin-top:2px;}
 .cpm-body{padding:18px 20px 0;}
 .cpm-label{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
-.cpm-colors{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:6px;}
-.cpm-color-btn{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:8px 10px;border-radius:14px;border:2px solid transparent;transition:border-color 0.15s,background 0.15s;min-width:56px;}
-.cpm-color-btn:hover{background:#f5f5f5;}
-.cpm-color-btn.active{border-color:var(--primary);background:#fff5f2;}
-.cpm-dot{width:38px;height:38px;border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:transform 0.15s,box-shadow 0.15s;}
-.cpm-color-btn.active .cpm-dot{box-shadow:0 0 0 3px var(--primary),0 2px 8px rgba(0,0,0,.15);transform:scale(1.1);}
-.cpm-color-btn.active .cpm-dot::after{content:'';}
-.cpm-dot-check{position:relative;}
-.cpm-color-btn.active .cpm-dot-check::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:900;text-shadow:0 1px 3px rgba(0,0,0,.5);}
+.cpm-options{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:6px;}
+.cpm-option-btn{padding:8px 16px;border-radius:8px;border:1.5px solid #e0e0e0;background:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;color:var(--dark);cursor:pointer;transition:border-color 0.15s,background 0.15s,color 0.15s;white-space:nowrap;}
+.cpm-option-btn:hover{border-color:var(--primary);color:var(--primary);}
+.cpm-option-btn.active{border-color:var(--primary);background:#fff2ec;color:var(--primary);position:relative;}
+.cpm-option-btn.active::after{content:'';position:absolute;bottom:-1px;right:-1px;width:14px;height:14px;background:var(--primary);border-radius:4px 0 8px 0;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'%3E%3Cpath d='M2 6l3 3 5-5' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-size:10px;background-repeat:no-repeat;background-position:center;}
 .cpm-selected-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f8f9fa;border-radius:12px;margin:14px 0 0;min-height:40px;}
-.cpm-sel-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.2);}
 .cpm-sel-text{font-size:13px;font-weight:700;color:var(--dark);}
 .cpm-sel-hint{font-size:13px;color:var(--muted);}
 .cpm-qty-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px;}
@@ -219,16 +212,24 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .a-input:focus{border-color:var(--primary);}
 .a-select{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;background:white;cursor:pointer;}
 
-/* ── COLOR TICK in admin add form ── */
-.color-tick-section{background:#f8f9fa;border-radius:12px;padding:12px 14px;margin-bottom:8px;}
-.color-tick-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;}
-.color-tick-grid{display:flex;flex-wrap:wrap;gap:8px;}
-.color-tick-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;user-select:none;}
-.color-tick-item input[type=checkbox]{display:none;}
-.color-tick-dot{width:32px;height:32px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,.18);transition:box-shadow 0.15s,transform 0.15s;position:relative;}
-.color-tick-item input:checked + .color-tick-dot{box-shadow:0 0 0 3px var(--primary),0 2px 8px rgba(0,0,0,.2);transform:scale(1.1);}
-.color-tick-item input:checked + .color-tick-dot::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:white;font-size:13px;font-weight:900;text-shadow:0 1px 2px rgba(0,0,0,.6);}
-.color-tick-name{font-size:10px;font-weight:700;color:var(--dark);text-align:center;}
+/* ── OPTION TAG INPUT in admin ── */
+.option-tag-section{background:#f8f9fa;border-radius:12px;padding:12px 14px;margin-bottom:8px;}
+.option-tag-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;}
+.option-tag-input-row{display:flex;gap:6px;margin-bottom:8px;}
+.option-tag-input{flex:1;padding:8px 12px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s;background:white;}
+.option-tag-input:focus{border-color:var(--primary);}
+.option-tag-add-btn{padding:8px 14px;background:var(--dark);color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.option-tag-add-btn:hover{background:var(--primary);}
+.option-tags-list{display:flex;flex-wrap:wrap;gap:6px;min-height:20px;}
+.option-tag-chip{display:inline-flex;align-items:center;gap:5px;background:var(--dark);color:white;padding:5px 10px 5px 12px;border-radius:100px;font-size:12px;font-weight:700;}
+.option-tag-chip button{background:rgba(255,255,255,0.2);border:none;color:white;width:16px;height:16px;border-radius:50%;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;padding:0;line-height:1;}
+.option-tag-chip button:hover{background:rgba(255,71,87,0.8);}
+.option-tag-hint{font-size:11px;color:#bbb;margin-top:6px;}
+
+/* ── OPTION PILL in product card ── */
+.card-options{display:flex;align-items:center;gap:4px;margin-top:7px;flex-wrap:wrap;}
+.card-option-pill{font-size:10px;font-weight:700;color:var(--muted);background:#f0f0f0;padding:2px 8px;border-radius:100px;}
+.card-option-more{font-size:10px;color:var(--muted);font-weight:600;}
 
 .btn-add-product{width:100%;padding:12px;background:linear-gradient(135deg,var(--primary),#FF8C42);color:white;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;}
 .product-list-admin{display:flex;flex-direction:column;gap:8px;}
@@ -238,7 +239,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .pla-info{flex:1;min-width:0;}
 .pla-name{font-weight:700;font-size:13px;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
 .pla-meta{font-size:11px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
-.pla-cdot{width:10px;height:10px;border-radius:50%;border:1.5px solid white;box-shadow:0 1px 3px rgba(0,0,0,.2);}
+
 .pla-actions{display:flex;align-items:center;gap:5px;flex-shrink:0;}
 .stock-ctrl{display:flex;align-items:center;gap:4px;background:white;border:1.5px solid #eee;border-radius:8px;padding:2px 4px;}
 .stock-ctrl button{background:none;border:none;width:22px;height:22px;cursor:pointer;font-size:14px;font-weight:800;color:var(--dark);display:flex;align-items:center;justify-content:center;}
@@ -373,8 +374,8 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
     </div>
     <div class="cpm-body">
       <div id="cpm-stock-note" style="margin-bottom:6px;min-height:18px"></div>
-      <div class="cpm-label">🎨 Chọn màu sắc</div>
-      <div class="cpm-colors" id="cpm-colors"></div>
+      <div class="cpm-label" id="cpm-options-label">🏷️ Chọn tuỳ chọn</div>
+      <div class="cpm-options" id="cpm-colors"></div>
       <div class="cpm-selected-bar" id="cpm-sel-bar">
         <span class="cpm-sel-hint">👆 Bấm chọn màu bên trên</span>
       </div>
@@ -437,10 +438,15 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
           <input type="file" id="a-img-file" accept="image/*" style="display:none" onchange="previewUpload(this)">
           <input type="hidden" id="a-img">
         </div>
-        <!-- COLOR TICK -->
-        <div class="color-tick-section">
-          <div class="color-tick-title">🎨 Màu sắc có sẵn (tick để khách chọn)</div>
-          <div class="color-tick-grid" id="color-tick-grid"></div>
+        <!-- OPTION TAG INPUT -->
+        <div class="option-tag-section">
+          <div class="option-tag-title">🏷️ Tuỳ chọn sản phẩm (màu sắc, size, loại...)</div>
+          <div class="option-tag-input-row">
+            <input class="option-tag-input" id="a-option-input" placeholder="VD: Đỏ, Size M, Loại A..." maxlength="30">
+            <button class="option-tag-add-btn" onclick="addOptionTag()">+ Thêm</button>
+          </div>
+          <div class="option-tags-list" id="a-option-tags"></div>
+          <div class="option-tag-hint">Gõ tên option → bấm "+ Thêm" hoặc Enter. Để trống nếu không có lựa chọn.</div>
         </div>
         <button class="btn-add-product" onclick="addProduct()">+ Thêm sản phẩm</button>
       </div>
@@ -468,29 +474,46 @@ firebase.initializeApp({
 });
 const db = firebase.database();
 
-// ── 7 màu cơ bản ─────────────────────────────────────────────────
-const BASE_COLORS = [
-  { key:'do',    hex:'#E53935', name:'Đỏ'      },
-  { key:'cam',   hex:'#FB8C00', name:'Cam'     },
-  { key:'vang',  hex:'#FDD835', name:'Vàng'    },
-  { key:'xanhla',hex:'#43A047', name:'Xanh lá' },
-  { key:'xanhduong',hex:'#1E88E5',name:'Xanh dương'},
-  { key:'tim',   hex:'#8E24AA', name:'Tím'     },
-  { key:'hong',  hex:'#E91E63', name:'Hồng'    },
-];
+// ── Option tags state for admin form ──────────────────────────────
+let adminOptionTags = []; // array of strings
+
+function addOptionTag(){
+  const inp = document.getElementById('a-option-input');
+  const val = inp.value.trim();
+  if(!val) return;
+  if(adminOptionTags.includes(val)){ inp.value=''; return; }
+  adminOptionTags.push(val);
+  renderAdminOptionTags();
+  inp.value='';
+  inp.focus();
+}
+function removeOptionTag(idx){
+  adminOptionTags.splice(idx,1);
+  renderAdminOptionTags();
+}
+function renderAdminOptionTags(){
+  const el = document.getElementById('a-option-tags');
+  el.innerHTML = adminOptionTags.map((t,i)=>
+    `<span class="option-tag-chip">${t}<button onclick="removeOptionTag(${i})">✕</button></span>`
+  ).join('');
+}
+document.addEventListener('DOMContentLoaded', ()=>{
+  const inp = document.getElementById('a-option-input');
+  if(inp) inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault();addOptionTag();} });
+});
 
 const DEFAULT_PRODUCTS = [
-  {id:1, name:'Bút bi Thiên Long TL-027',       price:5000,  unit:'cái',   emoji:'🖊️',cat:'Bút & Viết',      stock:50,image:'https://nguyengiaphat.com.vn/wp-content/uploads/2021/09/but-bi-thien-long-tl-027.jpg',colors:['do','xanhduong','den']},
+  {id:1, name:'Bút bi Thiên Long TL-027',       price:5000,  unit:'cái',   emoji:'🖊️',cat:'Bút & Viết',      stock:50,image:'https://nguyengiaphat.com.vn/wp-content/uploads/2021/09/but-bi-thien-long-tl-027.jpg',colors:['Đỏ','Xanh dương','Đen']},
   {id:2, name:'Bút chì 2B Staedtler',            price:8000,  unit:'cái',   emoji:'✏️',cat:'Bút & Viết',      stock:30,image:null,colors:[]},
   {id:3, name:'Bút màu Faber-Castell 12 màu',    price:45000, unit:'hộp',   emoji:'🖍️',cat:'Bút & Viết',      stock:20,image:null,colors:[]},
-  {id:4, name:'Bút mực Hồng Hà nét thanh',       price:12000, unit:'cái',   emoji:'🖋️',cat:'Bút & Viết',      stock:40,image:null,colors:['do','xanhduong','tim']},
-  {id:5, name:'Vở 200 trang Ánh Dương kẻ ngang', price:18000, unit:'quyển', emoji:'📓',cat:'Vở & Sổ',         stock:25,image:null,colors:['do','xanhduong','xanhla','vang','hong']},
-  {id:6, name:'Vở 100 trang Oxford ô li',         price:12000, unit:'quyển', emoji:'📔',cat:'Vở & Sổ',         stock:35,image:null,colors:['do','xanhduong','xanhla']},
+  {id:4, name:'Bút mực Hồng Hà nét thanh',       price:12000, unit:'cái',   emoji:'🖋️',cat:'Bút & Viết',      stock:40,image:null,colors:['Đỏ','Xanh dương','Tím']},
+  {id:5, name:'Vở 200 trang Ánh Dương kẻ ngang', price:18000, unit:'quyển', emoji:'📓',cat:'Vở & Sổ',         stock:25,image:null,colors:['Đỏ','Xanh dương','Xanh lá','Vàng','Hồng']},
+  {id:6, name:'Vở 100 trang Oxford ô li',         price:12000, unit:'quyển', emoji:'📔',cat:'Vở & Sổ',         stock:35,image:null,colors:['Đỏ','Xanh dương','Xanh lá']},
   {id:7, name:'Sổ tay bìa cứng A5',               price:35000, unit:'quyển', emoji:'📒',cat:'Vở & Sổ',         stock:15,image:null,colors:[]},
-  {id:8, name:'Tập bìa nhựa A4 10 tờ',            price:22000, unit:'bộ',    emoji:'📋',cat:'Vở & Sổ',         stock:20,image:null,colors:['do','xanhduong','vang']},
-  {id:9, name:'Thước kẻ 30cm Điền Phú',           price:7000,  unit:'cái',   emoji:'📐',cat:'Dụng cụ học tập', stock:45,image:null,colors:['xanhduong','do','xanhla']},
+  {id:8, name:'Tập bìa nhựa A4 10 tờ',            price:22000, unit:'bộ',    emoji:'📋',cat:'Vở & Sổ',         stock:20,image:null,colors:['Đỏ','Xanh dương','Vàng']},
+  {id:9, name:'Thước kẻ 30cm Điền Phú',           price:7000,  unit:'cái',   emoji:'📐',cat:'Dụng cụ học tập', stock:45,image:null,colors:['Xanh dương','Đỏ','Xanh lá']},
   {id:10,name:'Thước đo độ + êke bộ 3',           price:15000, unit:'bộ',    emoji:'📏',cat:'Dụng cụ học tập', stock:20,image:null,colors:[]},
-  {id:11,name:'Kéo học sinh cán nhựa',             price:20000, unit:'cái',   emoji:'✂️',cat:'Dụng cụ học tập', stock:18,image:null,colors:['do','xanhduong','xanhla','vang','cam']},
+  {id:11,name:'Kéo học sinh cán nhựa',             price:20000, unit:'cái',   emoji:'✂️',cat:'Dụng cụ học tập', stock:18,image:null,colors:['Đỏ','Xanh dương','Xanh lá','Vàng','Cam']},
   {id:12,name:'Bìa kẹp tài liệu A4',              price:25000, unit:'cái',   emoji:'🗂️',cat:'Dụng cụ học tập', stock:22,image:null,colors:[]},
 ];
 
@@ -504,22 +527,10 @@ const CATEGORIES = [
 let products = [];
 let searchQuery = '';
 let customer = {name:'',phone:''};
-// cart: { productId: { ...product, qty, selectedColor: key|null } }
+// cart: { key: { ...product, qty, selectedOption: string|null } }
 let cart = {};
 let lastMsg = '';
 let isAdminMode = false;
-
-// ── Build color tick grid in admin ────────────────────────────────
-function buildColorTickGrid() {
-  const grid = document.getElementById('color-tick-grid');
-  grid.innerHTML = BASE_COLORS.map(c => `
-    <label class="color-tick-item" title="${c.name}">
-      <input type="checkbox" name="color-tick" value="${c.key}">
-      <div class="color-tick-dot" style="background:${c.hex}"></div>
-      <span class="color-tick-name">${c.name}</span>
-    </label>`).join('');
-}
-buildColorTickGrid();
 
 // ── Firebase ──────────────────────────────────────────────────────
 db.ref('products').on('value', snap => {
@@ -544,10 +555,6 @@ function stockBadge(s) {
   if (s<=0) return `<span class="stock-badge out">🚫 Hết hàng</span>`;
   if (s<=5) return `<span class="stock-badge low-stock">⚠️ Còn ${s}</span>`;
   return `<span class="stock-badge in-stock">✅ Còn ${s}</span>`;
-}
-// resolve color key → BASE_COLORS object
-function resolveColor(key) {
-  return BASE_COLORS.find(c => c.key === key) || null;
 }
 
 // ── Search ────────────────────────────────────────────────────────
@@ -579,9 +586,9 @@ function renderShop() {
     html += `<div class="section-title">${cat.icon} ${cat.key}</div><div class="products-grid">`;
     items.forEach(p => {
       const oos = p.stock<=0;
-      const cols = (p.colors||[]).map(k=>resolveColor(k)).filter(Boolean);
-      const swatches = cols.length
-        ? `<div class="card-colors">${cols.map(c=>`<span class="card-swatch" style="background:${c.hex}" title="${c.name}"></span>`).join('')}<span class="card-color-hint">${cols.length} màu</span></div>`
+      const opts = (p.colors||[]).filter(Boolean);
+      const optPills = opts.length
+        ? `<div class="card-options">${opts.slice(0,3).map(o=>`<span class="card-option-pill">${o}</span>`).join('')}${opts.length>3?`<span class="card-option-more">+${opts.length-3}</span>`:''}</div>`
         : '';
       html += `
       <div class="product-card${oos?' out-of-stock':''}">
@@ -591,7 +598,7 @@ function renderShop() {
           <div class="product-name">${p.name}</div>
           <div class="product-price">${p.price.toLocaleString('vi-VN')}đ <span class="product-unit">/${p.unit}</span></div>
           ${stockBadge(p.stock)}
-          ${swatches}
+          ${optPills}
           <button class="add-btn${oos?' sold-out':''}" onclick="addToCart(${p.id})" ${oos?'disabled':''}>
             ${oos?'🚫 Hết hàng':'+ Thêm vào giỏ'}
           </button>
@@ -664,14 +671,14 @@ function renderAdminList(){
   const el=document.getElementById('product-list-admin');
   if(!products.length){el.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có sản phẩm</div>';return;}
   el.innerHTML=products.map(p=>{
-    const cols=(p.colors||[]).map(k=>resolveColor(k)).filter(Boolean);
-    const dots=cols.slice(0,7).map(c=>`<span class="pla-cdot" style="background:${c.hex}"></span>`).join('');
+    const opts=(p.colors||[]).filter(Boolean);
+    const optTags=opts.slice(0,5).map(o=>`<span style="background:#e8e8e8;color:var(--dark);padding:1px 7px;border-radius:100px;font-size:10px;font-weight:700">${o}</span>`).join('');
     return `
     <div class="pla-item">
       <div class="pla-thumb">${imgHtml(p)}</div>
       <div class="pla-info">
         <div class="pla-name">${p.name}</div>
-        <div class="pla-meta">${p.price.toLocaleString('vi-VN')}đ/${p.unit} · Còn: ${p.stock} ${dots} ${cols.length?cols.length+' màu':'· Không có màu'}</div>
+        <div class="pla-meta">${p.price.toLocaleString('vi-VN')}đ/${p.unit} · Còn: ${p.stock} ${optTags} ${opts.length?'':'· Không có tuỳ chọn'}</div>
       </div>
       <div class="pla-actions">
         <div class="stock-ctrl">
@@ -700,15 +707,15 @@ function addProduct(){
   const cat=document.getElementById('a-cat').value;
   const image=document.getElementById('a-img').value||null;
   if(!name||!price||!unit){alert('Vui lòng điền đầy đủ: Tên, Giá, Đơn vị!');return;}
-  // collect ticked colors
-  const ticked=[...document.querySelectorAll('#color-tick-grid input[type=checkbox]:checked')].map(cb=>cb.value);
+  const options=[...adminOptionTags];
   const newId=Date.now();
-  db.ref('products/'+newId).set({id:newId,name,price,unit,stock,emoji,cat,image,colors:ticked});
+  db.ref('products/'+newId).set({id:newId,name,price,unit,stock,emoji,cat,image,colors:options});
   // reset form
   ['a-name','a-price','a-unit','a-emoji','a-img'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('a-stock').value='10';
   document.getElementById('a-img-file').value='';
-  document.querySelectorAll('#color-tick-grid input[type=checkbox]').forEach(cb=>cb.checked=false);
+  adminOptionTags=[];
+  renderAdminOptionTags();
   const lbl=document.getElementById('upload-label');
   lbl.innerHTML='📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
   lbl.classList.remove('has-img');
@@ -722,8 +729,8 @@ function deleteProduct(id){
   renderCart();
 }
 
-// ── Color Picker Modal (CPM) ─────────────────────────────────────
-let cpm = { productId:null, selectedColor:null, qty:1 };
+// ── Option Picker Modal (CPM) ─────────────────────────────────────
+let cpm = { productId:null, selectedOption:null, qty:1 };
 
 function openCPM(productId){
   const p = products.find(x=>x.id===productId);
@@ -734,7 +741,7 @@ function openCPM(productId){
   if(available <= 0){ alert(`Chỉ còn ${p.stock} sản phẩm!`); return; }
 
   cpm.productId = productId;
-  cpm.selectedColor = null;
+  cpm.selectedOption = null;
   cpm.qty = 1;
 
   // Fill product info
@@ -742,46 +749,40 @@ function openCPM(productId){
   document.getElementById('cpm-pname').textContent = p.name;
   document.getElementById('cpm-pprice').textContent = p.price.toLocaleString('vi-VN')+'đ /'+p.unit;
 
-  const cols = (p.colors||[]).map(k=>resolveColor(k)).filter(Boolean);
+  const opts = (p.colors||[]).filter(Boolean);
 
-  if(cols.length===0){
-    // No colors — skip modal, add directly
+  if(opts.length===0){
+    // No options — skip modal, add directly
     addToCartDirect(productId, null, 1);
     bounceCartBtn();
     return;
   }
 
-  // Render color buttons
-  document.getElementById('cpm-colors').innerHTML = cols.map((c,i)=>`
-    <div class="cpm-color-btn" id="cpm-cb-${i}" onclick="cpmPickColor('${c.key}',${i})">
-      <div class="cpm-dot cpm-dot-check" style="background:${c.hex}"></div>
-      <span class="cpm-color-name">${c.name}</span>
-    </div>`).join('');
+  // Update label text depending on content
+  document.getElementById('cpm-options-label').textContent = '🏷️ Chọn tuỳ chọn';
 
-  // Show remaining stock
+  // Render option pill buttons
+  document.getElementById('cpm-colors').innerHTML = opts.map((opt,i)=>`
+    <button class="cpm-option-btn" id="cpm-cb-${i}" onclick="cpmPickOption('${opt.replace(/'/g,"\\'")}',${i})">${opt}</button>`
+  ).join('');
+
+  // Show remaining stock note
   const stockNote = available<=5 ? `<span style="color:var(--primary);font-weight:700;font-size:12px">⚠️ Còn ${available} sản phẩm có thể thêm</span>` : '';
-  document.getElementById('cpm-sel-bar').innerHTML = '<span class="cpm-sel-hint">👆 Bấm chọn màu bên trên</span>';
+  document.getElementById('cpm-sel-bar').innerHTML = '<span class="cpm-sel-hint">👆 Bấm chọn tuỳ chọn bên trên</span>';
   document.getElementById('cpm-qty').textContent = '1';
   document.getElementById('btn-cpm-add').disabled = true;
   document.getElementById('btn-cpm-add').textContent = '+ Thêm vào giỏ hàng';
-  // inject stock note
   const stockEl = document.getElementById('cpm-stock-note');
   if(stockEl) stockEl.innerHTML = stockNote;
 
   document.getElementById('color-picker-modal').classList.add('show');
 }
 
-function cpmPickColor(colorKey, idx){
-  cpm.selectedColor = colorKey;
-  const c = resolveColor(colorKey);
-  // highlight active button
-  document.querySelectorAll('.cpm-color-btn').forEach(b=>b.classList.remove('active'));
+function cpmPickOption(optionVal, idx){
+  cpm.selectedOption = optionVal;
+  document.querySelectorAll('.cpm-option-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById('cpm-cb-'+idx).classList.add('active');
-  // update selected bar
-  document.getElementById('cpm-sel-bar').innerHTML = `
-    <div class="cpm-sel-dot" style="background:${c.hex}"></div>
-    <span class="cpm-sel-text">Màu: ${c.name}</span>`;
-  // enable confirm
+  document.getElementById('cpm-sel-bar').innerHTML = `<span class="cpm-sel-text">Đã chọn: <strong>${optionVal}</strong></span>`;
   document.getElementById('btn-cpm-add').disabled = false;
   document.getElementById('btn-cpm-add').textContent = `+ Thêm ${cpm.qty} vào giỏ`;
 }
@@ -789,7 +790,7 @@ function cpmPickColor(colorKey, idx){
 function cpmChangeQty(d){
   const p = products.find(x=>x.id===cpm.productId);
   if(!p) return;
-  const available = p.stock - totalInCart(cpm.productId); // how many more can be added
+  const available = p.stock - totalInCart(cpm.productId);
   const newQty = Math.max(1, Math.min(cpm.qty + d, available));
   if(newQty === cpm.qty){
     if(d>0) alert(`Chỉ còn ${p.stock} sản phẩm!`);
@@ -797,13 +798,13 @@ function cpmChangeQty(d){
   }
   cpm.qty = newQty;
   document.getElementById('cpm-qty').textContent = cpm.qty;
-  if(cpm.selectedColor){
+  if(cpm.selectedOption){
     document.getElementById('btn-cpm-add').textContent = `+ Thêm ${cpm.qty} vào giỏ`;
   }
 }
 
 function cpmConfirm(){
-  if(!cpm.selectedColor||!cpm.productId) return;
+  if(!cpm.selectedOption||!cpm.productId) return;
   const p = products.find(x=>x.id===cpm.productId);
   if(!p) return;
   const available = p.stock - totalInCart(cpm.productId);
@@ -813,7 +814,7 @@ function cpmConfirm(){
     document.getElementById('cpm-qty').textContent = cpm.qty;
     return;
   }
-  addToCartDirect(cpm.productId, cpm.selectedColor, cpm.qty);
+  addToCartDirect(cpm.productId, cpm.selectedOption, cpm.qty);
   closeCPM();
   bounceCartBtn();
 }
@@ -823,8 +824,6 @@ function closeCPM(){
 }
 
 // ── Cart ──────────────────────────────────────────────────────────
-function makeKey(productId, colorKey){ return colorKey ? `${productId}__${colorKey}` : `${productId}__none_${Date.now()}`; }
-
 function totalInCart(productId){
   return Object.values(cart).filter(i=>i.id===productId).reduce((s,i)=>s+i.qty,0);
 }
@@ -834,23 +833,20 @@ function addToCart(productId){
   openCPM(productId);
 }
 
-function addToCartDirect(productId, colorKey, qty){
+function addToCartDirect(productId, optionVal, qty){
   const p = products.find(x=>x.id===productId);
   if(!p) return;
-  // Hard cap: total in cart + new qty cannot exceed stock
   const currentTotal = totalInCart(productId);
   const allowed = Math.min(qty, p.stock - currentTotal);
   if(allowed <= 0){ alert(`Chỉ còn ${p.stock} sản phẩm!`); return; }
-  if(colorKey){
-    // keyed by color — merge same color
-    const key = `${productId}__${colorKey}`;
+  if(optionVal){
+    const key = `${productId}__${optionVal}`;
     if(cart[key]){ cart[key].qty += allowed; }
-    else { cart[key] = {...p, qty:allowed, selectedColor:colorKey}; }
+    else { cart[key] = {...p, qty:allowed, selectedOption:optionVal}; }
   } else {
-    // no color — single slot per product
     const existKey = Object.keys(cart).find(k=>cart[k].id===productId);
     if(existKey){ cart[existKey].qty = Math.min(cart[existKey].qty + allowed, p.stock); }
-    else { const key=makeKey(productId,null); cart[key]={...p,qty:allowed,selectedColor:null}; }
+    else { const key=`${productId}__none_${Date.now()}`; cart[key]={...p,qty:allowed,selectedOption:null}; }
   }
   renderCart();
 }
@@ -881,9 +877,8 @@ function renderCart(){
     return;
   }
   el.innerHTML=entries.map(([key,item])=>{
-    const colObj=item.selectedColor?resolveColor(item.selectedColor):null;
-    const colorTag=colObj
-      ?`<span class="ci-color-tag" style="background:${colObj.hex}"><span class="ci-color-tag-dot"></span>${colObj.name}</span>`
+    const optTag=item.selectedOption
+      ?`<span class="ci-option-tag">🏷️ ${item.selectedOption}</span>`
       :'';
     return `
     <div class="cart-item">
@@ -891,7 +886,7 @@ function renderCart(){
         <div class="ci-thumb">${imgHtml(item)}</div>
         <div class="ci-info">
           <div class="ci-name">${item.name}</div>
-          ${colorTag}
+          ${optTag}
           <div class="ci-price">${(item.price*item.qty).toLocaleString('vi-VN')}đ</div>
         </div>
         <div class="ci-qty">
@@ -914,9 +909,8 @@ function sendOrder(){
   const note=document.getElementById('order-note').value;
   const total=items.reduce((s,i)=>s+i.price*i.qty,0);
   const list=items.map(i=>{
-    const colObj=i.selectedColor?resolveColor(i.selectedColor):null;
-    const colStr=colObj?` [Màu: ${colObj.name}]`:'';
-    return `  • ${i.emoji} ${i.name}${colStr} x${i.qty} = ${(i.price*i.qty).toLocaleString('vi-VN')}đ`;
+    const optStr=i.selectedOption?` [${i.selectedOption}]`:'';
+    return `  • ${i.emoji} ${i.name}${optStr} x${i.qty} = ${(i.price*i.qty).toLocaleString('vi-VN')}đ`;
   }).join('\n');
   lastMsg=
 `🛒 ĐƠN HÀNG MỚI – MsHuongShop
