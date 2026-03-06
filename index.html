@@ -122,16 +122,49 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .qty-btn:hover{background:var(--secondary);}
 .qty-num{font-weight:800;font-size:15px;min-width:20px;text-align:center;}
 
-/* ── COLOR ROW inside cart item ── */
-.ci-color-row{margin-top:8px;padding:8px 10px;background:#f8f9fa;border-radius:10px;}
-.ci-color-label{font-size:11px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:6px;}
-.ci-color-options{display:flex;flex-wrap:wrap;gap:6px;}
-.ci-color-swatch{width:26px;height:26px;border-radius:50%;border:3px solid white;box-shadow:0 1px 5px rgba(0,0,0,.2);cursor:pointer;transition:transform 0.15s,box-shadow 0.15s;position:relative;flex-shrink:0;}
-.ci-color-swatch:hover{transform:scale(1.15);}
-.ci-color-swatch.picked{box-shadow:0 0 0 3px var(--primary),0 2px 8px rgba(0,0,0,.2);transform:scale(1.1);}
-.ci-color-swatch.picked::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:white;font-size:11px;font-weight:900;text-shadow:0 1px 2px rgba(0,0,0,.5);}
-.ci-picked-name{font-size:11px;font-weight:700;color:var(--dark);margin-top:5px;display:flex;align-items:center;gap:5px;}
-.ci-picked-dot{width:10px;height:10px;border-radius:50%;display:inline-block;flex-shrink:0;}
+/* ── COLOR TAG on cart item ── */
+.ci-color-tag{display:inline-flex;align-items:center;gap:5px;margin-top:4px;padding:3px 9px 3px 5px;border-radius:100px;font-size:11px;font-weight:700;color:white;}
+.ci-color-tag-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0;border:1.5px solid rgba(255,255,255,0.5);}
+
+/* ── COLOR PICKER POPUP (TMDT style) ── */
+#color-picker-modal{position:fixed;inset:0;z-index:650;display:none;align-items:flex-end;justify-content:center;}
+#color-picker-modal.show{display:flex;}
+#color-picker-modal .cpm-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.5);animation:fadeInBd 0.2s ease;}
+@keyframes fadeInBd{from{opacity:0;}to{opacity:1;}}
+.cpm-sheet{position:relative;background:white;border-radius:24px 24px 0 0;padding:0 0 32px;width:100%;max-width:480px;animation:slideUpSheet 0.3s cubic-bezier(.34,1.1,.64,1) both;z-index:1;}
+@keyframes slideUpSheet{from{transform:translateY(100%);}to{transform:translateY(0);}}
+.cpm-handle{width:40px;height:4px;background:#e0e0e0;border-radius:4px;margin:14px auto 0;}
+.cpm-product-row{display:flex;align-items:center;gap:12px;padding:16px 20px 14px;border-bottom:1px solid #f0f0f0;}
+.cpm-thumb{width:60px;height:60px;border-radius:12px;overflow:hidden;background:#fff8f0;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;}
+.cpm-thumb img{width:100%;height:100%;object-fit:cover;}
+.cpm-pname{font-weight:800;font-size:14px;color:var(--dark);line-height:1.3;}
+.cpm-pprice{color:var(--primary);font-weight:800;font-size:16px;font-family:'Baloo 2',cursive;margin-top:2px;}
+.cpm-body{padding:18px 20px 0;}
+.cpm-label{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;}
+.cpm-colors{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:6px;}
+.cpm-color-btn{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:8px 10px;border-radius:14px;border:2px solid transparent;transition:border-color 0.15s,background 0.15s;min-width:56px;}
+.cpm-color-btn:hover{background:#f5f5f5;}
+.cpm-color-btn.active{border-color:var(--primary);background:#fff5f2;}
+.cpm-dot{width:38px;height:38px;border-radius:50%;border:3px solid white;box-shadow:0 2px 8px rgba(0,0,0,.2);transition:transform 0.15s,box-shadow 0.15s;}
+.cpm-color-btn.active .cpm-dot{box-shadow:0 0 0 3px var(--primary),0 2px 8px rgba(0,0,0,.15);transform:scale(1.1);}
+.cpm-color-btn.active .cpm-dot::after{content:'';}
+.cpm-dot-check{position:relative;}
+.cpm-color-btn.active .cpm-dot-check::after{content:'✓';position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:white;font-size:14px;font-weight:900;text-shadow:0 1px 3px rgba(0,0,0,.5);}
+.cpm-color-name{font-size:11px;font-weight:700;color:var(--dark);text-align:center;line-height:1.2;}
+.cpm-selected-bar{display:flex;align-items:center;gap:8px;padding:10px 14px;background:#f8f9fa;border-radius:12px;margin:14px 0 0;min-height:40px;}
+.cpm-sel-dot{width:20px;height:20px;border-radius:50%;flex-shrink:0;border:2px solid white;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.cpm-sel-text{font-size:13px;font-weight:700;color:var(--dark);}
+.cpm-sel-hint{font-size:13px;color:var(--muted);}
+.cpm-qty-row{display:flex;align-items:center;justify-content:space-between;margin-top:16px;}
+.cpm-qty-label{font-size:13px;font-weight:700;color:var(--dark);}
+.cpm-qty-ctrl{display:flex;align-items:center;gap:10px;}
+.cpm-qty-btn{width:34px;height:34px;border-radius:10px;background:#f5f5f5;border:none;font-size:20px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.cpm-qty-btn:hover{background:var(--secondary);}
+.cpm-qty-num{font-weight:800;font-size:18px;min-width:28px;text-align:center;color:var(--dark);}
+.cpm-footer{padding:16px 20px 0;}
+.btn-cpm-add{width:100%;padding:14px;background:linear-gradient(135deg,var(--primary),#FF8C42);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 4px 16px rgba(255,107,53,.35);transition:transform .15s,opacity .15s;}
+.btn-cpm-add:hover{transform:translateY(-2px);}
+.btn-cpm-add:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none;}
 
 .cart-footer{padding:14px 20px 24px;border-top:2px dashed #eee;}
 .cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
@@ -220,33 +253,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .upload-img-label.has-img{border-color:var(--accent);background:#f0fdf9;color:#00a86b;}
 .upload-img-thumb{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;}
 
-/* ── COLOR WARNING POPUP ── */
-#popup-color-warn{position:fixed;inset:0;z-index:700;background:rgba(0,0,0,0.5);display:none;align-items:center;justify-content:center;padding:20px;}
-#popup-color-warn.show{display:flex;animation:fadeInBg 0.2s ease;}
-@keyframes fadeInBg{from{background:rgba(0,0,0,0);}to{background:rgba(0,0,0,0.5);}}
-.cw-box{background:white;border-radius:28px;padding:36px 32px 28px;max-width:340px;width:100%;text-align:center;animation:popIn 0.35s cubic-bezier(.34,1.56,.64,1) both;position:relative;overflow:hidden;}
-.cw-box::before{content:'';position:absolute;top:0;left:0;right:0;height:5px;background:linear-gradient(90deg,#FF6B35,#FFD166,#FF6B35);background-size:200%;animation:shimmer 2s linear infinite;}
-@keyframes shimmer{0%{background-position:200%}100%{background-position:-200%}}
-.cw-icon{font-size:60px;display:block;margin-bottom:10px;animation:bounce 0.6s cubic-bezier(.34,1.56,.64,1) 0.1s both;}
-@keyframes bounce{0%{transform:scale(0) rotate(-15deg);}60%{transform:scale(1.15) rotate(5deg);}100%{transform:scale(1) rotate(0);}}
-.cw-title{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:8px;}
-.cw-desc{font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:6px;}
-.cw-items{margin:14px 0;display:flex;flex-direction:column;gap:7px;}
-.cw-item{display:flex;align-items:center;gap:9px;background:#fff5f2;border:1.5px solid #ffe0d6;border-radius:12px;padding:9px 12px;text-align:left;}
-.cw-item-thumb{width:34px;height:34px;border-radius:8px;overflow:hidden;background:#fff3e0;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
-.cw-item-thumb img{width:100%;height:100%;object-fit:cover;}
-.cw-item-name{flex:1;font-weight:700;font-size:12px;color:var(--dark);line-height:1.3;}
-.cw-item-badge{font-size:10px;font-weight:800;color:var(--primary);background:#fff0eb;padding:2px 7px;border-radius:100px;white-space:nowrap;}
-.btn-cw-ok{width:100%;padding:13px;background:linear-gradient(135deg,var(--primary),#FF8C42);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px;box-shadow:0 4px 16px rgba(255,107,53,0.35);transition:transform 0.15s;}
-.btn-cw-ok:hover{transform:translateY(-2px);}
-/* add another color button */
-.btn-add-another{display:flex;align-items:center;gap:5px;margin-top:7px;padding:6px 12px;background:#f0f4ff;color:#4A6CF7;border:1.5px dashed #c0ceff;border-radius:8px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:background 0.15s;}
-.btn-add-another:hover{background:#e0e8ff;}
 
-/* highlight cart item missing color */
-.cart-item.missing-color .ci-color-row{border:2px solid var(--primary);background:#fff5f2;animation:pulseWarn 0.4s ease;}
-@keyframes pulseWarn{0%,100%{transform:scale(1);}50%{transform:scale(1.01);}}
-.ci-color-row.warn-label .ci-color-label::after{content:' ← Bắt buộc chọn!';color:var(--primary);font-weight:800;}
 
 @media(max-width:480px){
   #cart-panel{width:100%;}
@@ -353,18 +360,40 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
   </div>
 </div>
 
-<!-- COLOR WARNING POPUP -->
-<div id="popup-color-warn">
-  <div class="cw-box">
-    <span class="cw-icon">🎨</span>
-    <div class="cw-title">Chưa chọn màu!</div>
-    <div class="cw-desc">Vui lòng chọn màu cho các sản phẩm sau trước khi đặt hàng nhé!</div>
-    <div class="cw-items" id="cw-items-list"></div>
-    <button class="btn-cw-ok" onclick="closeColorWarn()">✅ Quay lại chọn màu</button>
+<!-- COLOR PICKER MODAL (TMDT style) -->
+<div id="color-picker-modal">
+  <div class="cpm-backdrop" onclick="closeCPM()"></div>
+  <div class="cpm-sheet">
+    <div class="cpm-handle"></div>
+    <div class="cpm-product-row">
+      <div class="cpm-thumb" id="cpm-thumb"></div>
+      <div>
+        <div class="cpm-pname" id="cpm-pname"></div>
+        <div class="cpm-pprice" id="cpm-pprice"></div>
+      </div>
+    </div>
+    <div class="cpm-body">
+      <div class="cpm-label">🎨 Chọn màu sắc</div>
+      <div class="cpm-colors" id="cpm-colors"></div>
+      <div class="cpm-selected-bar" id="cpm-sel-bar">
+        <span class="cpm-sel-hint">👆 Bấm chọn màu bên trên</span>
+      </div>
+      <div class="cpm-qty-row">
+        <span class="cpm-qty-label">Số lượng</span>
+        <div class="cpm-qty-ctrl">
+          <button class="cpm-qty-btn" onclick="cpmChangeQty(-1)">−</button>
+          <span class="cpm-qty-num" id="cpm-qty">1</span>
+          <button class="cpm-qty-btn" onclick="cpmChangeQty(+1)">+</button>
+        </div>
+      </div>
+    </div>
+    <div class="cpm-footer">
+      <button class="btn-cpm-add" id="btn-cpm-add" onclick="cpmConfirm()" disabled>+ Thêm vào giỏ hàng</button>
+    </div>
   </div>
 </div>
 
-<!-- ADMIN LOGIN -->
+<!-- ADMIN LOGIN --><!-- ADMIN LOGIN -->
 <div id="admin-login">
   <div class="admin-login-box">
     <div style="font-size:40px;margin-bottom:8px">🔐</div>
@@ -693,8 +722,86 @@ function deleteProduct(id){
   renderCart();
 }
 
+// ── Color Picker Modal (CPM) ─────────────────────────────────────
+let cpm = { productId:null, selectedColor:null, qty:1 };
+
+function openCPM(productId){
+  const p = products.find(x=>x.id===productId);
+  if(!p||p.stock<=0) return;
+  cpm.productId = productId;
+  cpm.selectedColor = null;
+  cpm.qty = 1;
+
+  // Fill product info
+  document.getElementById('cpm-thumb').innerHTML = imgHtml(p);
+  document.getElementById('cpm-pname').textContent = p.name;
+  document.getElementById('cpm-pprice').textContent = p.price.toLocaleString('vi-VN')+'đ /'+p.unit;
+
+  const cols = (p.colors||[]).map(k=>resolveColor(k)).filter(Boolean);
+
+  if(cols.length===0){
+    // No colors — skip modal, add directly
+    addToCartDirect(productId, null, 1);
+    bounceCartBtn();
+    return;
+  }
+
+  // Render color buttons
+  document.getElementById('cpm-colors').innerHTML = cols.map((c,i)=>`
+    <div class="cpm-color-btn" id="cpm-cb-${i}" onclick="cpmPickColor('${c.key}',${i})">
+      <div class="cpm-dot cpm-dot-check" style="background:${c.hex}"></div>
+      <span class="cpm-color-name">${c.name}</span>
+    </div>`).join('');
+
+  // Reset state
+  document.getElementById('cpm-sel-bar').innerHTML = '<span class="cpm-sel-hint">👆 Bấm chọn màu bên trên</span>';
+  document.getElementById('cpm-qty').textContent = '1';
+  document.getElementById('btn-cpm-add').disabled = true;
+  document.getElementById('btn-cpm-add').textContent = '+ Thêm vào giỏ hàng';
+
+  document.getElementById('color-picker-modal').classList.add('show');
+}
+
+function cpmPickColor(colorKey, idx){
+  cpm.selectedColor = colorKey;
+  const c = resolveColor(colorKey);
+  // highlight active button
+  document.querySelectorAll('.cpm-color-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById('cpm-cb-'+idx).classList.add('active');
+  // update selected bar
+  document.getElementById('cpm-sel-bar').innerHTML = `
+    <div class="cpm-sel-dot" style="background:${c.hex}"></div>
+    <span class="cpm-sel-text">Màu: ${c.name}</span>`;
+  // enable confirm
+  document.getElementById('btn-cpm-add').disabled = false;
+  document.getElementById('btn-cpm-add').textContent = `+ Thêm ${cpm.qty} vào giỏ`;
+}
+
+function cpmChangeQty(d){
+  const p = products.find(x=>x.id===cpm.productId);
+  const maxStock = p ? p.stock : 99;
+  const alreadyIn = totalInCart(cpm.productId);
+  const newQty = Math.max(1, Math.min(cpm.qty + d, maxStock - alreadyIn));
+  if(newQty === cpm.qty) return;
+  cpm.qty = newQty;
+  document.getElementById('cpm-qty').textContent = cpm.qty;
+  if(cpm.selectedColor){
+    document.getElementById('btn-cpm-add').textContent = `+ Thêm ${cpm.qty} vào giỏ`;
+  }
+}
+
+function cpmConfirm(){
+  if(!cpm.selectedColor||!cpm.productId) return;
+  addToCartDirect(cpm.productId, cpm.selectedColor, cpm.qty);
+  closeCPM();
+  bounceCartBtn();
+}
+
+function closeCPM(){
+  document.getElementById('color-picker-modal').classList.remove('show');
+}
+
 // ── Cart ──────────────────────────────────────────────────────────
-// cart key: "productId__colorKey"  or  "productId__none_N" for uncolored slots
 function makeKey(productId, colorKey){ return colorKey ? `${productId}__${colorKey}` : `${productId}__none_${Date.now()}`; }
 
 function totalInCart(productId){
@@ -702,75 +809,42 @@ function totalInCart(productId){
 }
 
 function addToCart(productId){
-  const p=products.find(x=>x.id===productId);
-  if(!p||p.stock<=0) return;
-
-  if(totalInCart(productId)>=p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
-
-  if(p.colors&&p.colors.length>0){
-    // Product has colors → always create a new slot for independent color picking
-    const key=makeKey(productId, null);
-    cart[key]={...p, qty:1, selectedColor:null};
-  } else {
-    // No colors → simple qty merge into one slot
-    const existKey=Object.keys(cart).find(k=>cart[k].id===productId);
-    if(existKey){ cart[existKey].qty++; }
-    else{ const key=makeKey(productId,null); cart[key]={...p,qty:1,selectedColor:null}; }
-  }
-
-  renderCart();
-  // bounce header cart button only — do NOT auto-open cart panel
-  const b=document.querySelector('.cart-btn');
-  b.style.transform='scale(1.15)';
-  setTimeout(()=>b.style.transform='',150);
+  // Opens color picker modal if product has colors, else adds directly
+  openCPM(productId);
 }
 
-function pickColor(cartKey, colorKey){
-  if(!cart[cartKey]) return;
-  const item=cart[cartKey];
-  const productId=item.id;
-  const p=products.find(x=>x.id===productId);
-
-  // Is there already an entry with this color?
-  const existingKey=Object.keys(cart).find(k=>k!==cartKey && cart[k].id===productId && cart[k].selectedColor===colorKey);
-
-  if(existingKey){
-    // Merge: add qty to existing colored entry
-    const combined=cart[cartKey].qty+cart[existingKey].qty;
-    if(p&&combined>p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
-    cart[existingKey].qty=combined;
-    delete cart[cartKey];
+function addToCartDirect(productId, colorKey, qty){
+  const p = products.find(x=>x.id===productId);
+  if(!p) return;
+  if(colorKey){
+    // keyed by color — merge same color
+    const key = `${productId}__${colorKey}`;
+    if(cart[key]){ cart[key].qty += qty; }
+    else { cart[key] = {...p, qty, selectedColor:colorKey}; }
   } else {
-    // Just assign color to this slot
-    cart[cartKey].selectedColor=colorKey;
+    // no color — single slot per product
+    const existKey = Object.keys(cart).find(k=>cart[k].id===productId);
+    if(existKey){ cart[existKey].qty += qty; }
+    else { const key=makeKey(productId,null); cart[key]={...p,qty,selectedColor:null}; }
   }
   renderCart();
+}
+
+function bounceCartBtn(){
+  const b=document.querySelector('.cart-btn');
+  b.style.transform='scale(1.2)';
+  setTimeout(()=>b.style.transform='',200);
 }
 
 function changeQty(cartKey, d){
   if(!cart[cartKey]) return;
-  const p=products.find(x=>x.id===cart[cartKey].id);
+  const p = products.find(x=>x.id===cart[cartKey].id);
   if(d>0&&p&&totalInCart(cart[cartKey].id)>=p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
-  cart[cartKey].qty+=d;
+  cart[cartKey].qty += d;
   if(cart[cartKey].qty<=0) delete cart[cartKey];
   renderCart();
 }
-
-function addAnotherColor(productId){
-  const p=products.find(x=>x.id===productId);
-  if(!p||p.stock<=0) return;
-  if(totalInCart(productId)>=p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
-  const key=makeKey(productId, null);
-  cart[key]={...p, qty:1, selectedColor:null};
-  renderCart();
-  // scroll new item into view
-  setTimeout(()=>{
-    const items=document.querySelectorAll('.cart-item');
-    if(items.length) items[items.length-1].scrollIntoView({behavior:'smooth',block:'center'});
-  },100);
-}
-
-function renderCart(missingKeys=[]){
+function renderCart(){
   const entries=Object.entries(cart);
   const total=entries.reduce((s,[,i])=>s+i.price*i.qty,0);
   document.getElementById('cart-count').textContent=entries.reduce((s,[,i])=>s+i.qty,0);
@@ -781,39 +855,18 @@ function renderCart(missingKeys=[]){
     el.innerHTML=`<div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>`;
     return;
   }
-
   el.innerHTML=entries.map(([key,item])=>{
-    const cols=(item.colors||[]).map(k=>resolveColor(k)).filter(Boolean);
-    const isMissing=missingKeys.includes(key);
-    let colorRow='';
-    if(cols.length){
-      const swatchBtns=cols.map(c=>{
-        const picked=item.selectedColor===c.key;
-        return `<span class="ci-color-swatch${picked?' picked':''}" style="background:${c.hex}" title="${c.name}" onclick="pickColor('${key}','${c.key}')"></span>`;
-      }).join('');
-      const pickedObj=item.selectedColor?resolveColor(item.selectedColor):null;
-      const pickedLine=pickedObj
-        ?`<div class="ci-picked-name"><span class="ci-picked-dot" style="background:${pickedObj.hex}"></span>Đã chọn: ${pickedObj.name}</div>`
-        :`<div class="ci-picked-name" style="color:var(--primary);font-weight:700">👆 Bấm chọn màu${isMissing?' (bắt buộc!)':''}</div>`;
-      colorRow=`
-      <div class="ci-color-row${isMissing?' warn-label':''}">
-        <div class="ci-color-label">🎨 Chọn màu</div>
-        <div class="ci-color-options">${swatchBtns}</div>
-        ${pickedLine}
-      </div>`;
-    }
-    // show "thêm màu khác" only if product has colors and this slot already has a color picked
-    const canAddAnother = cols.length>0 && item.selectedColor && totalInCart(item.id)<(products.find(x=>x.id===item.id)||{}).stock;
-    const addAnotherBtn = canAddAnother
-      ? `<button class="btn-add-another" onclick="addAnotherColor(${item.id})">＋ Thêm với màu khác</button>`
-      : '';
-
+    const colObj=item.selectedColor?resolveColor(item.selectedColor):null;
+    const colorTag=colObj
+      ?`<span class="ci-color-tag" style="background:${colObj.hex}"><span class="ci-color-tag-dot"></span>${colObj.name}</span>`
+      :'';
     return `
-    <div class="cart-item${isMissing?' missing-color':''}">
+    <div class="cart-item">
       <div class="ci-top">
         <div class="ci-thumb">${imgHtml(item)}</div>
         <div class="ci-info">
           <div class="ci-name">${item.name}</div>
+          ${colorTag}
           <div class="ci-price">${(item.price*item.qty).toLocaleString('vi-VN')}đ</div>
         </div>
         <div class="ci-qty">
@@ -822,43 +875,18 @@ function renderCart(missingKeys=[]){
           <button class="qty-btn" onclick="changeQty('${key}',+1)">+</button>
         </div>
       </div>
-      ${colorRow}
-      ${addAnotherBtn}
     </div>`;
   }).join('');
 }
 
 function toggleCart(){document.getElementById('cart-panel').classList.toggle('open');}
 
-// ── Color warning ─────────────────────────────────────────────────
-function closeColorWarn(){
-  document.getElementById('popup-color-warn').classList.remove('show');
-  // make sure cart is open and scroll to first missing item
-  document.getElementById('cart-panel').classList.add('open');
-  setTimeout(()=>{
-    const first=document.querySelector('.cart-item.missing-color');
-    if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
-  },200);
-}
-
 // ── Order ─────────────────────────────────────────────────────────
 function sendOrder(){
   const items=Object.values(cart);
   if(!items.length) return;
 
-  // check missing colors — find cart entries that have colors available but none picked
-  const missingEntries=Object.entries(cart).filter(([,i])=>(i.colors&&i.colors.length>0)&&!i.selectedColor);
-  if(missingEntries.length){
-    document.getElementById('cw-items-list').innerHTML=missingEntries.map(([,i])=>`
-      <div class="cw-item">
-        <div class="cw-item-thumb">${imgHtml(i)}</div>
-        <div class="cw-item-name">${i.name}</div>
-        <div class="cw-item-badge">Chọn màu!</div>
-      </div>`).join('');
-    document.getElementById('popup-color-warn').classList.add('show');
-    renderCart(missingEntries.map(([k])=>k));
-    return;
-  }
+
 
   const note=document.getElementById('order-note').value;
   const total=items.reduce((s,i)=>s+i.price*i.qty,0);
