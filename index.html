@@ -239,6 +239,10 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .cw-item-badge{font-size:10px;font-weight:800;color:var(--primary);background:#fff0eb;padding:2px 7px;border-radius:100px;white-space:nowrap;}
 .btn-cw-ok{width:100%;padding:13px;background:linear-gradient(135deg,var(--primary),#FF8C42);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;cursor:pointer;margin-top:6px;box-shadow:0 4px 16px rgba(255,107,53,0.35);transition:transform 0.15s;}
 .btn-cw-ok:hover{transform:translateY(-2px);}
+/* add another color button */
+.btn-add-another{display:flex;align-items:center;gap:5px;margin-top:7px;padding:6px 12px;background:#f0f4ff;color:#4A6CF7;border:1.5px dashed #c0ceff;border-radius:8px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:background 0.15s;}
+.btn-add-another:hover{background:#e0e8ff;}
+
 /* highlight cart item missing color */
 .cart-item.missing-color .ci-color-row{border:2px solid var(--primary);background:#fff5f2;animation:pulseWarn 0.4s ease;}
 @keyframes pulseWarn{0%,100%{transform:scale(1);}50%{transform:scale(1.01);}}
@@ -703,20 +707,19 @@ function addToCart(productId){
 
   if(totalInCart(productId)>=p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
 
-  // Find an existing uncolored slot for this product
-  const uncoloredKey=Object.keys(cart).find(k=>cart[k].id===productId&&!cart[k].selectedColor);
-
-  if(uncoloredKey){
-    // Already has an uncolored slot → just bump its qty
-    cart[uncoloredKey].qty++;
-  } else {
-    // Create a fresh uncolored slot
+  if(p.colors&&p.colors.length>0){
+    // Product has colors → always create a new slot for independent color picking
     const key=makeKey(productId, null);
-    cart[key]={...p, qty:1, selectedColor:null, _key:key};
+    cart[key]={...p, qty:1, selectedColor:null};
+  } else {
+    // No colors → simple qty merge into one slot
+    const existKey=Object.keys(cart).find(k=>cart[k].id===productId);
+    if(existKey){ cart[existKey].qty++; }
+    else{ const key=makeKey(productId,null); cart[key]={...p,qty:1,selectedColor:null}; }
   }
 
   renderCart();
-  // bounce button only
+  // bounce header cart button only — do NOT auto-open cart panel
   const b=document.querySelector('.cart-btn');
   b.style.transform='scale(1.15)';
   setTimeout(()=>b.style.transform='',150);
@@ -753,6 +756,20 @@ function changeQty(cartKey, d){
   renderCart();
 }
 
+function addAnotherColor(productId){
+  const p=products.find(x=>x.id===productId);
+  if(!p||p.stock<=0) return;
+  if(totalInCart(productId)>=p.stock){alert(`Chỉ còn ${p.stock} sản phẩm!`);return;}
+  const key=makeKey(productId, null);
+  cart[key]={...p, qty:1, selectedColor:null};
+  renderCart();
+  // scroll new item into view
+  setTimeout(()=>{
+    const items=document.querySelectorAll('.cart-item');
+    if(items.length) items[items.length-1].scrollIntoView({behavior:'smooth',block:'center'});
+  },100);
+}
+
 function renderCart(missingKeys=[]){
   const entries=Object.entries(cart);
   const total=entries.reduce((s,[,i])=>s+i.price*i.qty,0);
@@ -785,6 +802,12 @@ function renderCart(missingKeys=[]){
         ${pickedLine}
       </div>`;
     }
+    // show "thêm màu khác" only if product has colors and this slot already has a color picked
+    const canAddAnother = cols.length>0 && item.selectedColor && totalInCart(item.id)<(products.find(x=>x.id===item.id)||{}).stock;
+    const addAnotherBtn = canAddAnother
+      ? `<button class="btn-add-another" onclick="addAnotherColor(${item.id})">＋ Thêm với màu khác</button>`
+      : '';
+
     return `
     <div class="cart-item${isMissing?' missing-color':''}">
       <div class="ci-top">
@@ -800,6 +823,7 @@ function renderCart(missingKeys=[]){
         </div>
       </div>
       ${colorRow}
+      ${addAnotherBtn}
     </div>`;
   }).join('');
 }
