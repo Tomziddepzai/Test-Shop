@@ -38,17 +38,17 @@ input,select{touch-action:manipulation;}
 .note{text-align:center;font-size:12px;color:var(--muted);margin-top:14px;}
 
 /* ── HEADER ── */
-header{background:var(--dark);padding:0 24px;display:flex;align-items:center;justify-content:space-between;height:64px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(26,26,46,0.3);}
-.header-logo{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:white;}
+header{background:var(--dark);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:56px;position:sticky;top:0;z-index:100;box-shadow:0 4px 20px rgba(26,26,46,0.3);}
+.header-logo{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:white;white-space:nowrap;}
 .header-logo span{color:var(--secondary);}
-.header-right{display:flex;align-items:center;gap:10px;}
-.user-chip{background:rgba(255,255,255,0.1);color:white;padding:6px 14px;border-radius:100px;font-size:13px;font-weight:600;}
-.admin-btn{background:rgba(255,255,255,0.1);color:white;border:none;padding:8px 14px;border-radius:100px;font-size:13px;font-weight:600;cursor:pointer;transition:background 0.2s;}
+.header-right{display:flex;align-items:center;gap:6px;}
+.user-chip{background:rgba(255,255,255,0.1);color:white;padding:5px 12px;border-radius:100px;font-size:12px;font-weight:600;white-space:nowrap;max-width:110px;overflow:hidden;text-overflow:ellipsis;}
+.admin-btn{background:rgba(255,255,255,0.1);color:white;border:none;width:36px;height:36px;border-radius:100px;font-size:16px;font-weight:600;cursor:pointer;transition:background 0.2s;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .admin-btn:hover{background:rgba(255,255,255,0.2);}
-.cart-btn{background:var(--primary);color:white;border:none;padding:8px 18px;border-radius:100px;font-size:14px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background 0.2s,transform 0.15s;}
+.cart-btn{background:var(--primary);color:white;border:none;padding:7px 14px;border-radius:100px;font-size:13px;font-weight:700;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background 0.2s,transform 0.15s;white-space:nowrap;flex-shrink:0;}
 .cart-btn:hover{background:#e55a27;transform:scale(1.04);}
-.cart-count{background:var(--secondary);color:var(--dark);border-radius:100px;width:20px;height:20px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;}
-
+.cart-btn-text{display:inline;}
+.cart-count{background:var(--secondary);color:var(--dark);border-radius:100px;width:20px;height:20px;font-size:12px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 /* ── HERO ── */
 .hero{background:linear-gradient(120deg,var(--dark) 0%,#0F3460 100%);padding:48px 24px 40px;text-align:center;color:white;position:relative;overflow:hidden;}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(circle at 70% 50%,rgba(255,209,102,0.12) 0%,transparent 60%);}
@@ -288,6 +288,11 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
   .products-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
   .field-row,.field-row.three{grid-template-columns:1fr;}
 }
+@media(max-width:400px){
+  .user-chip{max-width:80px;font-size:11px;padding:4px 9px;}
+  .cart-btn-text{display:none;}
+  .cart-btn{padding:7px 10px;}
+}
 </style>
 </head>
 <body>
@@ -324,7 +329,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
     <div class="user-chip" id="user-chip">👤 Khách</div>
     <button class="admin-btn" onclick="openAdminLogin()">⚙️</button>
     <button class="cart-btn" onclick="toggleCart()">
-      🛒 Giỏ hàng <div class="cart-count" id="cart-count">0</div>
+      🛒 <span class="cart-btn-text">Giỏ hàng</span> <div class="cart-count" id="cart-count">0</div>
     </button>
   </div>
 </header>
