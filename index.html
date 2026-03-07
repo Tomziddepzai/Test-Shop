@@ -737,8 +737,9 @@ document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='E
 function openAdmin(){isAdminMode=true;renderShop();renderAdminList();document.getElementById('admin-panel').classList.add('show');}
 function closeAdmin(){isAdminMode=false;renderShop();document.getElementById('admin-panel').classList.remove('show');}
 
-// track which categories are collapsed
+// track which categories are collapsed and which products have options expanded
 let adminCollapsed = {};
+let adminExpanded = {}; // productId -> bool
 
 function renderAdminList(){
   document.getElementById('product-count').textContent=products.length;
@@ -777,7 +778,7 @@ function renderAdminList(){
       const hasOpts = opts.length>0;
       const expandId = `pla-expand-${p.id}`;
       return `
-      <div class="pla-item${hasOpts?' has-opts':''}" id="pla-row-${p.id}">
+      <div class="pla-item${hasOpts?' has-opts':''}${adminExpanded[p.id]?' expanded':''}" id="pla-row-${p.id}">
         <div class="pla-thumb">${imgHtml(p)}</div>
         <div class="pla-info">
           <div class="pla-name">${p.name}</div>
@@ -790,11 +791,11 @@ function renderAdminList(){
             <button onclick="updateStock(${p.id},-1)">−</button>
             <span class="stock-num">${p.stock}</span>
             <button onclick="updateStock(${p.id},+1)">+</button>
-          </div>`:`<button class="btn-expand" id="${expandId}" onclick="toggleOptExpand(${p.id})" title="Xem options">⚙️</button>`}
+          </div>`:`<button class="btn-expand" id="pla-expand-${p.id}" onclick="toggleOptExpand(${p.id})" title="Xem options" style="${adminExpanded[p.id]?'background:#fff2ec':''}">⚙️</button>`}
           <button class="btn-del" onclick="deleteProduct(${p.id})">🗑️</button>
         </div>
       </div>
-      ${hasOpts?`<div class="pla-opts-grid" id="pla-opts-${p.id}" style="display:none">${optControls}</div>`:''}`;
+      ${hasOpts?`<div class="pla-opts-grid" id="pla-opts-${p.id}" style="${adminExpanded[p.id]?'display:flex':'display:none'}">${optControls}</div>`:''}`;
     }).join('');
 
     return `<div class="pla-cat-group">
@@ -827,6 +828,7 @@ function toggleOptExpand(productId){
   const btn = document.getElementById('pla-expand-'+productId);
   if(!grid) return;
   const isHidden = grid.style.display==='none';
+  adminExpanded[productId] = isHidden;
   grid.style.display = isHidden?'flex':'none';
   row.classList.toggle('expanded', isHidden);
   if(btn) btn.style.background = isHidden?'#fff2ec':'';
