@@ -706,7 +706,8 @@ function doLogin() {
   else{document.getElementById('inp-phone').classList.remove('error');document.getElementById('err-phone').classList.remove('show');}
   if (!ok) return;
   customer={name,phone};
-  document.getElementById('user-chip').textContent='👤 '+name;
+  const initials = name.split(' ').map(w=>w[0]).join('').toUpperCase().slice(0,3);
+  document.getElementById('user-chip').textContent='👤 '+initials;
   document.getElementById('overlay').classList.add('hide');
 }
 document.getElementById('inp-name').addEventListener('keydown',e=>{if(e.key==='Enter')document.getElementById('inp-phone').focus();});
