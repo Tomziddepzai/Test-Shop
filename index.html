@@ -238,23 +238,39 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .card-option-more{font-size:10px;color:var(--muted);font-weight:600;}
 
 .btn-add-product{width:100%;padding:12px;background:linear-gradient(135deg,var(--primary),#FF8C42);color:white;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-size:15px;font-weight:700;cursor:pointer;margin-top:4px;}
-.product-list-admin{display:flex;flex-direction:column;gap:8px;}
-.pla-item{display:flex;align-items:center;gap:10px;padding:10px 12px;background:#f8f9fa;border-radius:12px;}
-.pla-thumb{width:40px;height:40px;border-radius:8px;overflow:hidden;background:#fff3e0;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.product-list-admin{display:flex;flex-direction:column;gap:6px;}
+
+/* Accordion category group */
+.pla-cat-group{}
+.pla-cat-header{display:flex;align-items:center;justify-content:space-between;padding:7px 12px;background:var(--dark);color:white;border-radius:10px;cursor:pointer;user-select:none;}
+.pla-cat-header-left{display:flex;align-items:center;gap:8px;font-size:13px;font-weight:800;}
+.pla-cat-badge{background:rgba(255,255,255,0.18);border-radius:100px;padding:1px 9px;font-size:11px;font-weight:700;}
+.pla-cat-arrow{font-size:11px;transition:transform 0.2s;display:inline-block;}
+.pla-cat-arrow.open{transform:rotate(180deg);}
+.pla-cat-body{display:flex;flex-direction:column;gap:3px;margin-top:3px;overflow:hidden;transition:max-height 0.25s ease;}
+
+/* Compact row */
+.pla-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:#f8f9fa;border-radius:9px;border:1.5px solid transparent;transition:border-color 0.15s;}
+.pla-item:hover{border-color:#e0e0e0;}
+.pla-item.expanded{border-color:var(--primary);background:#fff9f7;}
+.pla-thumb{width:32px;height:32px;border-radius:7px;overflow:hidden;background:#fff3e0;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;}
 .pla-thumb img{width:100%;height:100%;object-fit:cover;}
 .pla-info{flex:1;min-width:0;}
-.pla-name{font-weight:700;font-size:13px;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.pla-meta{font-size:11px;color:var(--muted);margin-top:2px;display:flex;align-items:center;gap:4px;flex-wrap:wrap;}
-
-.pla-actions{display:flex;align-items:center;gap:5px;flex-shrink:0;}
-.stock-ctrl{display:flex;align-items:center;gap:4px;background:white;border:1.5px solid #eee;border-radius:8px;padding:2px 4px;}
-.stock-ctrl button{background:none;border:none;width:22px;height:22px;cursor:pointer;font-size:14px;font-weight:800;color:var(--dark);display:flex;align-items:center;justify-content:center;}
+.pla-name{font-weight:700;font-size:12px;color:var(--dark);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pla-meta{font-size:10px;color:var(--muted);margin-top:1px;}
+.pla-actions{display:flex;align-items:center;gap:4px;flex-shrink:0;}
+.stock-ctrl{display:flex;align-items:center;gap:3px;background:white;border:1.5px solid #eee;border-radius:7px;padding:1px 3px;}
+.stock-ctrl button{background:none;border:none;width:20px;height:20px;cursor:pointer;font-size:13px;font-weight:800;color:var(--dark);display:flex;align-items:center;justify-content:center;}
 .stock-ctrl button:hover{color:var(--primary);}
-.stock-num{font-weight:800;font-size:13px;min-width:24px;text-align:center;}
-.pla-opts-grid{display:flex;flex-wrap:wrap;gap:6px;padding:4px 0 2px 50px;}
-.pla-opt-row{display:flex;align-items:center;gap:6px;background:white;border:1.5px solid #eee;border-radius:10px;padding:4px 8px 4px 10px;}
-.pla-opt-name{font-size:12px;font-weight:700;color:var(--dark);min-width:40px;}
-.btn-del{background:#fff0f0;border:none;border-radius:8px;padding:6px 10px;color:#FF4757;font-size:13px;cursor:pointer;font-weight:700;}
+.stock-num{font-weight:800;font-size:12px;min-width:22px;text-align:center;}
+.btn-expand{background:none;border:1.5px solid #ddd;border-radius:7px;width:26px;height:26px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--muted);transition:all 0.15s;flex-shrink:0;}
+.btn-expand:hover,.pla-item.expanded .btn-expand{border-color:var(--primary);color:var(--primary);background:#fff2ec;}
+
+/* Option rows (expanded) */
+.pla-opts-grid{display:flex;flex-wrap:wrap;gap:4px;padding:6px 10px 7px 50px;background:#fff9f7;border-radius:0 0 9px 9px;margin-top:-3px;border:1.5px solid var(--primary);border-top:none;}
+.pla-opt-row{display:flex;align-items:center;gap:5px;background:white;border:1.5px solid #eee;border-radius:8px;padding:3px 7px 3px 9px;}
+.pla-opt-name{font-size:11px;font-weight:700;color:var(--dark);min-width:36px;}
+.btn-del{background:#fff0f0;border:none;border-radius:7px;padding:5px 9px;color:#FF4757;font-size:12px;cursor:pointer;font-weight:700;}
 .btn-del:hover{background:#FF4757;color:white;}
 .close-admin{background:#f5f5f5;border:none;border-radius:10px;width:36px;height:36px;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
 .upload-img-label{display:flex;align-items:center;gap:10px;width:100%;padding:10px 14px;border:2px dashed #eee;border-radius:10px;cursor:pointer;font-family:'Nunito',sans-serif;font-size:13px;color:var(--muted);background:#fafafa;transition:border-color 0.2s,background 0.2s;}
@@ -456,6 +472,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
             <button class="option-tag-add-btn" onclick="addOptionTag()">+ Thêm</button>
           </div>
           <div class="option-tags-list" id="a-option-tags"></div>
+          <div id="option-min-hint" style="display:none;font-size:11px;color:#FF4757;font-weight:700;margin-top:6px;">⚠️ Cần ít nhất 2 option nếu dùng tuỳ chọn!</div>
           <div class="option-tag-hint">Nhập tên + số lượng → Enter hoặc bấm "+ Thêm". Để trống nếu sản phẩm không có lựa chọn.</div>
         </div>
         <button class="btn-add-product" onclick="addProduct()">+ Thêm sản phẩm</button>
@@ -510,12 +527,39 @@ function renderAdminOptionTags(){
   el.innerHTML = adminOptionTags.map((t,i)=>
     `<span class="option-tag-chip">${t.name}<span class="chip-stock">${t.stock}</span><button onclick="removeOptionTag(${i})">✕</button></span>`
   ).join('');
+  syncAdminFormState();
+}
+
+function syncAdminFormState(){
+  const count = adminOptionTags.length;
+  const stockInput = document.getElementById('a-stock');
+  const submitBtn = document.querySelector('.btn-add-product');
+  const hintEl = document.getElementById('option-min-hint');
+
+  // Lock stock input when any option exists
+  if(count > 0){
+    stockInput.disabled = true;
+    stockInput.style.opacity = '0.4';
+    stockInput.title = 'Số lượng được tính theo từng option';
+  } else {
+    stockInput.disabled = false;
+    stockInput.style.opacity = '1';
+    stockInput.title = '';
+  }
+
+  // Lock submit if 1 option only (need 0 or ≥2)
+  const needMore = count === 1;
+  submitBtn.disabled = needMore;
+  submitBtn.style.opacity = needMore ? '0.4' : '1';
+  submitBtn.style.cursor = needMore ? 'not-allowed' : 'pointer';
+  if(hintEl) hintEl.style.display = needMore ? 'block' : 'none';
 }
 document.addEventListener('DOMContentLoaded', ()=>{
   const inp = document.getElementById('a-option-input');
   if(inp) inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault();addOptionTag();} });
   const sinp = document.getElementById('a-option-stock');
   if(sinp) sinp.addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault();addOptionTag();} });
+  syncAdminFormState();
 });
 
 const DEFAULT_PRODUCTS = [
@@ -693,43 +737,99 @@ document.getElementById('pw-input').addEventListener('keydown',e=>{if(e.key==='E
 function openAdmin(){isAdminMode=true;renderShop();renderAdminList();document.getElementById('admin-panel').classList.add('show');}
 function closeAdmin(){isAdminMode=false;renderShop();document.getElementById('admin-panel').classList.remove('show');}
 
+// track which categories are collapsed
+let adminCollapsed = {};
+
 function renderAdminList(){
   document.getElementById('product-count').textContent=products.length;
   const el=document.getElementById('product-list-admin');
   if(!products.length){el.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có sản phẩm</div>';return;}
-  el.innerHTML=products.map(p=>{
-    const opts=(p.colors||[]).filter(c=>c&&typeof c==='object');
-    const effStock = getEffectiveStock(p);
-    const optControls = opts.map((o,i)=>`
-      <div class="pla-opt-row">
-        <span class="pla-opt-name">${o.name}</span>
-        <div class="stock-ctrl">
-          <button onclick="updateOptionStock(${p.id},${i},-1)">−</button>
-          <span class="stock-num">${o.stock}</span>
-          <button onclick="updateOptionStock(${p.id},${i},+1)">+</button>
-        </div>
-      </div>`).join('');
-    return `
-    <div class="pla-item" style="flex-direction:column;align-items:stretch;gap:8px;">
-      <div style="display:flex;align-items:center;gap:10px;">
+
+  const q = '';
+  let filtered = products;
+
+  // Group by category
+  const groups = {};
+  filtered.forEach(p=>{
+    if(!groups[p.cat]) groups[p.cat]={icon:'📦',items:[]};
+    groups[p.cat].items.push(p);
+  });
+  // get icon from CATEGORIES
+  CATEGORIES.forEach(c=>{ if(groups[c.key]) groups[c.key].icon=c.icon; });
+
+  el.innerHTML = Object.entries(groups).map(([cat,{icon,items}])=>{
+    const isOpen = adminCollapsed[cat]!==true;
+    const rows = items.map(p=>{
+      const opts=(p.colors||[]).filter(c=>c&&typeof c==='object');
+      const effStock = getEffectiveStock(p);
+      const lowStock = effStock<=5 && effStock>0;
+      const oos = effStock<=0;
+      const stockColor = oos?'#FF4757':lowStock?'#FF8C42':'var(--muted)';
+      const optControls = opts.map((o,i)=>`
+        <div class="pla-opt-row">
+          <span class="pla-opt-name">${o.name}</span>
+          <div class="stock-ctrl">
+            <button onclick="updateOptionStock(${p.id},${i},-1)">−</button>
+            <span class="stock-num">${o.stock}</span>
+            <button onclick="updateOptionStock(${p.id},${i},+1)">+</button>
+          </div>
+        </div>`).join('');
+      const hasOpts = opts.length>0;
+      const expandId = `pla-expand-${p.id}`;
+      return `
+      <div class="pla-item${hasOpts?' has-opts':''}" id="pla-row-${p.id}">
         <div class="pla-thumb">${imgHtml(p)}</div>
         <div class="pla-info">
           <div class="pla-name">${p.name}</div>
-          <div class="pla-meta">${p.price.toLocaleString('vi-VN')}đ/${p.unit} · Tổng còn: <strong>${effStock}</strong></div>
+          <div class="pla-meta" style="color:${stockColor}">
+            ${p.price.toLocaleString('vi-VN')}đ/${p.unit} · Còn: <strong>${effStock}</strong>${hasOpts?` <span style="opacity:0.6;font-weight:400">(${opts.length} option)</span>`:''}
+          </div>
         </div>
-        <div class="pla-actions" style="flex-shrink:0;">
-          ${opts.length===0?`
-          <div class="stock-ctrl">
+        <div class="pla-actions">
+          ${!hasOpts?`<div class="stock-ctrl">
             <button onclick="updateStock(${p.id},-1)">−</button>
             <span class="stock-num">${p.stock}</span>
             <button onclick="updateStock(${p.id},+1)">+</button>
-          </div>`:''}
+          </div>`:`<button class="btn-expand" id="${expandId}" onclick="toggleOptExpand(${p.id})" title="Xem options">⚙️</button>`}
           <button class="btn-del" onclick="deleteProduct(${p.id})">🗑️</button>
         </div>
       </div>
-      ${optControls?`<div class="pla-opts-grid">${optControls}</div>`:''}
+      ${hasOpts?`<div class="pla-opts-grid" id="pla-opts-${p.id}" style="display:none">${optControls}</div>`:''}`;
+    }).join('');
+
+    return `<div class="pla-cat-group">
+      <div class="pla-cat-header" onclick="toggleAdminCat('${cat}')">
+        <span class="pla-cat-header-left">${icon} ${cat} <span class="pla-cat-badge">${items.length}</span></span>
+        <span class="pla-cat-arrow ${isOpen?'open':''}">▼</span>
+      </div>
+      <div class="pla-cat-body" id="pla-cat-${cat.replace(/\s/g,'_')}" style="${isOpen?'':'display:none'}">
+        ${rows}
+      </div>
     </div>`;
   }).join('');
+}
+
+function toggleAdminCat(cat){
+  const key = cat.replace(/\s/g,'_');
+  const body = document.getElementById('pla-cat-'+key);
+  if(!body) return;
+  const isHidden = body.style.display==='none';
+  body.style.display = isHidden?'':'none';
+  adminCollapsed[cat] = !isHidden;
+  // flip arrow
+  const header = body.previousElementSibling;
+  if(header) header.querySelector('.pla-cat-arrow').classList.toggle('open', isHidden);
+}
+
+function toggleOptExpand(productId){
+  const grid = document.getElementById('pla-opts-'+productId);
+  const row = document.getElementById('pla-row-'+productId);
+  const btn = document.getElementById('pla-expand-'+productId);
+  if(!grid) return;
+  const isHidden = grid.style.display==='none';
+  grid.style.display = isHidden?'flex':'none';
+  row.classList.toggle('expanded', isHidden);
+  if(btn) btn.style.background = isHidden?'#fff2ec':'';
 }
 
 function updateStock(id,delta){
@@ -765,6 +865,7 @@ function addProduct(){
   document.getElementById('a-img-file').value='';
   adminOptionTags=[];
   renderAdminOptionTags();
+  syncAdminFormState();
   const lbl=document.getElementById('upload-label');
   lbl.innerHTML='📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
   lbl.classList.remove('has-img');
