@@ -12,6 +12,9 @@
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Nunito',sans-serif;background:var(--soft);color:var(--text);min-height:100vh;}
 
+/* ── FIX iOS AUTO-ZOOM KHI FOCUS INPUT ── */
+input, textarea, select { font-size: 16px !important; }
+
 /* ── LOGIN ── */
 #overlay{position:fixed;inset:0;z-index:999;background:linear-gradient(135deg,#1A1A2E 0%,#16213E 60%,#0F3460 100%);display:flex;align-items:center;justify-content:center;transition:opacity 0.5s;}
 #overlay.hide{opacity:0;pointer-events:none;}
@@ -26,7 +29,7 @@ body{font-family:'Nunito',sans-serif;background:var(--soft);color:var(--text);mi
 .divider{border:none;border-top:1.5px dashed #eee;margin:20px 0;}
 .form-group{margin-bottom:16px;}
 .form-group label{display:block;font-size:13px;font-weight:700;color:var(--dark);margin-bottom:6px;text-transform:uppercase;letter-spacing:0.5px;}
-.form-group input{width:100%;padding:13px 16px;border:2px solid #eee;border-radius:12px;font-family:'Nunito',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;background:#fafafa;}
+.form-group input{width:100%;padding:13px 16px;border:2px solid #eee;border-radius:12px;font-family:'Nunito',sans-serif;outline:none;transition:border-color 0.2s;background:#fafafa;}
 .form-group input:focus{border-color:var(--primary);background:white;}
 .form-group input.error{border-color:#FF4757;}
 .error-msg{font-size:12px;color:#FF4757;margin-top:5px;display:none;}
@@ -59,7 +62,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .search-box{display:flex;align-items:center;gap:12px;background:white;border-radius:16px;padding:12px 20px;box-shadow:var(--shadow);border:2px solid transparent;transition:border-color 0.2s;}
 .search-box:focus-within{border-color:var(--primary);}
 .search-box .s-icon{font-size:20px;color:var(--muted);}
-.search-box input{flex:1;border:none;outline:none;font-family:'Nunito',sans-serif;font-size:15px;background:transparent;}
+.search-box input{flex:1;border:none;outline:none;font-family:'Nunito',sans-serif;background:transparent;}
 .search-box input::placeholder{color:#bbb;}
 .search-clear{background:none;border:none;cursor:pointer;font-size:18px;color:#bbb;padding:0 4px;display:none;}
 .search-clear.show{display:block;}
@@ -162,7 +165,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .cart-total{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
 .cart-total span{font-weight:700;color:var(--muted);}
 .cart-total strong{font-family:'Baloo 2',cursive;font-size:22px;color:var(--primary);}
-.note-input{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;resize:none;margin-bottom:12px;}
+.note-input{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;outline:none;resize:none;margin-bottom:12px;}
 .note-input:focus{border-color:var(--accent);}
 .order-btn{width:100%;padding:15px;background:linear-gradient(135deg,var(--accent),#00B894);color:white;border:none;border-radius:14px;font-family:'Baloo 2',cursive;font-size:16px;font-weight:700;cursor:pointer;box-shadow:0 6px 20px rgba(6,214,160,0.35);display:flex;align-items:center;justify-content:center;gap:8px;}
 .order-btn:hover{transform:translateY(-2px);}
@@ -187,7 +190,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .admin-login-box{background:white;border-radius:20px;padding:36px 32px;max-width:340px;width:90%;text-align:center;animation:popIn 0.4s cubic-bezier(.34,1.56,.64,1) both;}
 .admin-login-box h3{font-family:'Baloo 2',cursive;font-size:22px;font-weight:800;color:var(--dark);margin-bottom:6px;}
 .admin-login-box p{font-size:13px;color:var(--muted);margin-bottom:20px;}
-.pw-input{width:100%;padding:12px 16px;border:2px solid #eee;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;text-align:center;letter-spacing:4px;margin-bottom:8px;}
+.pw-input{width:100%;padding:12px 16px;border:2px solid #eee;border-radius:12px;font-family:'Nunito',sans-serif;outline:none;text-align:center;letter-spacing:4px;margin-bottom:8px;}
 .pw-input:focus{border-color:var(--primary);}
 .pw-input.shake{animation:shake 0.4s ease;}
 @keyframes shake{0%,100%{transform:translateX(0);}25%{transform:translateX(-8px);}75%{transform:translateX(8px);}}
@@ -208,17 +211,17 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px;}
 .field-row.full{grid-template-columns:1fr;}
 .field-row.three{grid-template-columns:1fr 1fr 1fr;}
-.a-input{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;transition:border-color 0.2s;}
+.a-input{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;outline:none;transition:border-color 0.2s;}
 .a-input:focus{border-color:var(--primary);}
-.a-select{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:14px;outline:none;background:white;cursor:pointer;}
+.a-select{width:100%;padding:10px 14px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;outline:none;background:white;cursor:pointer;}
 
 /* ── OPTION TAG INPUT in admin ── */
 .option-tag-section{background:#f8f9fa;border-radius:12px;padding:12px 14px;margin-bottom:8px;}
 .option-tag-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;}
 .option-tag-input-row{display:flex;gap:6px;margin-bottom:8px;align-items:center;}
-.option-tag-input{flex:2;padding:8px 12px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s;background:white;}
+.option-tag-input{flex:2;padding:8px 12px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;outline:none;transition:border-color 0.2s;background:white;}
 .option-tag-input:focus{border-color:var(--primary);}
-.option-tag-stock-input{flex:1;padding:8px 10px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;outline:none;transition:border-color 0.2s;background:white;min-width:60px;max-width:80px;}
+.option-tag-stock-input{flex:1;padding:8px 10px;border:2px solid #eee;border-radius:10px;font-family:'Nunito',sans-serif;outline:none;transition:border-color 0.2s;background:white;min-width:60px;max-width:80px;}
 .option-tag-stock-input:focus{border-color:var(--primary);}
 .option-tag-add-btn{padding:8px 14px;background:var(--dark);color:white;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;}
 .option-tag-add-btn:hover{background:var(--primary);}
@@ -486,8 +489,8 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 </div>
 
 <script>
-const BOT_TOKEN  = '8516807175:AAEx_VZh_dl_ECiMjeicNctmgUA4qCNE7vc';
-const CHAT_ID    = '5252076816';
+const BOT_TOKEN  = '8282934606:AAFlsscY2DKZN12I95PX_VZU4UGVVp_MeXI';
+const CHAT_ID    = '8547038863';
 const ADMIN_PASS = 'admin123';
 
 firebase.initializeApp({
