@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
 <title>MS HƯỜNG SHOP</title>
 <link href="https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;600;800&family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
@@ -178,7 +178,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 #note-popup{position:fixed;inset:0;z-index:700;display:none;align-items:flex-end;justify-content:center;}
 #note-popup.show{display:flex;}
 #note-popup .np-backdrop{position:absolute;inset:0;background:rgba(0,0,0,0.5);}
-.np-sheet{position:fixed;left:0;right:0;bottom:0;background:white;border-radius:24px 24px 0 0;padding:20px 20px 32px;width:100%;max-width:100%;z-index:701;animation:slideUpSheet 0.3s cubic-bezier(.34,1.1,.64,1) both;}
+.np-sheet{position:fixed;left:0;right:0;bottom:0;background:white;border-radius:24px 24px 0 0;padding:20px 20px 32px;width:100%;z-index:701;animation:slideUpSheet 0.3s cubic-bezier(.34,1.1,.64,1) both;padding-bottom:calc(32px + env(keyboard-inset-height, 0px));}
 .np-handle{width:40px;height:4px;background:#e0e0e0;border-radius:4px;margin:0 auto 16px;}
 .np-title{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:var(--dark);margin-bottom:12px;}
 .np-textarea{width:100%;padding:14px;border:2px solid #eee;border-radius:14px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;resize:none;height:90px;transition:border-color 0.2s;}
@@ -1214,7 +1214,6 @@ function openNotePopup(){
 }
 function closeNotePopup(){
   document.getElementById('note-popup').classList.remove('show');
-  document.querySelector('.np-sheet').style.bottom = '0px';
 }
 function saveNote(){
   const val = document.getElementById('order-note').value.trim();
@@ -1228,20 +1227,6 @@ function saveNote(){
     btn.classList.remove('has-note');
   }
   closeNotePopup();
-}
-
-// Theo dõi bàn phím iOS qua visualViewport — đẩy sheet lên đúng vị trí
-function updateNoteSheetPos(){
-  const sheet = document.querySelector('.np-sheet');
-  if(!sheet) return;
-  if(window.visualViewport){
-    const kbHeight = window.innerHeight - window.visualViewport.height;
-    sheet.style.bottom = Math.max(0, kbHeight) + 'px';
-  }
-}
-if(window.visualViewport){
-  window.visualViewport.addEventListener('resize', updateNoteSheetPos);
-  window.visualViewport.addEventListener('scroll', updateNoteSheetPos);
 }
 </script>
 </body>
