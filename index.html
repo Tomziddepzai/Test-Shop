@@ -100,7 +100,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .no-results .big{font-size:56px;display:block;margin-bottom:12px;}
 
 /* ── CART PANEL ── */
-#cart-panel{position:fixed;right:0;top:0;bottom:0;width:380px;background:white;box-shadow:-8px 0 40px rgba(0,0,0,0.15);z-index:500;transform:translateX(100%);transition:transform 0.35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;}
+#cart-panel{position:fixed;right:0;top:0;bottom:0;width:380px;background:white;box-shadow:-8px 0 40px rgba(0,0,0,0.15);z-index:500;transform:translateX(100%);transition:transform 0.35s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;height:100%;height:100dvh;}
 #cart-panel.open{transform:translateX(0);}
 .cart-header{padding:20px 24px;border-bottom:2px dashed #eee;display:flex;align-items:center;justify-content:space-between;}
 .cart-header h3{font-family:'Baloo 2',cursive;font-size:20px;font-weight:800;color:var(--dark);}
@@ -1174,6 +1174,11 @@ function clearImg(e){
   lbl.classList.remove('has-img');
 }
 function closePopup(id){document.getElementById(id).classList.remove('show');}
+
+// ── Fix iOS keyboard đẩy cart footer ra ngoài ────────────────────
+document.getElementById('order-note').addEventListener('focus', function(){
+  setTimeout(()=>{ this.scrollIntoView({behavior:'smooth', block:'center'}); }, 350);
+});
 </script>
 </body>
 </html>
