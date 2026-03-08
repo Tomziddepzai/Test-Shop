@@ -280,11 +280,90 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .upload-img-label.has-img{border-color:var(--accent);background:#f0fdf9;color:#00a86b;}
 .upload-img-thumb{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;}
 
+/* ── ORDER BADGE on admin btn ── */
+.order-badge{position:absolute;top:-5px;right:-5px;background:#FF4757;color:white;border-radius:100px;min-width:18px;height:18px;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--dark);animation:pulse-badge 1.5s infinite;}
+.order-badge.show{display:flex;}
+@keyframes pulse-badge{0%,100%{transform:scale(1);}50%{transform:scale(1.25);}}
+
+/* ── ADMIN PANEL TABS ── */
+.admin-panel-tabs{display:flex;gap:0;border-bottom:2px solid #eee;margin:-20px -24px 20px;padding:0 24px;}
+.ap-tab{flex:1;padding:12px 8px;background:none;border:none;border-bottom:3px solid transparent;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:var(--muted);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;transition:all 0.2s;touch-action:manipulation;margin-bottom:-2px;}
+.ap-tab:hover{color:var(--dark);}
+.ap-tab.active{color:var(--primary);border-bottom-color:var(--primary);}
+.ap-tab-count{background:#f0f0f0;border-radius:100px;padding:1px 7px;font-size:11px;font-weight:800;}
+.ap-tab.active .ap-tab-count{background:var(--primary);color:white;}
+.ap-tab-count.hot{background:#fff0f0;color:#FF4757;}
+.ap-tab.active .ap-tab-count.hot{background:#FF4757;color:white;}
+
+/* Admin panel tab sections */
+.admin-tab-section{display:none;}
+.admin-tab-section.active{display:block;}
+
+/* ── ORDER STATUS TABS ── */
+.order-status-tabs{display:flex;gap:6px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px;}
+.ost-btn{flex-shrink:0;padding:7px 14px;border-radius:100px;border:2px solid #eee;background:white;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;color:var(--muted);cursor:pointer;display:flex;align-items:center;gap:5px;transition:all 0.15s;touch-action:manipulation;}
+.ost-btn.active-pending{border-color:#FF8C42;background:#fff5ee;color:#FF6B35;}
+.ost-btn.active-ready{border-color:#06D6A0;background:#e8fdf5;color:#00a86b;}
+.ost-btn.active-done{border-color:#aaa;background:#f5f5f5;color:#555;}
+.ost-count{background:rgba(0,0,0,0.07);border-radius:100px;padding:1px 7px;font-size:11px;}
+
+/* ── STATS ROW ── */
+.order-stats-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px;}
+.os-card{background:#f8f9fa;border-radius:12px;padding:10px 12px;text-align:center;border:1.5px solid #eee;}
+.os-card .osv{font-family:'Baloo 2',cursive;font-size:17px;font-weight:800;color:var(--dark);}
+.os-card .osl{font-size:10px;color:var(--muted);margin-top:1px;}
+.os-card.highlight{background:#fff5ee;border-color:#FFD0B8;}
+.os-card.highlight .osv{color:var(--primary);}
+
+/* ── ORDER CARD (light) ── */
+.order-card{background:white;border-radius:14px;margin-bottom:10px;overflow:hidden;border:1.5px solid #eee;box-shadow:0 2px 12px rgba(26,26,46,0.05);animation:slideInCard 0.3s ease;}
+@keyframes slideInCard{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.order-card.status-pending{border-left:4px solid #FF8C42;}
+.order-card.status-ready{border-left:4px solid #06D6A0;}
+.order-card.status-done{border-left:4px solid #ccc;opacity:0.72;}
+.oc-head{padding:9px 14px;display:flex;align-items:center;justify-content:space-between;background:#f8f9fa;border-bottom:1px solid #eee;}
+.oc-id{font-size:11px;font-weight:800;color:var(--muted);font-family:'Baloo 2',cursive;}
+.oc-time{font-size:11px;color:#bbb;}
+.oc-body{padding:12px 14px;}
+.oc-customer{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+.oc-avatar{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--primary),#FF8C42);display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;color:white;flex-shrink:0;font-family:'Baloo 2',cursive;}
+.oc-name{font-weight:800;font-size:14px;color:var(--dark);}
+.oc-phone{font-size:12px;color:var(--muted);margin-top:1px;}
+.oc-items{background:#f8f9fa;border-radius:10px;padding:9px 12px;margin-bottom:8px;}
+.oc-item-row{display:flex;justify-content:space-between;align-items:baseline;padding:3px 0;border-bottom:1px solid #f0f0f0;}
+.oc-item-row:last-child{border-bottom:none;}
+.oc-item-name{font-size:12px;color:var(--text);flex:1;}
+.oc-item-opt{font-size:10px;color:var(--primary);margin-left:4px;font-weight:700;}
+.oc-item-price{font-size:12px;color:var(--muted);font-weight:700;margin-left:8px;white-space:nowrap;}
+.oc-note{font-size:11px;color:var(--muted);background:#fffbf0;border:1px solid #ffe8a0;border-radius:8px;padding:6px 10px;margin-bottom:8px;font-style:italic;}
+.oc-footer{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;}
+.oc-total{font-family:'Baloo 2',cursive;font-size:18px;font-weight:800;color:var(--primary);}
+.oc-actions{display:flex;gap:6px;}
+.btn-order-action{padding:8px 14px;border:none;border-radius:10px;font-family:'Nunito',sans-serif;font-size:12px;font-weight:800;cursor:pointer;touch-action:manipulation;transition:all 0.15s;}
+.btn-confirm{background:#FFD166;color:#1A1A2E;}
+.btn-confirm:hover{background:#ffc107;transform:translateY(-1px);}
+.btn-deliver{background:var(--accent);color:white;}
+.btn-deliver:hover{background:#00b894;transform:translateY(-1px);}
+.btn-delete-order{background:#fff0f0;color:#FF4757;border:1.5px solid #ffd0d0;}
+.btn-delete-order:hover{background:#FF4757;color:white;}
+
+/* live dot inline */
+.live-dot{width:7px;height:7px;border-radius:50%;background:#06D6A0;display:inline-block;animation:livepulse 2s infinite;flex-shrink:0;}
+@keyframes livepulse{0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(6,214,160,0.5);}50%{opacity:0.8;box-shadow:0 0 0 5px rgba(6,214,160,0);}}
+
+.op-empty{text-align:center;padding:40px 20px;color:var(--muted);}
+.op-empty .big{font-size:48px;display:block;margin-bottom:10px;}
+.op-empty p{font-size:14px;}
+.op-section{display:none;}
+.op-section.active{display:block;}
+
 @media(max-width:480px){
   #cart-panel{width:100%;}
   .hero h2{font-size:24px;}
   .products-grid{grid-template-columns:repeat(2,1fr);gap:12px;}
   .field-row,.field-row.three{grid-template-columns:1fr;}
+  .order-stats-row{grid-template-columns:repeat(3,1fr);}
+  .os-card .osv{font-size:14px;}
 }
 </style>
 </head>
@@ -320,7 +399,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
   <div class="header-logo">MSHUONG<span>SHOP</span> 🎒</div>
   <div class="header-right">
     <div class="user-chip" id="user-chip">👤 Khách</div>
-    <button class="admin-btn" onclick="openAdminLogin()">⚙️</button>
+    <button class="admin-btn" onclick="openAdminLogin()" style="position:relative">⚙️<span class="order-badge" id="order-badge"></span></button>
     <button class="cart-btn" onclick="toggleCart()">
       🛒 Giỏ hàng <div class="cart-count" id="cart-count">0</div>
     </button>
@@ -419,6 +498,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
   </div>
 </div>
 
+
 <!-- ADMIN LOGIN -->
 <div id="admin-login">
   <div class="admin-login-box">
@@ -436,57 +516,104 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 <div id="admin-panel">
   <div class="admin-box">
     <div class="admin-head">
-      <h3>⚙️ Quản lý sản phẩm</h3>
+      <h3>⚙️ Quản lý shop <span class="live-dot" style="margin-left:4px"></span></h3>
       <button class="close-admin" onclick="closeAdmin()">✕</button>
     </div>
     <div class="admin-body">
-      <div class="admin-section">
-        <div class="admin-section-title">➕ Thêm sản phẩm mới</div>
-        <div class="field-row full"><input class="a-input" id="a-name" placeholder="Tên sản phẩm" /></div>
-        <div class="field-row three">
-          <input class="a-input" id="a-price" placeholder="Giá (VD: 5000)" type="number" min="0" />
-          <input class="a-input" id="a-unit" placeholder="Đơn vị (cái...)" />
-          <input class="a-input" id="a-stock" placeholder="Số lượng" type="number" min="0" value="10" />
-        </div>
-        <div class="field-row">
-          <input class="a-input" id="a-emoji" placeholder="Emoji (VD: 🖊️)" />
-          <select class="a-select" id="a-cat">
-            <option value="Bút & Viết">✏️ Bút & Viết</option>
-            <option value="Dụng cụ học tập">📐 Dụng cụ học tập</option>
-            <option value="HOT TREND">🔥 HOT TREND</option>
-          </select>
-        </div>
-        <div class="field-row full">
-          <label class="upload-img-label" id="upload-label" onclick="document.getElementById('a-img-file').click()">
-            📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>
-          </label>
-          <input type="file" id="a-img-file" accept="image/*" style="display:none" onchange="previewUpload(this)">
-          <input type="hidden" id="a-img">
-        </div>
-        <div class="option-tag-section">
-          <div class="option-tag-title">🏷️ Tuỳ chọn sản phẩm (màu sắc, size, loại...)</div>
-          <div class="option-tag-input-row">
-            <input class="option-tag-input" id="a-option-input" placeholder="Tên option (VD: Đỏ, Size M...)" maxlength="30">
-            <input class="option-tag-stock-input" id="a-option-stock" placeholder="SL" type="number" min="0" value="10">
-            <button class="option-tag-add-btn" onclick="addOptionTag()">+ Thêm</button>
+
+      <!-- Tab switcher -->
+      <div class="admin-panel-tabs">
+        <button class="ap-tab active" id="apt-products" onclick="switchAdminTab('products')">
+          📦 Sản phẩm <span class="ap-tab-count" id="apt-count-products">0</span>
+        </button>
+        <button class="ap-tab" id="apt-orders" onclick="switchAdminTab('orders')">
+          📋 Đơn hàng <span class="ap-tab-count hot" id="apt-count-orders">0</span>
+        </button>
+      </div>
+
+      <!-- ── TAB: SẢN PHẨM ── -->
+      <div class="admin-tab-section active" id="admin-tab-products">
+        <div class="admin-section">
+          <div class="admin-section-title">➕ Thêm sản phẩm mới</div>
+          <div class="field-row full"><input class="a-input" id="a-name" placeholder="Tên sản phẩm" /></div>
+          <div class="field-row three">
+            <input class="a-input" id="a-price" placeholder="Giá (VD: 5000)" type="number" min="0" />
+            <input class="a-input" id="a-unit" placeholder="Đơn vị (cái...)" />
+            <input class="a-input" id="a-stock" placeholder="Số lượng" type="number" min="0" value="10" />
           </div>
-          <div class="option-tags-list" id="a-option-tags"></div>
-          <div id="option-min-hint" style="display:none;font-size:11px;color:#FF4757;font-weight:700;margin-top:6px;">⚠️ Cần ít nhất 2 option nếu dùng tuỳ chọn!</div>
-          <div class="option-tag-hint">Nhập tên + số lượng → Enter hoặc bấm "+ Thêm". Để trống nếu sản phẩm không có lựa chọn.</div>
+          <div class="field-row">
+            <input class="a-input" id="a-emoji" placeholder="Emoji (VD: 🖊️)" />
+            <select class="a-select" id="a-cat">
+              <option value="Bút & Viết">✏️ Bút & Viết</option>
+              <option value="Dụng cụ học tập">📐 Dụng cụ học tập</option>
+              <option value="HOT TREND">🔥 HOT TREND</option>
+            </select>
+          </div>
+          <div class="field-row full">
+            <label class="upload-img-label" id="upload-label" onclick="document.getElementById('a-img-file').click()">
+              📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>
+            </label>
+            <input type="file" id="a-img-file" accept="image/*" style="display:none" onchange="previewUpload(this)">
+            <input type="hidden" id="a-img">
+          </div>
+          <div class="option-tag-section">
+            <div class="option-tag-title">🏷️ Tuỳ chọn sản phẩm (màu sắc, size, loại...)</div>
+            <div class="option-tag-input-row">
+              <input class="option-tag-input" id="a-option-input" placeholder="Tên option (VD: Đỏ, Size M...)" maxlength="30">
+              <input class="option-tag-stock-input" id="a-option-stock" placeholder="SL" type="number" min="0" value="10">
+              <button class="option-tag-add-btn" onclick="addOptionTag()">+ Thêm</button>
+            </div>
+            <div class="option-tags-list" id="a-option-tags"></div>
+            <div id="option-min-hint" style="display:none;font-size:11px;color:#FF4757;font-weight:700;margin-top:6px;">⚠️ Cần ít nhất 2 option nếu dùng tuỳ chọn!</div>
+            <div class="option-tag-hint">Nhập tên + số lượng → Enter hoặc bấm "+ Thêm". Để trống nếu sản phẩm không có lựa chọn.</div>
+          </div>
+          <button class="btn-add-product" onclick="addProduct()">+ Thêm sản phẩm</button>
         </div>
-        <button class="btn-add-product" onclick="addProduct()">+ Thêm sản phẩm</button>
+        <div class="admin-section">
+          <div class="admin-section-title">📦 Danh sách sản phẩm (<span id="product-count">0</span>)</div>
+          <div class="product-list-admin" id="product-list-admin"></div>
+        </div>
       </div>
-      <div class="admin-section">
-        <div class="admin-section-title">📦 Danh sách sản phẩm (<span id="product-count">0</span>)</div>
-        <div class="product-list-admin" id="product-list-admin"></div>
+
+      <!-- ── TAB: ĐƠN HÀNG ── -->
+      <div class="admin-tab-section" id="admin-tab-orders">
+        <!-- Stats -->
+        <div class="order-stats-row" id="order-stats-row">
+          <div class="os-card highlight"><div class="osv" id="stat-revenue">0đ</div><div class="osl">Doanh thu hôm nay</div></div>
+          <div class="os-card"><div class="osv" id="stat-total">0</div><div class="osl">Tổng đơn</div></div>
+          <div class="os-card"><div class="osv" id="stat-pending">0</div><div class="osl">Chờ xử lý</div></div>
+        </div>
+        <!-- Status filter tabs -->
+        <div class="order-status-tabs">
+          <button class="ost-btn active-pending" id="ost-pending" onclick="switchOrderTab('pending')">
+            ⏳ Chờ xác nhận <span class="ost-count" id="tab-count-pending">0</span>
+          </button>
+          <button class="ost-btn" id="ost-ready" onclick="switchOrderTab('ready')">
+            📦 Đã chuẩn bị <span class="ost-count" id="tab-count-ready">0</span>
+          </button>
+          <button class="ost-btn" id="ost-done" onclick="switchOrderTab('done')">
+            ✅ Đã giao <span class="ost-count" id="tab-count-done">0</span>
+          </button>
+        </div>
+        <!-- Order lists -->
+        <div class="op-section active" id="op-pending">
+          <div class="op-empty"><span class="big">🎉</span><p>Chưa có đơn chờ xác nhận</p></div>
+        </div>
+        <div class="op-section" id="op-ready">
+          <div class="op-empty"><span class="big">📦</span><p>Chưa có đơn đang chuẩn bị</p></div>
+        </div>
+        <div class="op-section" id="op-done">
+          <div class="op-empty"><span class="big">✅</span><p>Chưa có đơn đã giao</p></div>
+        </div>
       </div>
+
     </div>
   </div>
 </div>
 
 <script>
-const BOT_TOKEN  = '8516807175:AAEx_VZh_dl_ECiMjeicNctmgUA4qCNE7vc';
-const CHAT_ID    = '5252076816';
+const BOT_TOKEN  = '8282934606:AAFlsscY2DKZN12I95PX_VZU4UGVVp_MeXI';
+const CHAT_ID    = '8547038863';
 const ADMIN_PASS = 'admin123';
 
 firebase.initializeApp({
@@ -1084,6 +1211,29 @@ function doSend(msg){
   xhr.send();
 }
 function showSuccess(){
+  // Save order to Firebase
+  const orderId = 'ORD_' + Date.now();
+  const orderItems = Object.values(cart).map(i=>({
+    id: i.id, name: i.name, emoji: i.emoji||'📦',
+    price: i.price, qty: i.qty, unit: i.unit,
+    selectedOption: i.selectedOption||null,
+  }));
+  const total = orderItems.reduce((s,i)=>s+i.price*i.qty,0);
+  const note = document.getElementById('order-note').value;
+  const orderData = {
+    id: orderId,
+    customer: customer.name,
+    phone: customer.phone,
+    items: orderItems,
+    total,
+    note: note||'',
+    status: 'pending',
+    createdAt: Date.now(),
+    updatedAt: Date.now(),
+  };
+  db.ref('orders/'+orderId).set(orderData);
+
+  // Deduct stock
   Object.values(cart).forEach(item=>{
     const p = products.find(x=>x.id==item.id);
     if(!p) return;
@@ -1126,7 +1276,190 @@ function clearImg(e){
   lbl.innerHTML='📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
   lbl.classList.remove('has-img');
 }
+
 function closePopup(id){document.getElementById(id).classList.remove('show');}
+
+// ── ADMIN PANEL TABS ──────────────────────────────────────────────
+let currentAdminTab = 'products';
+function switchAdminTab(tab){
+  currentAdminTab = tab;
+  document.querySelectorAll('.ap-tab').forEach(b=>b.classList.toggle('active', b.id==='apt-'+tab));
+  document.querySelectorAll('.admin-tab-section').forEach(s=>s.classList.toggle('active', s.id==='admin-tab-'+tab));
+  if(tab==='orders') renderOrders();
+}
+
+// ── ORDER MANAGEMENT ─────────────────────────────────────────────
+let orders = {};
+let activeOrderTab = 'pending';
+let prevPendingCount = -1;
+let ordersListenerActive = false;
+
+// Web Audio ding
+function playDing(){
+  try{
+    const ctx=new(window.AudioContext||window.webkitAudioContext)();
+    const o1=ctx.createOscillator(),o2=ctx.createOscillator(),g=ctx.createGain();
+    o1.connect(g);o2.connect(g);g.connect(ctx.destination);
+    o1.frequency.value=880;o2.frequency.value=1108;
+    o1.type='sine';o2.type='sine';
+    g.gain.setValueAtTime(0,ctx.currentTime);
+    g.gain.linearRampToValueAtTime(0.25,ctx.currentTime+0.02);
+    g.gain.exponentialRampToValueAtTime(0.001,ctx.currentTime+1.2);
+    o1.start(ctx.currentTime);o2.start(ctx.currentTime+0.08);
+    o1.stop(ctx.currentTime+1.2);o2.stop(ctx.currentTime+1.3);
+  }catch(e){}
+}
+
+function startOrderListener(){
+  if(ordersListenerActive) return;
+  ordersListenerActive = true;
+  db.ref('orders').on('value', snap=>{
+    const data = snap.val();
+    orders = data || {};
+    const pendingNow = Object.values(orders).filter(o=>o.status==='pending').length;
+    // Only ding if not first load and count went up
+    if(prevPendingCount >= 0 && pendingNow > prevPendingCount) playDing();
+    prevPendingCount = pendingNow;
+    // Badge on gear icon
+    const badge = document.getElementById('order-badge');
+    if(badge){
+      badge.textContent = pendingNow > 0 ? pendingNow : '';
+      badge.classList.toggle('show', pendingNow > 0);
+    }
+    // Update tab count badge on orders tab button
+    const aptCount = document.getElementById('apt-count-orders');
+    if(aptCount){
+      aptCount.textContent = pendingNow;
+      aptCount.classList.toggle('hot', pendingNow > 0);
+    }
+    if(currentAdminTab==='orders') renderOrders();
+  });
+}
+
+function switchOrderTab(tab){
+  activeOrderTab = tab;
+  // Update pill button styles
+  ['pending','ready','done'].forEach(s=>{
+    const btn = document.getElementById('ost-'+s);
+    if(!btn) return;
+    btn.className = 'ost-btn';
+    if(s===tab) btn.classList.add('active-'+tab);
+  });
+  // Show/hide sections
+  document.querySelectorAll('.op-section').forEach(el=>el.classList.toggle('active', el.id==='op-'+tab));
+}
+
+function timeSince(ts){
+  const s=Math.floor((Date.now()-ts)/1000);
+  if(s<60) return 'vừa xong';
+  const m=Math.floor(s/60);
+  if(m<60) return m+'p trước';
+  const h=Math.floor(m/60);
+  if(h<24) return h+'h trước';
+  return Math.floor(h/24)+'d trước';
+}
+
+function renderOrders(){
+  const all = Object.values(orders).sort((a,b)=>b.createdAt-a.createdAt);
+  const groups={pending:[],ready:[],done:[]};
+  all.forEach(o=>{ if(groups[o.status]) groups[o.status].push(o); });
+
+  // Counts
+  ['pending','ready','done'].forEach(s=>{
+    const el=document.getElementById('tab-count-'+s);
+    if(el) el.textContent=groups[s].length;
+  });
+
+  // Stats
+  const today=new Date(); today.setHours(0,0,0,0);
+  const rev=all.filter(o=>o.status==='done'&&o.createdAt>=today.getTime()).reduce((s,o)=>s+(o.total||0),0);
+  const sr=document.getElementById('stat-revenue');
+  const st=document.getElementById('stat-total');
+  const sp=document.getElementById('stat-pending');
+  if(sr) sr.textContent=rev>0?rev.toLocaleString('vi-VN')+'đ':'0đ';
+  if(st) st.textContent=all.length;
+  if(sp) sp.textContent=groups.pending.length;
+
+  // Render cards per section
+  ['pending','ready','done'].forEach(status=>{
+    const el=document.getElementById('op-'+status);
+    if(!el) return;
+    const items=groups[status];
+    if(!items.length){
+      const emojis={pending:'🎉',ready:'📦',done:'✅'};
+      const msgs={pending:'Chưa có đơn chờ xác nhận',ready:'Chưa có đơn đang chuẩn bị',done:'Chưa có đơn đã giao'};
+      el.innerHTML=`<div class="op-empty"><span class="big">${emojis[status]}</span><p>${msgs[status]}</p></div>`;
+      return;
+    }
+    el.innerHTML=items.map(o=>renderOrderCard(o)).join('');
+  });
+}
+
+function renderOrderCard(o){
+  const initials=o.customer.trim().split(' ').pop().charAt(0).toUpperCase();
+  const itemsHtml=(o.items||[]).map(i=>{
+    const optBadge=i.selectedOption?`<span class="oc-item-opt">[${i.selectedOption}]</span>`:'';
+    return `<div class="oc-item-row">
+      <span class="oc-item-name">${i.emoji||'📦'} ${i.name}${optBadge} ×${i.qty}</span>
+      <span class="oc-item-price">${(i.price*i.qty).toLocaleString('vi-VN')}đ</span>
+    </div>`;
+  }).join('');
+  const noteHtml=o.note?`<div class="oc-note">📝 ${o.note}</div>`:'';
+  let actionBtns='';
+  if(o.status==='pending'){
+    actionBtns=`<button class="btn-order-action btn-confirm" onclick="updateOrderStatus('${o.id}','ready')">📦 Xác nhận</button>
+                <button class="btn-order-action btn-delete-order" onclick="deleteOrder('${o.id}')">🗑️</button>`;
+  } else if(o.status==='ready'){
+    actionBtns=`<button class="btn-order-action btn-deliver" onclick="updateOrderStatus('${o.id}','done')">✅ Đã giao</button>
+                <button class="btn-order-action btn-delete-order" onclick="deleteOrder('${o.id}')">🗑️</button>`;
+  } else {
+    actionBtns=`<button class="btn-order-action btn-delete-order" onclick="deleteOrder('${o.id}')">🗑️ Xoá</button>`;
+  }
+  return `<div class="order-card status-${o.status}" id="ocard-${o.id}">
+    <div class="oc-head">
+      <span class="oc-id">#${o.id.slice(-8).toUpperCase()}</span>
+      <span class="oc-time">⏱ ${timeSince(o.createdAt)}</span>
+    </div>
+    <div class="oc-body">
+      <div class="oc-customer">
+        <div class="oc-avatar">${initials}</div>
+        <div>
+          <div class="oc-name">${o.customer}</div>
+          <div class="oc-phone">📞 ${o.phone}</div>
+        </div>
+      </div>
+      <div class="oc-items">${itemsHtml}</div>
+      ${noteHtml}
+      <div class="oc-footer">
+        <span class="oc-total">${(o.total||0).toLocaleString('vi-VN')}đ</span>
+        <div class="oc-actions">${actionBtns}</div>
+      </div>
+    </div>
+  </div>`;
+}
+
+function updateOrderStatus(orderId, newStatus){
+  db.ref('orders/'+orderId+'/status').set(newStatus);
+  db.ref('orders/'+orderId+'/updatedAt').set(Date.now());
+  // Auto-switch to next tab
+  const nextTab={pending:'ready',ready:'done'}[newStatus];
+  if(nextTab) setTimeout(()=>switchOrderTab(nextTab), 280);
+}
+
+function deleteOrder(orderId){
+  if(!confirm('Xoá đơn hàng này?')) return;
+  db.ref('orders/'+orderId).remove();
+}
+
+// Hook into openAdmin to start listener and update product tab count
+const _origOpenAdmin = openAdmin;
+openAdmin = function(){
+  _origOpenAdmin();
+  // Update product count badge
+  const aptCP = document.getElementById('apt-count-products');
+  if(aptCP) aptCP.textContent = products.length;
+  startOrderListener();
+};
 </script>
 </body>
 </html>
