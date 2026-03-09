@@ -280,6 +280,72 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .upload-img-label.has-img{border-color:var(--accent);background:#f0fdf9;color:#00a86b;}
 .upload-img-thumb{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;}
 
+/* ── VOUCHER in cart ── */
+.voucher-row{display:flex;gap:8px;margin:8px 0 4px;}
+.voucher-input{flex:1;padding:10px 14px;border:2px solid #eee;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;text-transform:uppercase;letter-spacing:1px;transition:border-color 0.2s;}
+.voucher-input:focus{border-color:var(--primary);}
+.voucher-input.success{border-color:#00a86b;background:#f0fdf9;}
+.voucher-input.error{border-color:#FF4757;background:#fff5f5;}
+.voucher-btn{padding:10px 16px;background:var(--dark);color:white;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background 0.2s;}
+.voucher-btn:hover{background:var(--primary);}
+.voucher-msg{font-size:12px;font-weight:700;min-height:18px;margin-bottom:4px;padding:0 2px;}
+.voucher-msg.ok{color:#00a86b;}
+.voucher-msg.err{color:#FF4757;}
+.voucher-discount-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#00a86b;font-weight:700;padding:2px 0;margin-bottom:2px;}
+.voucher-tag{display:inline-flex;align-items:center;gap:5px;background:#e8fdf3;color:#00a86b;border:1.5px solid #b2f0d4;border-radius:100px;padding:3px 10px;font-size:12px;font-weight:800;}
+.voucher-tag button{background:none;border:none;color:#00a86b;cursor:pointer;font-size:13px;padding:0;line-height:1;touch-action:manipulation;}
+
+/* ── VOUCHER in admin ── */
+.vc-list{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
+.vc-item{background:#f8f9fa;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:10px;border:1.5px solid #eee;}
+.vc-item.active-vc{border-color:#b2f0d4;background:#f0fdf9;}
+.vc-item.inactive-vc{opacity:0.55;}
+.vc-code{font-family:'Baloo 2',cursive;font-weight:800;font-size:14px;color:var(--dark);letter-spacing:1px;}
+.vc-meta{font-size:11px;color:var(--muted);margin-top:1px;}
+.vc-badge{background:var(--primary);color:white;border-radius:100px;padding:2px 10px;font-size:11px;font-weight:800;margin-left:auto;white-space:nowrap;}
+.vc-badge.used-up{background:#ccc;}
+.vc-del{background:#fff0f0;border:none;border-radius:8px;padding:5px 9px;color:#FF4757;font-size:12px;cursor:pointer;font-weight:700;touch-action:manipulation;margin-left:4px;}
+.vc-del:hover{background:#FF4757;color:white;}
+
+/* ── PRODUCT IMAGE CLICKABLE ── */
+.product-img{cursor:zoom-in;position:relative;}
+.product-img:hover::after{content:'🔍';position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.55);color:white;border-radius:8px;padding:3px 7px;font-size:12px;}
+.img-dot-row{display:flex;justify-content:center;gap:4px;padding:4px 0 0;}
+.img-dot{width:6px;height:6px;border-radius:50%;background:#ddd;transition:background 0.2s;}
+.img-dot.active{background:var(--primary);}
+
+/* ── LIGHTBOX ── */
+#lightbox{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;flex-direction:column;}
+#lightbox.show{display:flex;}
+.lb-img-wrap{position:relative;max-width:94vw;max-height:78vh;display:flex;align-items:center;justify-content:center;}
+.lb-img-wrap img{max-width:94vw;max-height:78vh;border-radius:12px;object-fit:contain;user-select:none;-webkit-user-drag:none;}
+.lb-emoji{font-size:100px;user-select:none;}
+.lb-prev,.lb-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:white;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;backdrop-filter:blur(4px);transition:background 0.2s;}
+.lb-prev{left:-20px;}
+.lb-next{right:-20px;}
+.lb-prev:hover,.lb-next:hover{background:rgba(255,255,255,0.3);}
+.lb-prev.hidden,.lb-next.hidden{display:none;}
+.lb-bottom{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.lb-name{color:white;font-weight:700;font-size:15px;font-family:'Baloo 2',cursive;}
+.lb-dots{display:flex;gap:7px;}
+.lb-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:background 0.2s;}
+.lb-dot.active{background:white;}
+.lb-close{position:fixed;top:16px;right:16px;background:rgba(255,255,255,0.12);border:none;color:white;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;backdrop-filter:blur(4px);}
+.lb-close:hover{background:rgba(255,71,87,0.5);}
+.lb-counter{color:rgba(255,255,255,0.45);font-size:12px;font-weight:700;}
+
+/* ── MULTI-IMAGE UPLOAD in admin ── */
+.multi-img-section{background:#f8f9fa;border-radius:12px;padding:12px 14px;margin-bottom:8px;}
+.multi-img-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;}
+.multi-img-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;}
+.img-slot{aspect-ratio:1;border-radius:10px;border:2px dashed #ddd;background:#fafafa;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;transition:border-color 0.2s;}
+.img-slot:hover{border-color:var(--primary);}
+.img-slot.filled{border-style:solid;border-color:#eee;}
+.img-slot img{width:100%;height:100%;object-fit:cover;}
+.img-slot .slot-add{font-size:22px;color:#ccc;}
+.img-slot .slot-del{position:absolute;top:3px;right:3px;background:rgba(255,71,87,0.85);color:white;border:none;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;}
+.multi-img-hint{font-size:11px;color:#bbb;}
+
 /* ── ORDER BADGE on admin btn ── */
 .order-badge{position:absolute;top:-5px;right:-5px;background:#FF4757;color:white;border-radius:100px;min-width:18px;height:18px;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--dark);animation:pulse-badge 1.5s infinite;}
 .order-badge.show{display:flex;}
@@ -434,7 +500,19 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
     <div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>
   </div>
   <div class="cart-footer">
-    <div class="cart-total"><span>Tổng cộng:</span><strong id="cart-total">0đ</strong></div>
+    <div class="cart-total"><span>Tạm tính:</span><strong id="cart-subtotal">0đ</strong></div>
+    <div id="voucher-section">
+      <div class="voucher-row">
+        <input class="voucher-input" id="voucher-input" placeholder="NHẬP MÃ GIẢM GIÁ" maxlength="20" oninput="this.value=this.value.toUpperCase()" />
+        <button class="voucher-btn" onclick="applyVoucher()">Áp dụng</button>
+      </div>
+      <div class="voucher-msg" id="voucher-msg"></div>
+      <div id="voucher-applied-row" style="display:none" class="voucher-discount-row">
+        <span id="voucher-tag-el"></span>
+        <span id="voucher-discount-text" style="color:#00a86b"></span>
+      </div>
+    </div>
+    <div class="cart-total" id="cart-total-row" style="font-size:16px;font-weight:900;border-top:2px dashed #eee;padding-top:8px;margin-top:4px"><span>Tổng cộng:</span><strong id="cart-total">0đ</strong></div>
     <textarea class="note-input" id="order-note" placeholder="Ghi chú (địa chỉ, yêu cầu...)" rows="2"></textarea>
     <button class="order-btn" id="order-btn" onclick="sendOrder()" disabled>📲 Đặt Hàng</button>
   </div>
@@ -529,6 +607,9 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
         <button class="ap-tab" id="apt-orders" onclick="switchAdminTab('orders')">
           📋 Đơn hàng <span class="ap-tab-count hot" id="apt-count-orders">0</span>
         </button>
+        <button class="ap-tab" id="apt-vouchers" onclick="switchAdminTab('vouchers')">
+          🎟️ Voucher
+        </button>
       </div>
 
       <!-- ── TAB: SẢN PHẨM ── -->
@@ -550,11 +631,19 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
             </select>
           </div>
           <div class="field-row full">
-            <label class="upload-img-label" id="upload-label" onclick="document.getElementById('a-img-file').click()">
-              📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>
-            </label>
-            <input type="file" id="a-img-file" accept="image/*" style="display:none" onchange="previewUpload(this)">
-            <input type="hidden" id="a-img">
+            <!-- Multi-image upload: tối đa 4 ảnh -->
+            <div class="multi-img-section">
+              <div class="multi-img-title">📷 Ảnh sản phẩm (tối đa 4 ảnh)</div>
+              <div class="multi-img-grid" id="img-slots-grid">
+                <div class="img-slot" id="img-slot-0" onclick="triggerImgSlot(0)"><span class="slot-add">＋</span></div>
+                <div class="img-slot" id="img-slot-1" onclick="triggerImgSlot(1)"><span class="slot-add">＋</span></div>
+                <div class="img-slot" id="img-slot-2" onclick="triggerImgSlot(2)"><span class="slot-add">＋</span></div>
+                <div class="img-slot" id="img-slot-3" onclick="triggerImgSlot(3)"><span class="slot-add">＋</span></div>
+              </div>
+              <input type="file" id="a-img-file" accept="image/*" style="display:none" onchange="handleSlotUpload(this)">
+              <input type="hidden" id="a-img"><!-- giữ ảnh đầu cho tương thích cũ -->
+              <div class="multi-img-hint">Bấm vào ô để chọn ảnh. Ảnh đầu tiên là ảnh chính hiển thị trên thẻ sản phẩm.</div>
+            </div>
           </div>
           <div class="option-tag-section">
             <div class="option-tag-title">🏷️ Tuỳ chọn sản phẩm (màu sắc, size, loại...)</div>
@@ -607,7 +696,43 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
         </div>
       </div>
 
+      <!-- ── TAB: VOUCHER ── -->
+      <div class="admin-tab-section" id="admin-tab-vouchers">
+        <div class="admin-section">
+          <div class="admin-section-title">🎟️ Tạo mã giảm giá mới</div>
+          <div class="field-row full">
+            <input class="a-input" id="vc-code" placeholder="Mã voucher (VD: SALE20)" maxlength="20" oninput="this.value=this.value.toUpperCase()" style="letter-spacing:1px;font-weight:800;" />
+          </div>
+          <div class="field-row">
+            <input class="a-input" id="vc-discount" placeholder="Giảm % (VD: 20)" type="number" min="1" max="100" />
+            <input class="a-input" id="vc-uses" placeholder="Số lần dùng (VD: 10)" type="number" min="1" max="999" />
+          </div>
+          <button class="btn-add-product" onclick="createVoucher()" style="background:var(--accent)">🎟️ Tạo voucher</button>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section-title">📋 Danh sách voucher</div>
+          <div class="vc-list" id="vc-list">
+            <div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có voucher nào</div>
+          </div>
+        </div>
+      </div>
+
     </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="lbClickOutside(event)">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <div class="lb-img-wrap" id="lb-img-wrap">
+    <button class="lb-prev" id="lb-prev" onclick="lbNav(-1)">‹</button>
+    <div id="lb-img-content"></div>
+    <button class="lb-next" id="lb-next" onclick="lbNav(1)">›</button>
+  </div>
+  <div class="lb-bottom">
+    <div class="lb-name" id="lb-name"></div>
+    <div class="lb-dots" id="lb-dots"></div>
+    <div class="lb-counter" id="lb-counter"></div>
   </div>
 </div>
 
@@ -727,8 +852,15 @@ db.ref('products').on('value', snap => {
   if (document.getElementById('admin-panel').classList.contains('show')) renderAdminList();
 });
 
+function getProductImages(p) {
+  // images[] array takes priority, fallback to legacy image field
+  if (p.images && p.images.length > 0) return p.images.filter(Boolean);
+  if (p.image) return [p.image];
+  return [];
+}
 function imgHtml(p) {
-  if (p.image) return `<img src="${p.image}" alt="${p.name}" onerror="this.outerHTML='<span>${p.emoji||'📦'}</span>'"/>`;
+  const imgs = getProductImages(p);
+  if (imgs.length > 0) return `<img src="${imgs[0]}" alt="${p.name}" onerror="this.outerHTML='<span>${p.emoji||'📦'}</span>'"/>`;
   return `<span>${p.emoji||'📦'}</span>`;
 }
 function getEffectiveStock(p) {
@@ -774,10 +906,16 @@ function renderShop() {
       const optPills = opts.length
         ? `<div class="card-options">${opts.slice(0,3).map(o=>`<span class="card-option-pill">${o.name}</span>`).join('')}${opts.length>3?`<span class="card-option-more">+${opts.length-3}</span>`:''}</div>`
         : '';
+      const imgs = getProductImages(p);
+      const hasMulti = imgs.length > 1;
+      const dotsHtml = hasMulti
+        ? `<div class="img-dot-row">${imgs.map((_,i)=>`<span class="img-dot${i===0?' active':''}"></span>`).join('')}</div>`
+        : '';
       html += `
       <div class="product-card${oos?' out-of-stock':''}">
         <button class="delete-badge" onclick="deleteProduct(${p.id})">✕</button>
-        <div class="product-img">${imgHtml(p)}</div>
+        <div class="product-img" onclick="openLightbox(${p.id})">${imgHtml(p)}</div>
+        ${dotsHtml}
         <div class="product-info">
           <div class="product-name">${p.name}</div>
           <div class="product-price">${p.price.toLocaleString('vi-VN')}đ <span class="product-unit">/${p.unit}</span></div>
@@ -958,21 +1096,22 @@ function addProduct(){
   const unit=document.getElementById('a-unit').value.trim();
   const emoji=document.getElementById('a-emoji').value.trim()||'📦';
   const cat=document.getElementById('a-cat').value;
-  const image=document.getElementById('a-img').value||null;
   if(!name||!price||!unit){alert('Vui lòng điền đầy đủ: Tên, Giá, Đơn vị!');return;}
   const options=[...adminOptionTags];
   const stock = options.length>0 ? 0 : (parseInt(document.getElementById('a-stock').value)||0);
   const newId=Date.now();
-  db.ref('products/'+newId).set({id:newId,name,price,unit,stock,emoji,cat,image,colors:options});
+  // Lấy mảng ảnh từ adminImgSlots
+  const images = adminImgSlots.filter(Boolean);
+  const image = images[0] || null; // giữ field cũ cho tương thích
+  db.ref('products/'+newId).set({id:newId,name,price,unit,stock,emoji,cat,image,images,colors:options});
   ['a-name','a-price','a-unit','a-emoji','a-img'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('a-stock').value='10';
   document.getElementById('a-img-file').value='';
   adminOptionTags=[];
+  adminImgSlots=[null,null,null,null];
   renderAdminOptionTags();
+  renderImgSlots();
   syncAdminFormState();
-  const lbl=document.getElementById('upload-label');
-  lbl.innerHTML='📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
-  lbl.classList.remove('has-img');
 }
 
 function deleteProduct(id){
@@ -1135,10 +1274,22 @@ function changeQty(cartKey, d){
 }
 function renderCart(){
   const entries=Object.entries(cart);
-  const total=entries.reduce((s,[,i])=>s+i.price*i.qty,0);
+  const subtotal=entries.reduce((s,[,i])=>s+i.price*i.qty,0);
+  const discount = activeVoucher ? Math.round(subtotal * activeVoucher.discount / 100) : 0;
+  const total = Math.max(0, subtotal - discount);
   document.getElementById('cart-count').textContent=entries.reduce((s,[,i])=>s+i.qty,0);
+  document.getElementById('cart-subtotal').textContent=subtotal.toLocaleString('vi-VN')+'đ';
   document.getElementById('cart-total').textContent=total.toLocaleString('vi-VN')+'đ';
   document.getElementById('order-btn').disabled=entries.length===0;
+  // Show/hide discount row
+  const appliedRow = document.getElementById('voucher-applied-row');
+  if(activeVoucher && discount > 0){
+    appliedRow.style.display='flex';
+    document.getElementById('voucher-tag-el').innerHTML=`<span class="voucher-tag">🎟️ ${activeVoucher.code} −${activeVoucher.discount}% <button onclick="removeVoucher()">✕</button></span>`;
+    document.getElementById('voucher-discount-text').textContent=`−${discount.toLocaleString('vi-VN')}đ`;
+  } else {
+    appliedRow.style.display='none';
+  }
   const el=document.getElementById('cart-items');
   if(!entries.length){
     el.innerHTML=`<div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>`;
@@ -1173,11 +1324,16 @@ function sendOrder(){
   const items=Object.values(cart);
   if(!items.length) return;
   const note=document.getElementById('order-note').value;
-  const total=items.reduce((s,i)=>s+i.price*i.qty,0);
+  const subtotal=items.reduce((s,i)=>s+i.price*i.qty,0);
+  const discount = activeVoucher ? Math.round(subtotal * activeVoucher.discount / 100) : 0;
+  const total = Math.max(0, subtotal - discount);
   const list=items.map(i=>{
     const optStr=i.selectedOption?` [${i.selectedOption}]`:'';
     return `  • ${i.emoji} ${i.name}${optStr} x${i.qty} = ${(i.price*i.qty).toLocaleString('vi-VN')}đ`;
   }).join('\n');
+  const discountLine = activeVoucher
+    ? `\n🎟️ Voucher ${activeVoucher.code} (−${activeVoucher.discount}%): −${discount.toLocaleString('vi-VN')}đ`
+    : '';
   lastMsg=
 `🛒 ĐƠN HÀNG MỚI – MsHuongShop
 ━━━━━━━━━━━━━━━━━━━
@@ -1187,7 +1343,8 @@ function sendOrder(){
 📦 Sản phẩm:
 ${list}
 ━━━━━━━━━━━━━━━━━━━
-💰 Tổng cộng: ${total.toLocaleString('vi-VN')}đ
+💰 Tạm tính: ${subtotal.toLocaleString('vi-VN')}đ${discountLine}
+💳 Tổng thanh toán: ${total.toLocaleString('vi-VN')}đ
 📝 Ghi chú: ${note||'Không có'}
 ━━━━━━━━━━━━━━━━━━━
 ⏰ ${new Date().toLocaleString('vi-VN')}`;
@@ -1218,13 +1375,18 @@ function showSuccess(){
     price: i.price, qty: i.qty, unit: i.unit,
     selectedOption: i.selectedOption||null,
   }));
-  const total = orderItems.reduce((s,i)=>s+i.price*i.qty,0);
+  const subtotal = orderItems.reduce((s,i)=>s+i.price*i.qty,0);
+  const discount = activeVoucher ? Math.round(subtotal * activeVoucher.discount / 100) : 0;
+  const total = Math.max(0, subtotal - discount);
   const note = document.getElementById('order-note').value;
   const orderData = {
     id: orderId,
     customer: customer.name,
     phone: customer.phone,
     items: orderItems,
+    subtotal,
+    discount,
+    voucherCode: activeVoucher ? activeVoucher.code : null,
     total,
     note: note||'',
     status: 'pending',
@@ -1232,6 +1394,24 @@ function showSuccess(){
     updatedAt: Date.now(),
   };
   db.ref('orders/'+orderId).set(orderData);
+
+  // Consume voucher (tăng usedCount + ghi device)
+  if(activeVoucher){
+    const vcRef = db.ref('vouchers/'+activeVoucher.code);
+    vcRef.transaction(v => {
+      if(!v) return v;
+      v.usedCount = (v.usedCount||0) + 1;
+      if(!v.usedDevices) v.usedDevices = [];
+      if(!v.usedDevices.includes(deviceId)) v.usedDevices.push(deviceId);
+      return v;
+    });
+    activeVoucher = null;
+    document.getElementById('voucher-input').value='';
+    document.getElementById('voucher-input').className='voucher-input';
+    document.getElementById('voucher-msg').textContent='';
+    document.getElementById('voucher-msg').className='voucher-msg';
+    document.getElementById('voucher-applied-row').style.display='none';
+  }
 
   // Deduct stock
   Object.values(cart).forEach(item=>{
@@ -1254,28 +1434,131 @@ function showSuccess(){
   lastMsg='';
 }
 
-function previewUpload(input){
-  const file=input.files[0];
-  if(!file) return;
-  if(file.size>2*1024*1024){alert('Ảnh quá lớn! Vui lòng chọn ảnh dưới 2MB.');input.value='';return;}
-  const reader=new FileReader();
-  reader.onload=function(e){
-    const b64=e.target.result;
-    document.getElementById('a-img').value=b64;
-    const lbl=document.getElementById('upload-label');
-    lbl.innerHTML=`<img class="upload-img-thumb" src="${b64}"> <span>✅ ${file.name}</span> <small style="margin-left:auto;cursor:pointer;color:#FF4757" onclick="clearImg(event)">✕ Xoá</small>`;
-    lbl.classList.add('has-img');
+// ── MULTI-IMAGE UPLOAD ────────────────────────────────────────────
+let adminImgSlots = [null, null, null, null];
+let currentSlotIndex = 0;
+
+function triggerImgSlot(idx) {
+  currentSlotIndex = idx;
+  document.getElementById('a-img-file').value = '';
+  document.getElementById('a-img-file').click();
+}
+
+function handleSlotUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2*1024*1024) { alert('Ảnh quá lớn! Vui lòng chọn ảnh dưới 2MB.'); input.value=''; return; }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    adminImgSlots[currentSlotIndex] = e.target.result;
+    document.getElementById('a-img').value = adminImgSlots[0] || '';
+    renderImgSlots();
   };
   reader.readAsDataURL(file);
 }
-function clearImg(e){
+
+function removeImgSlot(e, idx) {
   e.stopPropagation();
-  document.getElementById('a-img').value='';
-  document.getElementById('a-img-file').value='';
-  const lbl=document.getElementById('upload-label');
-  lbl.innerHTML='📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
-  lbl.classList.remove('has-img');
+  adminImgSlots[idx] = null;
+  document.getElementById('a-img').value = adminImgSlots[0] || '';
+  renderImgSlots();
 }
+
+function renderImgSlots() {
+  for (let i = 0; i < 4; i++) {
+    const slot = document.getElementById('img-slot-' + i);
+    if (!slot) continue;
+    if (adminImgSlots[i]) {
+      slot.className = 'img-slot filled';
+      slot.innerHTML = `<img src="${adminImgSlots[i]}"><button class="slot-del" onclick="removeImgSlot(event,${i})">✕</button>`;
+      slot.onclick = () => triggerImgSlot(i);
+    } else {
+      slot.className = 'img-slot';
+      slot.innerHTML = `<span class="slot-add">＋</span>`;
+      slot.onclick = () => triggerImgSlot(i);
+    }
+  }
+}
+
+// ── LIGHTBOX ─────────────────────────────────────────────────────
+let lbImages = [];
+let lbIndex = 0;
+let lbTouchStartX = 0;
+
+function openLightbox(productId) {
+  const p = products.find(x => x.id === productId);
+  if (!p) return;
+  lbImages = getProductImages(p);
+  if (lbImages.length === 0) {
+    // chỉ có emoji, hiển thị emoji to
+    lbImages = [null];
+  }
+  lbIndex = 0;
+  document.getElementById('lb-name').textContent = p.name;
+  renderLightbox();
+  document.getElementById('lightbox').classList.add('show');
+  document.body.style.overflow = 'hidden';
+
+  // Swipe support
+  const wrap = document.getElementById('lb-img-wrap');
+  wrap.ontouchstart = e => { lbTouchStartX = e.touches[0].clientX; };
+  wrap.ontouchend = e => {
+    const dx = e.changedTouches[0].clientX - lbTouchStartX;
+    if (Math.abs(dx) > 50) lbNav(dx < 0 ? 1 : -1);
+  };
+}
+
+function renderLightbox() {
+  const total = lbImages.length;
+  // Image
+  const content = document.getElementById('lb-img-content');
+  const p = lbImages[lbIndex];
+  const prod = products.find(x => getProductImages(x)[0] === lbImages[0]);
+  content.innerHTML = p
+    ? `<img src="${p}" alt="ảnh ${lbIndex+1}">`
+    : `<div class="lb-emoji">${prod ? (prod.emoji||'📦') : '📦'}</div>`;
+
+  // Nav buttons
+  document.getElementById('lb-prev').classList.toggle('hidden', total <= 1 || lbIndex === 0);
+  document.getElementById('lb-next').classList.toggle('hidden', total <= 1 || lbIndex === total - 1);
+
+  // Dots
+  const dotsEl = document.getElementById('lb-dots');
+  dotsEl.innerHTML = total > 1
+    ? lbImages.map((_,i) => `<span class="lb-dot${i===lbIndex?' active':''}" onclick="lbGoTo(${i})"></span>`).join('')
+    : '';
+
+  // Counter
+  document.getElementById('lb-counter').textContent = total > 1 ? `${lbIndex+1} / ${total}` : '';
+}
+
+function lbNav(dir) {
+  const newIdx = lbIndex + dir;
+  if (newIdx < 0 || newIdx >= lbImages.length) return;
+  lbIndex = newIdx;
+  renderLightbox();
+}
+
+function lbGoTo(idx) {
+  lbIndex = idx;
+  renderLightbox();
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function lbClickOutside(e) {
+  if (e.target.id === 'lightbox') closeLightbox();
+}
+
+// Đóng lightbox bằng phím Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+});
 
 function closePopup(id){document.getElementById(id).classList.remove('show');}
 
@@ -1286,6 +1569,7 @@ function switchAdminTab(tab){
   document.querySelectorAll('.ap-tab').forEach(b=>b.classList.toggle('active', b.id==='apt-'+tab));
   document.querySelectorAll('.admin-tab-section').forEach(s=>s.classList.toggle('active', s.id==='admin-tab-'+tab));
   if(tab==='orders') renderOrders();
+  if(tab==='vouchers') renderVoucherList();
 }
 
 // ── ORDER MANAGEMENT ─────────────────────────────────────────────
@@ -1460,6 +1744,99 @@ openAdmin = function(){
   if(aptCP) aptCP.textContent = products.length;
   startOrderListener();
 };
+
+// Báo cáo cuối ngày được xử lý bởi GitHub Actions — không cần code ở đây.
+
+// ── VOUCHER SYSTEM ───────────────────────────────────────────────
+// DeviceId: tạo 1 lần, lưu localStorage — nhận diện máy không cần đăng nhập
+const deviceId = (function(){
+  let id = localStorage.getItem('mshuong_device_id');
+  if(!id){ id = 'dev_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('mshuong_device_id', id); }
+  return id;
+})();
+
+let activeVoucher = null; // { code, discount }
+
+async function applyVoucher(){
+  const code = document.getElementById('voucher-input').value.trim().toUpperCase();
+  const msgEl = document.getElementById('voucher-msg');
+  const inputEl = document.getElementById('voucher-input');
+  if(!code){ setVoucherMsg('Vui lòng nhập mã voucher!', false); return; }
+
+  try {
+    const snap = await db.ref('vouchers/'+code).once('value');
+    const vc = snap.val();
+
+    if(!vc){ setVoucherMsg('❌ Mã không tồn tại!', false); inputEl.className='voucher-input error'; return; }
+    if((vc.usedCount||0) >= vc.totalUses){ setVoucherMsg('❌ Mã đã hết lượt sử dụng!', false); inputEl.className='voucher-input error'; return; }
+    if(vc.usedDevices && vc.usedDevices.includes(deviceId)){ setVoucherMsg('❌ Thiết bị này đã dùng mã rồi!', false); inputEl.className='voucher-input error'; return; }
+
+    // Hợp lệ!
+    activeVoucher = { code, discount: vc.discount };
+    inputEl.className='voucher-input success';
+    setVoucherMsg(`✅ Áp dụng thành công! Giảm ${vc.discount}%`, true);
+    renderCart();
+  } catch(e) {
+    setVoucherMsg('❌ Lỗi kết nối, thử lại!', false);
+  }
+}
+
+function setVoucherMsg(text, isOk){
+  const el = document.getElementById('voucher-msg');
+  el.textContent = text;
+  el.className = 'voucher-msg ' + (isOk ? 'ok' : 'err');
+}
+
+function removeVoucher(){
+  activeVoucher = null;
+  document.getElementById('voucher-input').value='';
+  document.getElementById('voucher-input').className='voucher-input';
+  document.getElementById('voucher-msg').textContent='';
+  document.getElementById('voucher-msg').className='voucher-msg';
+  renderCart();
+}
+
+// ── ADMIN: TẠO VÀ QUẢN LÝ VOUCHER ───────────────────────────────
+function createVoucher(){
+  const code = document.getElementById('vc-code').value.trim().toUpperCase();
+  const discount = parseInt(document.getElementById('vc-discount').value);
+  const totalUses = parseInt(document.getElementById('vc-uses').value);
+  if(!code){ alert('Vui lòng nhập mã voucher!'); return; }
+  if(!discount || discount<1 || discount>100){ alert('% giảm phải từ 1–100!'); return; }
+  if(!totalUses || totalUses<1){ alert('Số lần dùng phải ít nhất 1!'); return; }
+  db.ref('vouchers/'+code).set({ code, discount, totalUses, usedCount:0, usedDevices:[], createdAt: Date.now() })
+    .then(()=>{
+      document.getElementById('vc-code').value='';
+      document.getElementById('vc-discount').value='';
+      document.getElementById('vc-uses').value='';
+      renderVoucherList();
+    });
+}
+
+function renderVoucherList(){
+  db.ref('vouchers').once('value').then(snap=>{
+    const list = document.getElementById('vc-list');
+    const data = snap.val();
+    if(!data){ list.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có voucher nào</div>'; return; }
+    const vcs = Object.values(data).sort((a,b)=>b.createdAt-a.createdAt);
+    list.innerHTML = vcs.map(vc=>{
+      const usedUp = (vc.usedCount||0) >= vc.totalUses;
+      return `<div class="vc-item ${usedUp?'inactive-vc':'active-vc'}">
+        <div>
+          <div class="vc-code">🎟️ ${vc.code}</div>
+          <div class="vc-meta">Giảm ${vc.discount}% · Đã dùng ${vc.usedCount||0}/${vc.totalUses} lần</div>
+        </div>
+        <span class="vc-badge ${usedUp?'used-up':''}">${usedUp?'Hết lượt':'Còn '+(vc.totalUses-(vc.usedCount||0))+' lượt'}</span>
+        <button class="vc-del" onclick="deleteVoucher('${vc.code}')">🗑️</button>
+      </div>`;
+    }).join('');
+  });
+}
+
+function deleteVoucher(code){
+  if(!confirm(`Xoá voucher ${code}?`)) return;
+  db.ref('vouchers/'+code).remove().then(renderVoucherList);
+}
 </script>
 </body>
 </html>
