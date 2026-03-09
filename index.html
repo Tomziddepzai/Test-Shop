@@ -280,6 +280,45 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .upload-img-label.has-img{border-color:var(--accent);background:#f0fdf9;color:#00a86b;}
 .upload-img-thumb{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;}
 
+/* ── PRODUCT IMAGE CLICKABLE ── */
+.product-img{cursor:zoom-in;position:relative;}
+.product-img:hover::after{content:'🔍';position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.55);color:white;border-radius:8px;padding:3px 7px;font-size:12px;}
+.img-dot-row{display:flex;justify-content:center;gap:4px;padding:4px 0 0;}
+.img-dot{width:6px;height:6px;border-radius:50%;background:#ddd;transition:background 0.2s;}
+.img-dot.active{background:var(--primary);}
+
+/* ── LIGHTBOX ── */
+#lightbox{position:fixed;inset:0;z-index:1100;background:rgba(0,0,0,0.92);display:none;align-items:center;justify-content:center;flex-direction:column;}
+#lightbox.show{display:flex;}
+.lb-img-wrap{position:relative;max-width:94vw;max-height:78vh;display:flex;align-items:center;justify-content:center;}
+.lb-img-wrap img{max-width:94vw;max-height:78vh;border-radius:12px;object-fit:contain;user-select:none;-webkit-user-drag:none;}
+.lb-emoji{font-size:100px;user-select:none;}
+.lb-prev,.lb-next{position:absolute;top:50%;transform:translateY(-50%);background:rgba(255,255,255,0.15);border:none;color:white;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;backdrop-filter:blur(4px);transition:background 0.2s;}
+.lb-prev{left:-20px;}
+.lb-next{right:-20px;}
+.lb-prev:hover,.lb-next:hover{background:rgba(255,255,255,0.3);}
+.lb-prev.hidden,.lb-next.hidden{display:none;}
+.lb-bottom{margin-top:14px;display:flex;flex-direction:column;align-items:center;gap:10px;}
+.lb-name{color:white;font-weight:700;font-size:15px;font-family:'Baloo 2',cursive;}
+.lb-dots{display:flex;gap:7px;}
+.lb-dot{width:8px;height:8px;border-radius:50%;background:rgba(255,255,255,0.3);cursor:pointer;transition:background 0.2s;}
+.lb-dot.active{background:white;}
+.lb-close{position:fixed;top:16px;right:16px;background:rgba(255,255,255,0.12);border:none;color:white;border-radius:50%;width:40px;height:40px;font-size:20px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;backdrop-filter:blur(4px);}
+.lb-close:hover{background:rgba(255,71,87,0.5);}
+.lb-counter{color:rgba(255,255,255,0.45);font-size:12px;font-weight:700;}
+
+/* ── MULTI-IMAGE UPLOAD in admin ── */
+.multi-img-section{background:#f8f9fa;border-radius:12px;padding:12px 14px;margin-bottom:8px;}
+.multi-img-title{font-size:12px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:0.4px;margin-bottom:10px;}
+.multi-img-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:8px;}
+.img-slot{aspect-ratio:1;border-radius:10px;border:2px dashed #ddd;background:#fafafa;display:flex;align-items:center;justify-content:center;cursor:pointer;overflow:hidden;position:relative;transition:border-color 0.2s;}
+.img-slot:hover{border-color:var(--primary);}
+.img-slot.filled{border-style:solid;border-color:#eee;}
+.img-slot img{width:100%;height:100%;object-fit:cover;}
+.img-slot .slot-add{font-size:22px;color:#ccc;}
+.img-slot .slot-del{position:absolute;top:3px;right:3px;background:rgba(255,71,87,0.85);color:white;border:none;border-radius:50%;width:20px;height:20px;font-size:11px;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;}
+.multi-img-hint{font-size:11px;color:#bbb;}
+
 /* ── ORDER BADGE on admin btn ── */
 .order-badge{position:absolute;top:-5px;right:-5px;background:#FF4757;color:white;border-radius:100px;min-width:18px;height:18px;font-size:10px;font-weight:800;display:none;align-items:center;justify-content:center;padding:0 4px;border:2px solid var(--dark);animation:pulse-badge 1.5s infinite;}
 .order-badge.show{display:flex;}
@@ -550,11 +589,19 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
             </select>
           </div>
           <div class="field-row full">
-            <label class="upload-img-label" id="upload-label" onclick="document.getElementById('a-img-file').click()">
-              📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>
-            </label>
-            <input type="file" id="a-img-file" accept="image/*" style="display:none" onchange="previewUpload(this)">
-            <input type="hidden" id="a-img">
+            <!-- Multi-image upload: tối đa 4 ảnh -->
+            <div class="multi-img-section">
+              <div class="multi-img-title">📷 Ảnh sản phẩm (tối đa 4 ảnh)</div>
+              <div class="multi-img-grid" id="img-slots-grid">
+                <div class="img-slot" id="img-slot-0" onclick="triggerImgSlot(0)"><span class="slot-add">＋</span></div>
+                <div class="img-slot" id="img-slot-1" onclick="triggerImgSlot(1)"><span class="slot-add">＋</span></div>
+                <div class="img-slot" id="img-slot-2" onclick="triggerImgSlot(2)"><span class="slot-add">＋</span></div>
+                <div class="img-slot" id="img-slot-3" onclick="triggerImgSlot(3)"><span class="slot-add">＋</span></div>
+              </div>
+              <input type="file" id="a-img-file" accept="image/*" style="display:none" onchange="handleSlotUpload(this)">
+              <input type="hidden" id="a-img"><!-- giữ ảnh đầu cho tương thích cũ -->
+              <div class="multi-img-hint">Bấm vào ô để chọn ảnh. Ảnh đầu tiên là ảnh chính hiển thị trên thẻ sản phẩm.</div>
+            </div>
           </div>
           <div class="option-tag-section">
             <div class="option-tag-title">🏷️ Tuỳ chọn sản phẩm (màu sắc, size, loại...)</div>
@@ -608,6 +655,21 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
       </div>
 
     </div>
+  </div>
+</div>
+
+<!-- LIGHTBOX -->
+<div id="lightbox" onclick="lbClickOutside(event)">
+  <button class="lb-close" onclick="closeLightbox()">✕</button>
+  <div class="lb-img-wrap" id="lb-img-wrap">
+    <button class="lb-prev" id="lb-prev" onclick="lbNav(-1)">‹</button>
+    <div id="lb-img-content"></div>
+    <button class="lb-next" id="lb-next" onclick="lbNav(1)">›</button>
+  </div>
+  <div class="lb-bottom">
+    <div class="lb-name" id="lb-name"></div>
+    <div class="lb-dots" id="lb-dots"></div>
+    <div class="lb-counter" id="lb-counter"></div>
   </div>
 </div>
 
@@ -727,8 +789,15 @@ db.ref('products').on('value', snap => {
   if (document.getElementById('admin-panel').classList.contains('show')) renderAdminList();
 });
 
+function getProductImages(p) {
+  // images[] array takes priority, fallback to legacy image field
+  if (p.images && p.images.length > 0) return p.images.filter(Boolean);
+  if (p.image) return [p.image];
+  return [];
+}
 function imgHtml(p) {
-  if (p.image) return `<img src="${p.image}" alt="${p.name}" onerror="this.outerHTML='<span>${p.emoji||'📦'}</span>'"/>`;
+  const imgs = getProductImages(p);
+  if (imgs.length > 0) return `<img src="${imgs[0]}" alt="${p.name}" onerror="this.outerHTML='<span>${p.emoji||'📦'}</span>'"/>`;
   return `<span>${p.emoji||'📦'}</span>`;
 }
 function getEffectiveStock(p) {
@@ -774,10 +843,16 @@ function renderShop() {
       const optPills = opts.length
         ? `<div class="card-options">${opts.slice(0,3).map(o=>`<span class="card-option-pill">${o.name}</span>`).join('')}${opts.length>3?`<span class="card-option-more">+${opts.length-3}</span>`:''}</div>`
         : '';
+      const imgs = getProductImages(p);
+      const hasMulti = imgs.length > 1;
+      const dotsHtml = hasMulti
+        ? `<div class="img-dot-row">${imgs.map((_,i)=>`<span class="img-dot${i===0?' active':''}"></span>`).join('')}</div>`
+        : '';
       html += `
       <div class="product-card${oos?' out-of-stock':''}">
         <button class="delete-badge" onclick="deleteProduct(${p.id})">✕</button>
-        <div class="product-img">${imgHtml(p)}</div>
+        <div class="product-img" onclick="openLightbox(${p.id})">${imgHtml(p)}</div>
+        ${dotsHtml}
         <div class="product-info">
           <div class="product-name">${p.name}</div>
           <div class="product-price">${p.price.toLocaleString('vi-VN')}đ <span class="product-unit">/${p.unit}</span></div>
@@ -958,21 +1033,22 @@ function addProduct(){
   const unit=document.getElementById('a-unit').value.trim();
   const emoji=document.getElementById('a-emoji').value.trim()||'📦';
   const cat=document.getElementById('a-cat').value;
-  const image=document.getElementById('a-img').value||null;
   if(!name||!price||!unit){alert('Vui lòng điền đầy đủ: Tên, Giá, Đơn vị!');return;}
   const options=[...adminOptionTags];
   const stock = options.length>0 ? 0 : (parseInt(document.getElementById('a-stock').value)||0);
   const newId=Date.now();
-  db.ref('products/'+newId).set({id:newId,name,price,unit,stock,emoji,cat,image,colors:options});
+  // Lấy mảng ảnh từ adminImgSlots
+  const images = adminImgSlots.filter(Boolean);
+  const image = images[0] || null; // giữ field cũ cho tương thích
+  db.ref('products/'+newId).set({id:newId,name,price,unit,stock,emoji,cat,image,images,colors:options});
   ['a-name','a-price','a-unit','a-emoji','a-img'].forEach(id=>document.getElementById(id).value='');
   document.getElementById('a-stock').value='10';
   document.getElementById('a-img-file').value='';
   adminOptionTags=[];
+  adminImgSlots=[null,null,null,null];
   renderAdminOptionTags();
+  renderImgSlots();
   syncAdminFormState();
-  const lbl=document.getElementById('upload-label');
-  lbl.innerHTML='📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
-  lbl.classList.remove('has-img');
 }
 
 function deleteProduct(id){
@@ -1254,28 +1330,131 @@ function showSuccess(){
   lastMsg='';
 }
 
-function previewUpload(input){
-  const file=input.files[0];
-  if(!file) return;
-  if(file.size>2*1024*1024){alert('Ảnh quá lớn! Vui lòng chọn ảnh dưới 2MB.');input.value='';return;}
-  const reader=new FileReader();
-  reader.onload=function(e){
-    const b64=e.target.result;
-    document.getElementById('a-img').value=b64;
-    const lbl=document.getElementById('upload-label');
-    lbl.innerHTML=`<img class="upload-img-thumb" src="${b64}"> <span>✅ ${file.name}</span> <small style="margin-left:auto;cursor:pointer;color:#FF4757" onclick="clearImg(event)">✕ Xoá</small>`;
-    lbl.classList.add('has-img');
+// ── MULTI-IMAGE UPLOAD ────────────────────────────────────────────
+let adminImgSlots = [null, null, null, null];
+let currentSlotIndex = 0;
+
+function triggerImgSlot(idx) {
+  currentSlotIndex = idx;
+  document.getElementById('a-img-file').value = '';
+  document.getElementById('a-img-file').click();
+}
+
+function handleSlotUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  if (file.size > 2*1024*1024) { alert('Ảnh quá lớn! Vui lòng chọn ảnh dưới 2MB.'); input.value=''; return; }
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    adminImgSlots[currentSlotIndex] = e.target.result;
+    document.getElementById('a-img').value = adminImgSlots[0] || '';
+    renderImgSlots();
   };
   reader.readAsDataURL(file);
 }
-function clearImg(e){
+
+function removeImgSlot(e, idx) {
   e.stopPropagation();
-  document.getElementById('a-img').value='';
-  document.getElementById('a-img-file').value='';
-  const lbl=document.getElementById('upload-label');
-  lbl.innerHTML='📷 Chọn ảnh từ thiết bị <small style="margin-left:auto;opacity:0.6">(để trống dùng emoji)</small>';
-  lbl.classList.remove('has-img');
+  adminImgSlots[idx] = null;
+  document.getElementById('a-img').value = adminImgSlots[0] || '';
+  renderImgSlots();
 }
+
+function renderImgSlots() {
+  for (let i = 0; i < 4; i++) {
+    const slot = document.getElementById('img-slot-' + i);
+    if (!slot) continue;
+    if (adminImgSlots[i]) {
+      slot.className = 'img-slot filled';
+      slot.innerHTML = `<img src="${adminImgSlots[i]}"><button class="slot-del" onclick="removeImgSlot(event,${i})">✕</button>`;
+      slot.onclick = () => triggerImgSlot(i);
+    } else {
+      slot.className = 'img-slot';
+      slot.innerHTML = `<span class="slot-add">＋</span>`;
+      slot.onclick = () => triggerImgSlot(i);
+    }
+  }
+}
+
+// ── LIGHTBOX ─────────────────────────────────────────────────────
+let lbImages = [];
+let lbIndex = 0;
+let lbTouchStartX = 0;
+
+function openLightbox(productId) {
+  const p = products.find(x => x.id === productId);
+  if (!p) return;
+  lbImages = getProductImages(p);
+  if (lbImages.length === 0) {
+    // chỉ có emoji, hiển thị emoji to
+    lbImages = [null];
+  }
+  lbIndex = 0;
+  document.getElementById('lb-name').textContent = p.name;
+  renderLightbox();
+  document.getElementById('lightbox').classList.add('show');
+  document.body.style.overflow = 'hidden';
+
+  // Swipe support
+  const wrap = document.getElementById('lb-img-wrap');
+  wrap.ontouchstart = e => { lbTouchStartX = e.touches[0].clientX; };
+  wrap.ontouchend = e => {
+    const dx = e.changedTouches[0].clientX - lbTouchStartX;
+    if (Math.abs(dx) > 50) lbNav(dx < 0 ? 1 : -1);
+  };
+}
+
+function renderLightbox() {
+  const total = lbImages.length;
+  // Image
+  const content = document.getElementById('lb-img-content');
+  const p = lbImages[lbIndex];
+  const prod = products.find(x => getProductImages(x)[0] === lbImages[0]);
+  content.innerHTML = p
+    ? `<img src="${p}" alt="ảnh ${lbIndex+1}">`
+    : `<div class="lb-emoji">${prod ? (prod.emoji||'📦') : '📦'}</div>`;
+
+  // Nav buttons
+  document.getElementById('lb-prev').classList.toggle('hidden', total <= 1 || lbIndex === 0);
+  document.getElementById('lb-next').classList.toggle('hidden', total <= 1 || lbIndex === total - 1);
+
+  // Dots
+  const dotsEl = document.getElementById('lb-dots');
+  dotsEl.innerHTML = total > 1
+    ? lbImages.map((_,i) => `<span class="lb-dot${i===lbIndex?' active':''}" onclick="lbGoTo(${i})"></span>`).join('')
+    : '';
+
+  // Counter
+  document.getElementById('lb-counter').textContent = total > 1 ? `${lbIndex+1} / ${total}` : '';
+}
+
+function lbNav(dir) {
+  const newIdx = lbIndex + dir;
+  if (newIdx < 0 || newIdx >= lbImages.length) return;
+  lbIndex = newIdx;
+  renderLightbox();
+}
+
+function lbGoTo(idx) {
+  lbIndex = idx;
+  renderLightbox();
+}
+
+function closeLightbox() {
+  document.getElementById('lightbox').classList.remove('show');
+  document.body.style.overflow = '';
+}
+
+function lbClickOutside(e) {
+  if (e.target.id === 'lightbox') closeLightbox();
+}
+
+// Đóng lightbox bằng phím Escape
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeLightbox();
+  if (e.key === 'ArrowLeft') lbNav(-1);
+  if (e.key === 'ArrowRight') lbNav(1);
+});
 
 function closePopup(id){document.getElementById(id).classList.remove('show');}
 
@@ -1460,6 +1639,8 @@ openAdmin = function(){
   if(aptCP) aptCP.textContent = products.length;
   startOrderListener();
 };
+
+// Báo cáo cuối ngày được xử lý bởi GitHub Actions — không cần code ở đây.
 </script>
 </body>
 </html>
