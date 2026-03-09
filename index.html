@@ -703,9 +703,18 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
           <div class="field-row full">
             <input class="a-input" id="vc-code" placeholder="Mã voucher (VD: SALE20)" maxlength="20" oninput="this.value=this.value.toUpperCase()" style="letter-spacing:1px;font-weight:800;" />
           </div>
+          <div class="field-row full">
+            <select class="a-select" id="vc-type" onchange="toggleVcTypeUI()">
+              <option value="percent">% Phần trăm (VD: giảm 20%)</option>
+              <option value="fixed">Số tiền cố định (VD: giảm 10.000đ)</option>
+            </select>
+          </div>
           <div class="field-row">
             <input class="a-input" id="vc-discount" placeholder="Giảm % (VD: 20)" type="number" min="1" max="100" />
             <input class="a-input" id="vc-uses" placeholder="Số lần dùng (VD: 10)" type="number" min="1" max="999" />
+          </div>
+          <div class="field-row full">
+            <input class="a-input" id="vc-minorder" placeholder="Đơn tối thiểu (để trống = không giới hạn)" type="number" min="0" />
           </div>
           <button class="btn-add-product" onclick="createVoucher()" style="background:var(--accent)">🎟️ Tạo voucher</button>
         </div>
@@ -1275,7 +1284,7 @@ function changeQty(cartKey, d){
 function renderCart(){
   const entries=Object.entries(cart);
   const subtotal=entries.reduce((s,[,i])=>s+i.price*i.qty,0);
-  const discount = activeVoucher ? Math.round(subtotal * activeVoucher.discount / 100) : 0;
+  const discount = calcDiscount(subtotal);
   const total = Math.max(0, subtotal - discount);
   document.getElementById('cart-count').textContent=entries.reduce((s,[,i])=>s+i.qty,0);
   document.getElementById('cart-subtotal').textContent=subtotal.toLocaleString('vi-VN')+'đ';
@@ -1285,7 +1294,7 @@ function renderCart(){
   const appliedRow = document.getElementById('voucher-applied-row');
   if(activeVoucher && discount > 0){
     appliedRow.style.display='flex';
-    document.getElementById('voucher-tag-el').innerHTML=`<span class="voucher-tag">🎟️ ${activeVoucher.code} −${activeVoucher.discount}% <button onclick="removeVoucher()">✕</button></span>`;
+    document.getElementById('voucher-tag-el').innerHTML=`<span class="voucher-tag">🎟️ ${activeVoucher.code} ${activeVoucher.type==='fixed'?'−'+activeVoucher.discount.toLocaleString('vi-VN')+'đ':'−'+activeVoucher.discount+'%'} <button onclick="removeVoucher()">✕</button></span>`;
     document.getElementById('voucher-discount-text').textContent=`−${discount.toLocaleString('vi-VN')}đ`;
   } else {
     appliedRow.style.display='none';
@@ -1325,14 +1334,14 @@ function sendOrder(){
   if(!items.length) return;
   const note=document.getElementById('order-note').value;
   const subtotal=items.reduce((s,i)=>s+i.price*i.qty,0);
-  const discount = activeVoucher ? Math.round(subtotal * activeVoucher.discount / 100) : 0;
+  const discount = calcDiscount(subtotal);
   const total = Math.max(0, subtotal - discount);
   const list=items.map(i=>{
     const optStr=i.selectedOption?` [${i.selectedOption}]`:'';
     return `  • ${i.emoji} ${i.name}${optStr} x${i.qty} = ${(i.price*i.qty).toLocaleString('vi-VN')}đ`;
   }).join('\n');
-  const discountLine = activeVoucher
-    ? `\n🎟️ Voucher ${activeVoucher.code} (−${activeVoucher.discount}%): −${discount.toLocaleString('vi-VN')}đ`
+  const discountLine = activeVoucher && discount > 0
+    ? `\n🎟️ Voucher ${activeVoucher.code} (${activeVoucher.type==='fixed'?'−'+activeVoucher.discount.toLocaleString('vi-VN')+'đ':'−'+activeVoucher.discount+'%'}): −${discount.toLocaleString('vi-VN')}đ`
     : '';
   lastMsg=
 `🛒 ĐƠN HÀNG MỚI – MsHuongShop
@@ -1376,7 +1385,7 @@ function showSuccess(){
     selectedOption: i.selectedOption||null,
   }));
   const subtotal = orderItems.reduce((s,i)=>s+i.price*i.qty,0);
-  const discount = activeVoucher ? Math.round(subtotal * activeVoucher.discount / 100) : 0;
+  const discount = calcDiscount(subtotal);
   const total = Math.max(0, subtotal - discount);
   const note = document.getElementById('order-note').value;
   const orderData = {
@@ -1755,11 +1764,17 @@ const deviceId = (function(){
   return id;
 })();
 
-let activeVoucher = null; // { code, discount }
+let activeVoucher = null; // { code, type, discount, minOrder }
+
+function toggleVcTypeUI(){
+  const type = document.getElementById('vc-type').value;
+  const inp = document.getElementById('vc-discount');
+  if(type==='percent'){ inp.placeholder='Giảm % (VD: 20)'; inp.max=100; }
+  else { inp.placeholder='Giảm tiền (VD: 10000)'; inp.removeAttribute('max'); }
+}
 
 async function applyVoucher(){
   const code = document.getElementById('voucher-input').value.trim().toUpperCase();
-  const msgEl = document.getElementById('voucher-msg');
   const inputEl = document.getElementById('voucher-input');
   if(!code){ setVoucherMsg('Vui lòng nhập mã voucher!', false); return; }
 
@@ -1771,14 +1786,35 @@ async function applyVoucher(){
     if((vc.usedCount||0) >= vc.totalUses){ setVoucherMsg('❌ Mã đã hết lượt sử dụng!', false); inputEl.className='voucher-input error'; return; }
     if(vc.usedDevices && vc.usedDevices.includes(deviceId)){ setVoucherMsg('❌ Thiết bị này đã dùng mã rồi!', false); inputEl.className='voucher-input error'; return; }
 
+    // Kiểm tra đơn tối thiểu
+    if(vc.minOrder && vc.minOrder > 0){
+      const subtotal = Object.values(cart).reduce((s,i)=>s+i.price*i.qty, 0);
+      if(subtotal < vc.minOrder){
+        setVoucherMsg(`❌ Đơn tối thiểu ${vc.minOrder.toLocaleString('vi-VN')}đ để dùng mã này!`, false);
+        inputEl.className='voucher-input error';
+        return;
+      }
+    }
+
     // Hợp lệ!
-    activeVoucher = { code, discount: vc.discount };
+    activeVoucher = { code, type: vc.type||'percent', discount: vc.discount, minOrder: vc.minOrder||0 };
     inputEl.className='voucher-input success';
-    setVoucherMsg(`✅ Áp dụng thành công! Giảm ${vc.discount}%`, true);
+    const discLabel = vc.type==='fixed'
+      ? `${vc.discount.toLocaleString('vi-VN')}đ`
+      : `${vc.discount}%`;
+    const minLabel = vc.minOrder ? ` (đơn từ ${vc.minOrder.toLocaleString('vi-VN')}đ)` : '';
+    setVoucherMsg(`✅ Áp dụng thành công! Giảm ${discLabel}${minLabel}`, true);
     renderCart();
   } catch(e) {
     setVoucherMsg('❌ Lỗi kết nối, thử lại!', false);
   }
+}
+
+function calcDiscount(subtotal){
+  if(!activeVoucher) return 0;
+  if(activeVoucher.minOrder && subtotal < activeVoucher.minOrder) return 0;
+  if(activeVoucher.type==='fixed') return Math.min(activeVoucher.discount, subtotal);
+  return Math.round(subtotal * activeVoucher.discount / 100);
 }
 
 function setVoucherMsg(text, isOk){
@@ -1799,16 +1835,20 @@ function removeVoucher(){
 // ── ADMIN: TẠO VÀ QUẢN LÝ VOUCHER ───────────────────────────────
 function createVoucher(){
   const code = document.getElementById('vc-code').value.trim().toUpperCase();
+  const type = document.getElementById('vc-type').value;
   const discount = parseInt(document.getElementById('vc-discount').value);
   const totalUses = parseInt(document.getElementById('vc-uses').value);
+  const minOrder = parseInt(document.getElementById('vc-minorder').value)||0;
   if(!code){ alert('Vui lòng nhập mã voucher!'); return; }
-  if(!discount || discount<1 || discount>100){ alert('% giảm phải từ 1–100!'); return; }
+  if(!discount || discount<1){ alert('Nhập số tiền/% giảm hợp lệ!'); return; }
+  if(type==='percent' && discount>100){ alert('% giảm tối đa 100!'); return; }
   if(!totalUses || totalUses<1){ alert('Số lần dùng phải ít nhất 1!'); return; }
-  db.ref('vouchers/'+code).set({ code, discount, totalUses, usedCount:0, usedDevices:[], createdAt: Date.now() })
+  db.ref('vouchers/'+code).set({ code, type, discount, totalUses, minOrder, usedCount:0, usedDevices:[], createdAt: Date.now() })
     .then(()=>{
       document.getElementById('vc-code').value='';
       document.getElementById('vc-discount').value='';
       document.getElementById('vc-uses').value='';
+      document.getElementById('vc-minorder').value='';
       renderVoucherList();
     });
 }
@@ -1821,10 +1861,14 @@ function renderVoucherList(){
     const vcs = Object.values(data).sort((a,b)=>b.createdAt-a.createdAt);
     list.innerHTML = vcs.map(vc=>{
       const usedUp = (vc.usedCount||0) >= vc.totalUses;
+      const discLabel = vc.type==='fixed'
+        ? `Giảm ${vc.discount.toLocaleString('vi-VN')}đ`
+        : `Giảm ${vc.discount}%`;
+      const minLabel = vc.minOrder ? ` · Đơn từ ${vc.minOrder.toLocaleString('vi-VN')}đ` : '';
       return `<div class="vc-item ${usedUp?'inactive-vc':'active-vc'}">
         <div>
           <div class="vc-code">🎟️ ${vc.code}</div>
-          <div class="vc-meta">Giảm ${vc.discount}% · Đã dùng ${vc.usedCount||0}/${vc.totalUses} lần</div>
+          <div class="vc-meta">${discLabel}${minLabel} · Đã dùng ${vc.usedCount||0}/${vc.totalUses} lần</div>
         </div>
         <span class="vc-badge ${usedUp?'used-up':''}">${usedUp?'Hết lượt':'Còn '+(vc.totalUses-(vc.usedCount||0))+' lượt'}</span>
         <button class="vc-del" onclick="deleteVoucher('${vc.code}')">🗑️</button>
