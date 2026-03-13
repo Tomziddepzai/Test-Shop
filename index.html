@@ -406,7 +406,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 }
 
 /* ── CATEGORY PILLS ── */
-.cat-pills-wrap{max-width:960px;margin:0 auto;padding:12px 16px 0;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+.cat-pills-wrap{max-width:960px;margin:0 auto;padding:10px 16px 2px;display:flex;gap:8px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;}
 .cat-pills-wrap::-webkit-scrollbar{display:none;}
 .cat-pill{flex-shrink:0;display:flex;align-items:center;gap:6px;padding:8px 16px;border-radius:100px;border:2px solid #e8e8e8;background:white;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:var(--muted);cursor:pointer;transition:all 0.18s;touch-action:manipulation;white-space:nowrap;}
 .cat-pill:hover{border-color:var(--primary);color:var(--primary);}
@@ -468,15 +468,12 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
     <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
   </div>
   <div class="search-results-info" id="search-info" style="display:none"></div>
+  <div class="cat-pills-wrap" id="cat-pills-wrap"></div>
 </div>
 
 <div class="container" id="shop-container">
   <div style="text-align:center;padding:60px 0;color:var(--muted)">⏳ Đang tải sản phẩm...</div>
 </div>
-
-
-<!-- CATEGORY PILLS -->
-<div class="cat-pills-wrap" id="cat-pills-wrap"></div>
 
 <!-- CART PANEL -->
 <div id="cart-panel">
@@ -759,6 +756,8 @@ function syncAdminFormState(){
   if(hintEl) hintEl.style.display = needMore ? 'block' : 'none';
 }
 document.addEventListener('DOMContentLoaded', ()=>{
+  // Render default category pills immediately (will update when products load)
+  renderCatPills();
   const inp = document.getElementById('a-option-input');
   if(inp) inp.addEventListener('keydown', e=>{ if(e.key==='Enter'){e.preventDefault();addOptionTag();} });
   const sinp = document.getElementById('a-option-stock');
