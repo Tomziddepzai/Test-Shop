@@ -280,33 +280,6 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .upload-img-label.has-img{border-color:var(--accent);background:#f0fdf9;color:#00a86b;}
 .upload-img-thumb{width:36px;height:36px;border-radius:8px;object-fit:cover;flex-shrink:0;}
 
-/* ── VOUCHER in cart ── */
-.voucher-row{display:flex;gap:8px;margin:8px 0 4px;}
-.voucher-input{flex:1;padding:10px 14px;border:2px solid #eee;border-radius:12px;font-family:'Nunito',sans-serif;font-size:16px;outline:none;text-transform:uppercase;letter-spacing:1px;transition:border-color 0.2s;}
-.voucher-input:focus{border-color:var(--primary);}
-.voucher-input.success{border-color:#00a86b;background:#f0fdf9;}
-.voucher-input.error{border-color:#FF4757;background:#fff5f5;}
-.voucher-btn{padding:10px 16px;background:var(--dark);color:white;border:none;border-radius:12px;font-family:'Baloo 2',cursive;font-size:14px;font-weight:700;cursor:pointer;white-space:nowrap;touch-action:manipulation;transition:background 0.2s;}
-.voucher-btn:hover{background:var(--primary);}
-.voucher-msg{font-size:12px;font-weight:700;min-height:18px;margin-bottom:4px;padding:0 2px;}
-.voucher-msg.ok{color:#00a86b;}
-.voucher-msg.err{color:#FF4757;}
-.voucher-discount-row{display:flex;justify-content:space-between;align-items:center;font-size:13px;color:#00a86b;font-weight:700;padding:2px 0;margin-bottom:2px;}
-.voucher-tag{display:inline-flex;align-items:center;gap:5px;background:#e8fdf3;color:#00a86b;border:1.5px solid #b2f0d4;border-radius:100px;padding:3px 10px;font-size:12px;font-weight:800;}
-.voucher-tag button{background:none;border:none;color:#00a86b;cursor:pointer;font-size:13px;padding:0;line-height:1;touch-action:manipulation;}
-
-/* ── VOUCHER in admin ── */
-.vc-list{display:flex;flex-direction:column;gap:8px;margin-top:8px;}
-.vc-item{background:#f8f9fa;border-radius:12px;padding:11px 14px;display:flex;align-items:center;gap:10px;border:1.5px solid #eee;}
-.vc-item.active-vc{border-color:#b2f0d4;background:#f0fdf9;}
-.vc-item.inactive-vc{opacity:0.55;}
-.vc-code{font-family:'Baloo 2',cursive;font-weight:800;font-size:14px;color:var(--dark);letter-spacing:1px;}
-.vc-meta{font-size:11px;color:var(--muted);margin-top:1px;}
-.vc-badge{background:var(--primary);color:white;border-radius:100px;padding:2px 10px;font-size:11px;font-weight:800;margin-left:auto;white-space:nowrap;}
-.vc-badge.used-up{background:#ccc;}
-.vc-del{background:#fff0f0;border:none;border-radius:8px;padding:5px 9px;color:#FF4757;font-size:12px;cursor:pointer;font-weight:700;touch-action:manipulation;margin-left:4px;}
-.vc-del:hover{background:#FF4757;color:white;}
-
 /* ── PRODUCT IMAGE CLICKABLE ── */
 .product-img{cursor:zoom-in;position:relative;}
 .product-img:hover::after{content:'🔍';position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.55);color:white;border-radius:8px;padding:3px 7px;font-size:12px;}
@@ -431,6 +404,35 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
   .order-stats-row{grid-template-columns:repeat(3,1fr);}
   .os-card .osv{font-size:14px;}
 }
+
+/* ── CATEGORY FILTER DRAWER ── */
+.cat-menu-btn{background:rgba(255,255,255,0.12);border:none;color:white;width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;flex-direction:column;gap:5px;padding:10px;transition:background 0.2s;touch-action:manipulation;flex-shrink:0;}
+.cat-menu-btn:hover{background:rgba(255,255,255,0.22);}
+.cat-menu-btn span{display:block;width:18px;height:2px;background:white;border-radius:2px;transition:all 0.3s;}
+.cat-menu-btn.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.cat-menu-btn.open span:nth-child(2){opacity:0;transform:scaleX(0);}
+.cat-menu-btn.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+#cat-drawer-overlay{position:fixed;inset:0;z-index:490;background:rgba(0,0,0,0);pointer-events:none;transition:background 0.25s;}
+#cat-drawer-overlay.show{background:rgba(0,0,0,0.35);pointer-events:all;}
+#cat-drawer{position:fixed;top:64px;left:0;bottom:0;width:220px;background:white;z-index:491;transform:translateX(-100%);transition:transform 0.3s cubic-bezier(.4,0,.2,1);box-shadow:4px 0 24px rgba(26,26,46,0.12);display:flex;flex-direction:column;}
+#cat-drawer.open{transform:translateX(0);}
+.cat-drawer-head{padding:16px 20px 10px;border-bottom:2px dashed #eee;}
+.cat-drawer-head h4{font-family:'Baloo 2',cursive;font-size:15px;font-weight:800;color:var(--dark);}
+.cat-drawer-head p{font-size:11px;color:var(--muted);margin-top:2px;}
+.cat-drawer-list{flex:1;overflow-y:auto;padding:10px 10px;}
+.cat-drawer-item{display:flex;align-items:center;gap:10px;padding:11px 12px;border-radius:12px;cursor:pointer;transition:background 0.15s,color 0.15s;font-family:'Nunito',sans-serif;font-size:14px;font-weight:700;color:var(--text);touch-action:manipulation;border:2px solid transparent;margin-bottom:4px;}
+.cat-drawer-item:hover{background:#fff5f2;color:var(--primary);}
+.cat-drawer-item.active{background:#fff2ec;color:var(--primary);border-color:#FFD0B8;}
+.cat-drawer-item .cat-icon{font-size:20px;width:28px;text-align:center;flex-shrink:0;}
+.cat-drawer-item .cat-name{flex:1;}
+.cat-drawer-item .cat-count{font-size:11px;font-weight:800;background:#f0f0f0;border-radius:100px;padding:1px 8px;color:var(--muted);}
+.cat-drawer-item.active .cat-count{background:var(--primary);color:white;}
+.cat-drawer-all{border-bottom:1px solid #f0f0f0;margin-bottom:6px;}
+.cat-active-pill{display:none;align-items:center;gap:6px;background:#fff2ec;border:1.5px solid #FFD0B8;border-radius:100px;padding:4px 12px 4px 8px;font-size:12px;font-weight:800;color:var(--primary);cursor:pointer;margin-left:8px;touch-action:manipulation;}
+.cat-active-pill.show{display:flex;}
+.cat-active-pill .pill-x{font-size:14px;line-height:1;}
+
 </style>
 </head>
 <body>
@@ -464,6 +466,9 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 <header>
   <div class="header-logo">MSHUONG<span>SHOP</span> 🎒</div>
   <div class="header-right">
+    <button class="cat-menu-btn" id="cat-menu-btn" onclick="toggleCatDrawer()" title="Lọc danh mục">
+      <span></span><span></span><span></span>
+    </button>
     <div class="user-chip" id="user-chip">👤 Khách</div>
     <button class="admin-btn" onclick="openAdminLogin()" style="position:relative">⚙️<span class="order-badge" id="order-badge"></span></button>
     <button class="cart-btn" onclick="toggleCart()">
@@ -483,11 +488,30 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
     <input type="text" id="search-input" placeholder="Tìm kiếm sản phẩm..." oninput="doSearch(this.value)" autocomplete="off">
     <button class="search-clear" id="search-clear" onclick="clearSearch()">✕</button>
   </div>
-  <div class="search-results-info" id="search-info" style="display:none"></div>
+  <div style="display:flex;align-items:center;flex-wrap:wrap;gap:4px;margin-top:8px;">
+    <div class="search-results-info" id="search-info" style="display:none"></div>
+    <div class="cat-active-pill" id="cat-active-pill" onclick="clearCategoryFilter()">
+      <span id="cat-active-text">Tất cả</span>
+      <span class="pill-x">✕</span>
+    </div>
+  </div>
 </div>
 
 <div class="container" id="shop-container">
   <div style="text-align:center;padding:60px 0;color:var(--muted)">⏳ Đang tải sản phẩm...</div>
+</div>
+
+
+<!-- CATEGORY DRAWER -->
+<div id="cat-drawer-overlay" onclick="closeCatDrawer()"></div>
+<div id="cat-drawer">
+  <div class="cat-drawer-head">
+    <h4>🗂️ Danh mục</h4>
+    <p>Chọn để lọc sản phẩm</p>
+  </div>
+  <div class="cat-drawer-list" id="cat-drawer-list">
+    <!-- rendered by JS -->
+  </div>
 </div>
 
 <!-- CART PANEL -->
@@ -500,19 +524,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
     <div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>
   </div>
   <div class="cart-footer">
-    <div class="cart-total"><span>Tạm tính:</span><strong id="cart-subtotal">0đ</strong></div>
-    <div id="voucher-section">
-      <div class="voucher-row">
-        <input class="voucher-input" id="voucher-input" placeholder="NHẬP MÃ GIẢM GIÁ" maxlength="20" oninput="this.value=this.value.toUpperCase()" />
-        <button class="voucher-btn" onclick="applyVoucher()">Áp dụng</button>
-      </div>
-      <div class="voucher-msg" id="voucher-msg"></div>
-      <div id="voucher-applied-row" style="display:none" class="voucher-discount-row">
-        <span id="voucher-tag-el"></span>
-        <span id="voucher-discount-text" style="color:#00a86b"></span>
-      </div>
-    </div>
-    <div class="cart-total" id="cart-total-row" style="font-size:16px;font-weight:900;border-top:2px dashed #eee;padding-top:8px;margin-top:4px"><span>Tổng cộng:</span><strong id="cart-total">0đ</strong></div>
+    <div class="cart-total"><span>Tổng cộng:</span><strong id="cart-total">0đ</strong></div>
     <textarea class="note-input" id="order-note" placeholder="Ghi chú (địa chỉ, yêu cầu...)" rows="2"></textarea>
     <button class="order-btn" id="order-btn" onclick="sendOrder()" disabled>📲 Đặt Hàng</button>
   </div>
@@ -607,9 +619,6 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
         <button class="ap-tab" id="apt-orders" onclick="switchAdminTab('orders')">
           📋 Đơn hàng <span class="ap-tab-count hot" id="apt-count-orders">0</span>
         </button>
-        <button class="ap-tab" id="apt-vouchers" onclick="switchAdminTab('vouchers')">
-          🎟️ Voucher
-        </button>
       </div>
 
       <!-- ── TAB: SẢN PHẨM ── -->
@@ -660,6 +669,13 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
         </div>
         <div class="admin-section">
           <div class="admin-section-title">📦 Danh sách sản phẩm (<span id="product-count">0</span>)</div>
+          <div id="migrate-wrap" style="margin-bottom:10px;display:none">
+            <button onclick="migrateAllImages()" id="btn-migrate"
+              style="width:100%;padding:10px;background:#fff8e6;border:2px solid #FFD166;border-radius:10px;font-family:'Nunito',sans-serif;font-size:13px;font-weight:800;color:#b8860b;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;touch-action:manipulation">
+              ⚡ Chuyển ảnh cũ sang ImgBB (<span id="migrate-count">0</span> ảnh)
+            </button>
+            <div id="migrate-log" style="margin-top:8px;font-size:11px;color:var(--muted);line-height:1.8;display:none"></div>
+          </div>
           <div class="product-list-admin" id="product-list-admin"></div>
         </div>
       </div>
@@ -693,36 +709,6 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
         </div>
         <div class="op-section" id="op-done">
           <div class="op-empty"><span class="big">✅</span><p>Chưa có đơn đã giao</p></div>
-        </div>
-      </div>
-
-      <!-- ── TAB: VOUCHER ── -->
-      <div class="admin-tab-section" id="admin-tab-vouchers">
-        <div class="admin-section">
-          <div class="admin-section-title">🎟️ Tạo mã giảm giá mới</div>
-          <div class="field-row full">
-            <input class="a-input" id="vc-code" placeholder="Mã voucher (VD: SALE20)" maxlength="20" oninput="this.value=this.value.toUpperCase()" style="letter-spacing:1px;font-weight:800;" />
-          </div>
-          <div class="field-row full">
-            <select class="a-select" id="vc-type" onchange="toggleVcTypeUI()">
-              <option value="percent">% Phần trăm (VD: giảm 20%)</option>
-              <option value="fixed">Số tiền cố định (VD: giảm 10.000đ)</option>
-            </select>
-          </div>
-          <div class="field-row">
-            <input class="a-input" id="vc-discount" placeholder="Giảm % (VD: 20)" type="number" min="1" max="100" />
-            <input class="a-input" id="vc-uses" placeholder="Số lần dùng (VD: 10)" type="number" min="1" max="999" />
-          </div>
-          <div class="field-row full">
-            <input class="a-input" id="vc-minorder" placeholder="Đơn tối thiểu (để trống = không giới hạn)" type="number" min="0" />
-          </div>
-          <button class="btn-add-product" onclick="createVoucher()" style="background:var(--accent)">🎟️ Tạo voucher</button>
-        </div>
-        <div class="admin-section">
-          <div class="admin-section-title">📋 Danh sách voucher</div>
-          <div class="vc-list" id="vc-list">
-            <div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có voucher nào</div>
-          </div>
         </div>
       </div>
 
@@ -859,6 +845,7 @@ db.ref('products').on('value', snap => {
   }
   renderShop();
   if (document.getElementById('admin-panel').classList.contains('show')) renderAdminList();
+  checkMigrateNeeded();
 });
 
 function getProductImages(p) {
@@ -903,6 +890,8 @@ function renderShop() {
   let html='', totalMatch=0;
 
   CATEGORIES.forEach(cat => {
+    // Skip category if drawer filter active and doesn't match
+    if (activeCategory && cat.key !== activeCategory) return;
     let items = products.filter(p => p.cat===cat.key);
     if (searchQuery) items = items.filter(p => p.name.toLowerCase().includes(searchQuery)||p.cat.toLowerCase().includes(searchQuery));
     totalMatch += items.length;
@@ -945,6 +934,18 @@ function renderShop() {
   if (infoEl) {
     infoEl.style.display = (searchQuery && totalMatch>0) ? 'block' : 'none';
     if (searchQuery && totalMatch>0) infoEl.innerHTML = `Tìm thấy <span>${totalMatch} sản phẩm</span> cho "<strong>${searchQuery}</strong>"`;
+  }
+  // Show active category pill
+  const pill = document.getElementById('cat-active-pill');
+  const pillText = document.getElementById('cat-active-text');
+  if (pill && pillText) {
+    if (activeCategory) {
+      const cat = CATEGORIES.find(c => c.key === activeCategory);
+      pillText.textContent = (cat ? cat.icon + ' ' : '') + activeCategory;
+      pill.classList.add('show');
+    } else {
+      pill.classList.remove('show');
+    }
   }
 }
 
@@ -1283,22 +1284,10 @@ function changeQty(cartKey, d){
 }
 function renderCart(){
   const entries=Object.entries(cart);
-  const subtotal=entries.reduce((s,[,i])=>s+i.price*i.qty,0);
-  const discount = calcDiscount(subtotal);
-  const total = Math.max(0, subtotal - discount);
+  const total=entries.reduce((s,[,i])=>s+i.price*i.qty,0);
   document.getElementById('cart-count').textContent=entries.reduce((s,[,i])=>s+i.qty,0);
-  document.getElementById('cart-subtotal').textContent=subtotal.toLocaleString('vi-VN')+'đ';
   document.getElementById('cart-total').textContent=total.toLocaleString('vi-VN')+'đ';
   document.getElementById('order-btn').disabled=entries.length===0;
-  // Show/hide discount row
-  const appliedRow = document.getElementById('voucher-applied-row');
-  if(activeVoucher && discount > 0){
-    appliedRow.style.display='flex';
-    document.getElementById('voucher-tag-el').innerHTML=`<span class="voucher-tag">🎟️ ${activeVoucher.code} ${activeVoucher.type==='fixed'?'−'+activeVoucher.discount.toLocaleString('vi-VN')+'đ':'−'+activeVoucher.discount+'%'} <button onclick="removeVoucher()">✕</button></span>`;
-    document.getElementById('voucher-discount-text').textContent=`−${discount.toLocaleString('vi-VN')}đ`;
-  } else {
-    appliedRow.style.display='none';
-  }
   const el=document.getElementById('cart-items');
   if(!entries.length){
     el.innerHTML=`<div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>`;
@@ -1333,16 +1322,11 @@ function sendOrder(){
   const items=Object.values(cart);
   if(!items.length) return;
   const note=document.getElementById('order-note').value;
-  const subtotal=items.reduce((s,i)=>s+i.price*i.qty,0);
-  const discount = calcDiscount(subtotal);
-  const total = Math.max(0, subtotal - discount);
+  const total=items.reduce((s,i)=>s+i.price*i.qty,0);
   const list=items.map(i=>{
     const optStr=i.selectedOption?` [${i.selectedOption}]`:'';
     return `  • ${i.emoji} ${i.name}${optStr} x${i.qty} = ${(i.price*i.qty).toLocaleString('vi-VN')}đ`;
   }).join('\n');
-  const discountLine = activeVoucher && discount > 0
-    ? `\n🎟️ Voucher ${activeVoucher.code} (${activeVoucher.type==='fixed'?'−'+activeVoucher.discount.toLocaleString('vi-VN')+'đ':'−'+activeVoucher.discount+'%'}): −${discount.toLocaleString('vi-VN')}đ`
-    : '';
   lastMsg=
 `🛒 ĐƠN HÀNG MỚI – MsHuongShop
 ━━━━━━━━━━━━━━━━━━━
@@ -1352,8 +1336,7 @@ function sendOrder(){
 📦 Sản phẩm:
 ${list}
 ━━━━━━━━━━━━━━━━━━━
-💰 Tạm tính: ${subtotal.toLocaleString('vi-VN')}đ${discountLine}
-💳 Tổng thanh toán: ${total.toLocaleString('vi-VN')}đ
+💰 Tổng cộng: ${total.toLocaleString('vi-VN')}đ
 📝 Ghi chú: ${note||'Không có'}
 ━━━━━━━━━━━━━━━━━━━
 ⏰ ${new Date().toLocaleString('vi-VN')}`;
@@ -1384,18 +1367,13 @@ function showSuccess(){
     price: i.price, qty: i.qty, unit: i.unit,
     selectedOption: i.selectedOption||null,
   }));
-  const subtotal = orderItems.reduce((s,i)=>s+i.price*i.qty,0);
-  const discount = calcDiscount(subtotal);
-  const total = Math.max(0, subtotal - discount);
+  const total = orderItems.reduce((s,i)=>s+i.price*i.qty,0);
   const note = document.getElementById('order-note').value;
   const orderData = {
     id: orderId,
     customer: customer.name,
     phone: customer.phone,
     items: orderItems,
-    subtotal,
-    discount,
-    voucherCode: activeVoucher ? activeVoucher.code : null,
     total,
     note: note||'',
     status: 'pending',
@@ -1403,24 +1381,6 @@ function showSuccess(){
     updatedAt: Date.now(),
   };
   db.ref('orders/'+orderId).set(orderData);
-
-  // Consume voucher (tăng usedCount + ghi device)
-  if(activeVoucher){
-    const vcRef = db.ref('vouchers/'+activeVoucher.code);
-    vcRef.transaction(v => {
-      if(!v) return v;
-      v.usedCount = (v.usedCount||0) + 1;
-      if(!v.usedDevices) v.usedDevices = [];
-      if(!v.usedDevices.includes(deviceId)) v.usedDevices.push(deviceId);
-      return v;
-    });
-    activeVoucher = null;
-    document.getElementById('voucher-input').value='';
-    document.getElementById('voucher-input').className='voucher-input';
-    document.getElementById('voucher-msg').textContent='';
-    document.getElementById('voucher-msg').className='voucher-msg';
-    document.getElementById('voucher-applied-row').style.display='none';
-  }
 
   // Deduct stock
   Object.values(cart).forEach(item=>{
@@ -1453,17 +1413,34 @@ function triggerImgSlot(idx) {
   document.getElementById('a-img-file').click();
 }
 
-function handleSlotUpload(input) {
+async function handleSlotUpload(input) {
   const file = input.files[0];
   if (!file) return;
-  if (file.size > 2*1024*1024) { alert('Ảnh quá lớn! Vui lòng chọn ảnh dưới 2MB.'); input.value=''; return; }
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    adminImgSlots[currentSlotIndex] = e.target.result;
+  if (file.size > 32*1024*1024) { alert('Ảnh quá lớn! Vui lòng chọn ảnh dưới 32MB.'); input.value=''; return; }
+
+  const slotIdx = currentSlotIndex;
+  const slot = document.getElementById('img-slot-' + slotIdx);
+  if (slot) { slot.innerHTML = '<span style="font-size:13px;color:#999">⏳ Đang tải...</span>'; }
+
+  try {
+    const IMGBB_KEY = '596ccf3842830fc7dee77cbb070dee9d';
+    const formData = new FormData();
+    formData.append('image', file);
+    const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+      method: 'POST',
+      body: formData,
+    });
+    const data = await res.json();
+    if (!data.success) throw new Error('ImgBB lỗi: ' + JSON.stringify(data));
+    adminImgSlots[slotIdx] = data.data.url;
     document.getElementById('a-img').value = adminImgSlots[0] || '';
     renderImgSlots();
-  };
-  reader.readAsDataURL(file);
+  } catch (err) {
+    console.error(err);
+    alert('Upload ảnh thất bại! Kiểm tra kết nối mạng.\n' + err.message);
+    renderImgSlots();
+  }
+  input.value = '';
 }
 
 function removeImgSlot(e, idx) {
@@ -1578,7 +1555,6 @@ function switchAdminTab(tab){
   document.querySelectorAll('.ap-tab').forEach(b=>b.classList.toggle('active', b.id==='apt-'+tab));
   document.querySelectorAll('.admin-tab-section').forEach(s=>s.classList.toggle('active', s.id==='admin-tab-'+tab));
   if(tab==='orders') renderOrders();
-  if(tab==='vouchers') renderVoucherList();
 }
 
 // ── ORDER MANAGEMENT ─────────────────────────────────────────────
@@ -1752,135 +1728,157 @@ openAdmin = function(){
   const aptCP = document.getElementById('apt-count-products');
   if(aptCP) aptCP.textContent = products.length;
   startOrderListener();
+  checkMigrateNeeded();
 };
 
-// Báo cáo cuối ngày được xử lý bởi GitHub Actions — không cần code ở đây.
-
-// ── VOUCHER SYSTEM ───────────────────────────────────────────────
-// DeviceId: tạo 1 lần, lưu localStorage — nhận diện máy không cần đăng nhập
-const deviceId = (function(){
-  let id = localStorage.getItem('mshuong_device_id');
-  if(!id){ id = 'dev_' + Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('mshuong_device_id', id); }
-  return id;
-})();
-
-let activeVoucher = null; // { code, type, discount, minOrder }
-
-function toggleVcTypeUI(){
-  const type = document.getElementById('vc-type').value;
-  const inp = document.getElementById('vc-discount');
-  if(type==='percent'){ inp.placeholder='Giảm % (VD: 20)'; inp.max=100; }
-  else { inp.placeholder='Giảm tiền (VD: 10000)'; inp.removeAttribute('max'); }
+// ── MIGRATE ẢNH CŨ SANG IMGBB ────────────────────────────────────
+function checkMigrateNeeded() {
+  const base64Products = products.filter(p => {
+    const imgs = getProductImages(p);
+    return imgs.some(img => img && img.startsWith('data:'));
+  });
+  const wrap = document.getElementById('migrate-wrap');
+  const countEl = document.getElementById('migrate-count');
+  if (wrap) wrap.style.display = base64Products.length > 0 ? 'block' : 'none';
+  if (countEl) countEl.textContent = base64Products.length;
 }
 
-async function applyVoucher(){
-  const code = document.getElementById('voucher-input').value.trim().toUpperCase();
-  const inputEl = document.getElementById('voucher-input');
-  if(!code){ setVoucherMsg('Vui lòng nhập mã voucher!', false); return; }
+async function uploadBase64ToImgBB(base64str) {
+  const IMGBB_KEY = '596ccf3842830fc7dee77cbb070dee9d';
+  // Extract base64 data only (remove data:image/xxx;base64, prefix)
+  const base64data = base64str.split(',')[1];
+  const formData = new FormData();
+  formData.append('image', base64data);
+  const res = await fetch(`https://api.imgbb.com/1/upload?key=${IMGBB_KEY}`, {
+    method: 'POST',
+    body: formData,
+  });
+  const data = await res.json();
+  if (!data.success) throw new Error('ImgBB error: ' + JSON.stringify(data));
+  return data.data.url;
+}
 
-  try {
-    const snap = await db.ref('vouchers/'+code).once('value');
-    const vc = snap.val();
+async function migrateAllImages() {
+  const btn = document.getElementById('btn-migrate');
+  const logEl = document.getElementById('migrate-log');
+  logEl.style.display = 'block';
+  logEl.innerHTML = '⏳ Đang bắt đầu migrate...';
+  btn.disabled = true;
+  btn.style.opacity = '0.6';
 
-    if(!vc){ setVoucherMsg('❌ Mã không tồn tại!', false); inputEl.className='voucher-input error'; return; }
-    if((vc.usedCount||0) >= vc.totalUses){ setVoucherMsg('❌ Mã đã hết lượt sử dụng!', false); inputEl.className='voucher-input error'; return; }
-    if(vc.usedDevices && vc.usedDevices.includes(deviceId)){ setVoucherMsg('❌ Thiết bị này đã dùng mã rồi!', false); inputEl.className='voucher-input error'; return; }
+  let successCount = 0, failCount = 0;
 
-    // Kiểm tra đơn tối thiểu
-    if(vc.minOrder && vc.minOrder > 0){
-      const subtotal = Object.values(cart).reduce((s,i)=>s+i.price*i.qty, 0);
-      if(subtotal < vc.minOrder){
-        setVoucherMsg(`❌ Đơn tối thiểu ${vc.minOrder.toLocaleString('vi-VN')}đ để dùng mã này!`, false);
-        inputEl.className='voucher-input error';
-        return;
+  for (const p of products) {
+    const imgs = getProductImages(p);
+    const hasBase64 = imgs.some(img => img && img.startsWith('data:'));
+    if (!hasBase64) continue;
+
+    logEl.innerHTML += `<br>🔄 Đang xử lý: <b>${p.name}</b>...`;
+
+    try {
+      // Migrate images[] array
+      let newImages = [];
+      if (p.images && p.images.length > 0) {
+        for (let i = 0; i < p.images.length; i++) {
+          const img = p.images[i];
+          if (img && img.startsWith('data:')) {
+            const url = await uploadBase64ToImgBB(img);
+            newImages.push(url);
+            logEl.innerHTML += ` ✅ ảnh ${i+1}`;
+          } else {
+            newImages.push(img);
+          }
+        }
+        await db.ref('products/' + p.id + '/images').set(newImages);
       }
-    }
 
-    // Hợp lệ!
-    activeVoucher = { code, type: vc.type||'percent', discount: vc.discount, minOrder: vc.minOrder||0 };
-    inputEl.className='voucher-input success';
-    const discLabel = vc.type==='fixed'
-      ? `${vc.discount.toLocaleString('vi-VN')}đ`
-      : `${vc.discount}%`;
-    const minLabel = vc.minOrder ? ` (đơn từ ${vc.minOrder.toLocaleString('vi-VN')}đ)` : '';
-    setVoucherMsg(`✅ Áp dụng thành công! Giảm ${discLabel}${minLabel}`, true);
-    renderCart();
-  } catch(e) {
-    setVoucherMsg('❌ Lỗi kết nối, thử lại!', false);
+      // Migrate legacy image field
+      if (p.image && p.image.startsWith('data:')) {
+        const url = newImages[0] || await uploadBase64ToImgBB(p.image);
+        await db.ref('products/' + p.id + '/image').set(url);
+      } else if (newImages.length > 0 && !p.image) {
+        await db.ref('products/' + p.id + '/image').set(newImages[0]);
+      }
+
+      successCount++;
+    } catch (err) {
+      failCount++;
+      logEl.innerHTML += ` ❌ Lỗi: ${err.message}`;
+    }
+  }
+
+  logEl.innerHTML += `<br><br>🎉 <b>Hoàn tất!</b> Thành công: ${successCount} sản phẩm${failCount > 0 ? `, Lỗi: ${failCount}` : ''}.`;
+  btn.disabled = false;
+  btn.style.opacity = '1';
+  checkMigrateNeeded();
+}
+
+
+// ── CATEGORY FILTER DRAWER ────────────────────────────────────────
+let activeCategory = null; // null = all
+
+function toggleCatDrawer() {
+  const btn = document.getElementById('cat-menu-btn');
+  const drawer = document.getElementById('cat-drawer');
+  const overlay = document.getElementById('cat-drawer-overlay');
+  const isOpen = drawer.classList.contains('open');
+  if (isOpen) {
+    closeCatDrawer();
+  } else {
+    btn.classList.add('open');
+    drawer.classList.add('open');
+    overlay.classList.add('show');
+    renderCatDrawer();
   }
 }
 
-function calcDiscount(subtotal){
-  if(!activeVoucher) return 0;
-  if(activeVoucher.minOrder && subtotal < activeVoucher.minOrder) return 0;
-  if(activeVoucher.type==='fixed') return Math.min(activeVoucher.discount, subtotal);
-  return Math.round(subtotal * activeVoucher.discount / 100);
+function closeCatDrawer() {
+  document.getElementById('cat-menu-btn').classList.remove('open');
+  document.getElementById('cat-drawer').classList.remove('open');
+  document.getElementById('cat-drawer-overlay').classList.remove('show');
 }
 
-function setVoucherMsg(text, isOk){
-  const el = document.getElementById('voucher-msg');
-  el.textContent = text;
-  el.className = 'voucher-msg ' + (isOk ? 'ok' : 'err');
+function selectCategory(catKey) {
+  activeCategory = catKey;
+  closeCatDrawer();
+  renderShop();
+  // scroll to top smoothly
+  window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function removeVoucher(){
-  activeVoucher = null;
-  document.getElementById('voucher-input').value='';
-  document.getElementById('voucher-input').className='voucher-input';
-  document.getElementById('voucher-msg').textContent='';
-  document.getElementById('voucher-msg').className='voucher-msg';
-  renderCart();
+function clearCategoryFilter() {
+  activeCategory = null;
+  renderShop();
+  renderCatDrawer();
 }
 
-// ── ADMIN: TẠO VÀ QUẢN LÝ VOUCHER ───────────────────────────────
-function createVoucher(){
-  const code = document.getElementById('vc-code').value.trim().toUpperCase();
-  const type = document.getElementById('vc-type').value;
-  const discount = parseInt(document.getElementById('vc-discount').value);
-  const totalUses = parseInt(document.getElementById('vc-uses').value);
-  const minOrder = parseInt(document.getElementById('vc-minorder').value)||0;
-  if(!code){ alert('Vui lòng nhập mã voucher!'); return; }
-  if(!discount || discount<1){ alert('Nhập số tiền/% giảm hợp lệ!'); return; }
-  if(type==='percent' && discount>100){ alert('% giảm tối đa 100!'); return; }
-  if(!totalUses || totalUses<1){ alert('Số lần dùng phải ít nhất 1!'); return; }
-  db.ref('vouchers/'+code).set({ code, type, discount, totalUses, minOrder, usedCount:0, usedDevices:[], createdAt: Date.now() })
-    .then(()=>{
-      document.getElementById('vc-code').value='';
-      document.getElementById('vc-discount').value='';
-      document.getElementById('vc-uses').value='';
-      document.getElementById('vc-minorder').value='';
-      renderVoucherList();
-    });
-}
+function renderCatDrawer() {
+  const list = document.getElementById('cat-drawer-list');
+  if (!list) return;
 
-function renderVoucherList(){
-  db.ref('vouchers').once('value').then(snap=>{
-    const list = document.getElementById('vc-list');
-    const data = snap.val();
-    if(!data){ list.innerHTML='<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có voucher nào</div>'; return; }
-    const vcs = Object.values(data).sort((a,b)=>b.createdAt-a.createdAt);
-    list.innerHTML = vcs.map(vc=>{
-      const usedUp = (vc.usedCount||0) >= vc.totalUses;
-      const discLabel = vc.type==='fixed'
-        ? `Giảm ${vc.discount.toLocaleString('vi-VN')}đ`
-        : `Giảm ${vc.discount}%`;
-      const minLabel = vc.minOrder ? ` · Đơn từ ${vc.minOrder.toLocaleString('vi-VN')}đ` : '';
-      return `<div class="vc-item ${usedUp?'inactive-vc':'active-vc'}">
-        <div>
-          <div class="vc-code">🎟️ ${vc.code}</div>
-          <div class="vc-meta">${discLabel}${minLabel} · Đã dùng ${vc.usedCount||0}/${vc.totalUses} lần</div>
-        </div>
-        <span class="vc-badge ${usedUp?'used-up':''}">${usedUp?'Hết lượt':'Còn '+(vc.totalUses-(vc.usedCount||0))+' lượt'}</span>
-        <button class="vc-del" onclick="deleteVoucher('${vc.code}')">🗑️</button>
-      </div>`;
-    }).join('');
+  const allCount = products.length;
+  let html = `<div class="cat-drawer-item cat-drawer-all${activeCategory === null ? ' active' : ''}" onclick="selectCategory(null)">
+    <span class="cat-icon">🏪</span>
+    <span class="cat-name">Tất cả</span>
+    <span class="cat-count">${allCount}</span>
+  </div>`;
+
+  CATEGORIES.forEach(cat => {
+    const count = products.filter(p => p.cat === cat.key).length;
+    if (!count) return;
+    const isActive = activeCategory === cat.key;
+    html += `<div class="cat-drawer-item${isActive ? ' active' : ''}" onclick="selectCategory('${cat.key}')">
+      <span class="cat-icon">${cat.icon}</span>
+      <span class="cat-name">${cat.key}</span>
+      <span class="cat-count">${count}</span>
+    </div>`;
   });
+
+  list.innerHTML = html;
 }
 
-function deleteVoucher(code){
-  if(!confirm(`Xoá voucher ${code}?`)) return;
-  db.ref('vouchers/'+code).remove().then(renderVoucherList);
-}
+
+// Báo cáo cuối ngày được xử lý bởi GitHub Actions — không cần code ở đây.
 </script>
 </body>
 </html>
