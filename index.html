@@ -427,6 +427,14 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
 .cat-drop-item .cdi-icon{font-size:16px;width:22px;text-align:center;flex-shrink:0;}
 .cat-drop-item+.cat-drop-item{border-top:1px solid #f5f5f5;}
 
+
+/* ── BLACKLIST ── */
+.bl-list{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+.bl-item{background:#fff5f5;border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;border:1.5px solid #ffd0d0;}
+.bl-phone{font-family:'Baloo 2',cursive;font-weight:800;font-size:14px;color:#FF4757;}
+.bl-reason{font-size:11px;color:var(--muted);margin-top:1px;}
+.bl-del{background:#FF4757;border:none;border-radius:8px;padding:5px 10px;color:white;font-size:12px;cursor:pointer;font-weight:700;margin-left:auto;touch-action:manipulation;}
+.bl-del:hover{background:#cc0000;}
 </style>
 </head>
 <body>
@@ -693,6 +701,27 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
         </div>
       </div>
 
+
+      <!-- ── TAB: BLACKLIST ── -->
+      <div class="admin-tab-section" id="admin-tab-blacklist">
+        <div class="admin-section">
+          <div class="admin-section-title">🚫 Chặn số điện thoại</div>
+          <div class="field-row full">
+            <input class="a-input" id="bl-phone-input" placeholder="Số điện thoại (VD: 0912345678)" type="tel" maxlength="10" />
+          </div>
+          <div class="field-row full">
+            <input class="a-input" id="bl-reason-input" placeholder="Lý do (VD: Đặt đơn ảo)" />
+          </div>
+          <button class="btn-add-product" onclick="addBlacklist()" style="background:#FF4757">🚫 Chặn số này</button>
+        </div>
+        <div class="admin-section">
+          <div class="admin-section-title">📋 Danh sách bị chặn</div>
+          <div class="bl-list" id="bl-list">
+            <div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có số nào bị chặn</div>
+          </div>
+        </div>
+      </div>
+
     </div>
   </div>
 </div>
@@ -919,7 +948,7 @@ function renderShop() {
   }
 }
 
-function doLogin() {
+async function doLogin() {
   const name = document.getElementById('inp-name').value.trim();
   const phone = document.getElementById('inp-phone').value.trim();
   let ok=true;
@@ -928,6 +957,23 @@ function doLogin() {
   if (!/^0\d{9}$/.test(phone)){document.getElementById('inp-phone').classList.add('error');document.getElementById('err-phone').classList.add('show');ok=false;}
   else{document.getElementById('inp-phone').classList.remove('error');document.getElementById('err-phone').classList.remove('show');}
   if (!ok) return;
+
+  document.getElementById('err-phone').textContent='Số điện thoại không hợp lệ (10 chữ số, bắt đầu bằng 0)';
+  // Kiểm tra blacklist
+  const btn = document.querySelector('.btn-enter');
+  btn.disabled = true;
+  btn.textContent = '⏳ Đang kiểm tra...';
+  const blocked = await checkBlacklist(phone);
+  btn.disabled = false;
+  btn.textContent = 'Vào mua hàng ngay →';
+
+  if (blocked) {
+    document.getElementById('inp-phone').classList.add('error');
+    document.getElementById('err-phone').textContent = '🚫 Số điện thoại này không thể đặt hàng. Vui lòng liên hệ cô Hường.';
+    document.getElementById('err-phone').classList.add('show');
+    return;
+  }
+
   customer={name,phone};
   document.getElementById('user-chip').textContent='👤 '+name;
   document.getElementById('overlay').classList.add('hide');
@@ -1525,6 +1571,7 @@ function switchAdminTab(tab){
   document.querySelectorAll('.ap-tab').forEach(b=>b.classList.toggle('active', b.id==='apt-'+tab));
   document.querySelectorAll('.admin-tab-section').forEach(s=>s.classList.toggle('active', s.id==='admin-tab-'+tab));
   if(tab==='orders') renderOrders();
+  if(tab==='blacklist') renderBlacklist();
 }
 
 // ── ORDER MANAGEMENT ─────────────────────────────────────────────
@@ -1844,6 +1891,49 @@ function renderCatPills() {} // compatibility stub
 
 
 // Báo cáo cuối ngày được xử lý bởi GitHub Actions — không cần code ở đây.
+
+// ── BLACKLIST ─────────────────────────────────────────────────────
+async function checkBlacklist(phone) {
+  try {
+    const snap = await db.ref('blacklist/' + phone).once('value');
+    return snap.val(); // null nếu không bị chặn, object nếu bị chặn
+  } catch(e) { return null; }
+}
+
+function addBlacklist() {
+  const phone = document.getElementById('bl-phone-input').value.trim();
+  const reason = document.getElementById('bl-reason-input').value.trim() || 'Đặt đơn ảo';
+  if (!/^0\d{9}$/.test(phone)) { alert('Số điện thoại không hợp lệ!'); return; }
+  db.ref('blacklist/' + phone).set({ phone, reason, createdAt: Date.now() }).then(() => {
+    document.getElementById('bl-phone-input').value = '';
+    document.getElementById('bl-reason-input').value = '';
+    renderBlacklist();
+  });
+}
+
+function renderBlacklist() {
+  db.ref('blacklist').once('value').then(snap => {
+    const list = document.getElementById('bl-list');
+    if (!list) return;
+    const data = snap.val();
+    if (!data) { list.innerHTML = '<div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có số nào bị chặn ✅</div>'; return; }
+    const items = Object.values(data).sort((a,b) => b.createdAt - a.createdAt);
+    list.innerHTML = items.map(item => `
+      <div class="bl-item">
+        <div>
+          <div class="bl-phone">🚫 ${item.phone}</div>
+          <div class="bl-reason">${item.reason}</div>
+        </div>
+        <button class="bl-del" onclick="removeBlacklist('${item.phone}')">Bỏ chặn</button>
+      </div>`).join('');
+  });
+}
+
+function removeBlacklist(phone) {
+  if (!confirm('Bỏ chặn số ' + phone + '?')) return;
+  db.ref('blacklist/' + phone).remove().then(renderBlacklist);
+}
+
 </script>
 </body>
 </html>
