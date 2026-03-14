@@ -616,7 +616,9 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
         <button class="ap-tab" id="apt-orders" onclick="switchAdminTab('orders')">
           📋 Đơn hàng <span class="ap-tab-count hot" id="apt-count-orders">0</span>
         </button>
-        <button class="ap-tab" id="apt-blacklist" onclick="switchAdminTab('blacklist')">🚫 Chặn SĐT</button>
+        <button class="ap-tab" id="apt-blacklist" onclick="switchAdminTab('blacklist')">
+          🚫 Chặn SĐT
+        </button>
       </div>
 
       <!-- ── TAB: SẢN PHẨM ── -->
@@ -732,7 +734,7 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
         </div>
         <div class="admin-section">
           <div class="admin-section-title">📋 Danh sách bị chặn</div>
-          <div class="bl-list" id="bl-list"></div>
+          <div class="bl-list" id="bl-list"><div style="text-align:center;color:var(--muted);padding:20px;font-size:13px">Chưa có số nào bị chặn ✅</div></div>
         </div>
       </div>
 
