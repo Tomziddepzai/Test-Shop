@@ -1729,12 +1729,8 @@ function updateOrderStatus(orderId, newStatus){
 }
 
 function deleteOrder(orderId){
-  const o=orders[orderId];
   if(!confirm('Xoá đơn hàng này?')) return;
   db.ref('orders/'+orderId).remove();
-  if(o&&o.phone&&confirm(`Có muốn chặn số ${o.phone} (${o.customer}) luôn không?`)){
-    db.ref('blacklist/'+o.phone).set({phone:o.phone,reason:'Đặt đơn ảo - xoá bởi admin',createdAt:Date.now()});
-  }
 }
 
 // Hook into openAdmin to start listener and update product tab count
