@@ -517,12 +517,6 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
   </div>
   <div class="cart-footer">
     <div class="cart-total"><span>Tổng cộng:</span><strong id="cart-total">0đ</strong></div>
-    <div class="voucher-msg" id="voucher-msg"></div>
-      <div id="voucher-applied-row" style="display:none" class="voucher-discount-row">
-        <span id="voucher-tag-el"></span>
-        <span id="voucher-discount-text" style="color:#00a86b"></span>
-      </div>
-    </div>
     <textarea class="note-input" id="order-note" placeholder="Ghi chú (địa chỉ, yêu cầu...)" rows="2"></textarea>
     <button class="order-btn" id="order-btn" onclick="sendOrder()" disabled>📲 Đặt Hàng</button>
   </div>
@@ -713,15 +707,6 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
         </div>
       </div>
 
-    </div>
-  </div>
-</div>
-
-    </div>
-  </div>
-</div>
-
-
       <!-- ── TAB: BLACKLIST ── -->
       <div class="admin-tab-section" id="admin-tab-blacklist">
         <div class="admin-section">
@@ -740,6 +725,9 @@ header{background:var(--dark);padding:0 24px;display:flex;align-items:center;jus
         </div>
       </div>
 
+    </div>
+  </div>
+</div>
 
 <!-- LIGHTBOX -->
 <div id="lightbox" onclick="lbClickOutside(event)">
@@ -1308,8 +1296,10 @@ function changeQty(cartKey, d){
 }
 function renderCart(){
   const entries=Object.entries(cart);
-  const subtotal=entries.reduce((s,[,i])=>s+i.price*i.qty,0);
-
+  const total=entries.reduce((s,[,i])=>s+i.price*i.qty,0);
+  document.getElementById('cart-count').textContent=entries.reduce((s,[,i])=>s+i.qty,0);
+  document.getElementById('cart-total').textContent=total.toLocaleString('vi-VN')+'đ';
+  document.getElementById('order-btn').disabled=entries.length===0;
   const el=document.getElementById('cart-items');
   if(!entries.length){
     el.innerHTML=`<div class="cart-empty"><span class="big">🛍️</span>Giỏ hàng trống<br>Thêm sản phẩm để đặt hàng!</div>`;
